@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/button_note.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/cart_app_bar.dart';
+import 'package:medpia_mobile/app/commons/ui/widgets/custom_line_widget.dart';
+import 'package:medpia_mobile/app/commons/ui/widgets/note_order_widget.dart';
+import 'package:medpia_mobile/app/commons/ui/widgets/custom_app_bar.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/cart_item.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/order_detail.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
@@ -15,6 +16,13 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   ProductRepository productRepository = ProductRepository();
+  String _selectedPayment = "Cash";
+
+  void selectPayment(String payMethod) {
+    setState(() {
+      _selectedPayment = payMethod;
+    });
+  }
 
   void getProduct() {
     final response = productRepository.getProduct();
@@ -53,7 +61,7 @@ class _CartScreenState extends State<CartScreen> {
                             .copyWith(color: Colors.grey.shade800)),
                     Row(
                       children: [
-                        Text("3",
+                        Text("5",
                             style: Theme.of(context)
                                 .textTheme
                                 .labelMedium!
@@ -89,13 +97,15 @@ class _CartScreenState extends State<CartScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CartAppBar(),
+                  CustomAppBar(
+                    appBarTitle: "Process Transaction",
+                  ),
                   SizedBox(height: 10),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.6,
                     child: ListView.builder(
                       scrollDirection: Axis.vertical,
-                      itemCount: 3,
+                      itemCount: 5,
                       itemBuilder: (context, index) {
                         return CartItem(
                           productModel: products.elementAt(index),
@@ -103,76 +113,86 @@ class _CartScreenState extends State<CartScreen> {
                       },
                     ),
                   ),
-                  Divider(
-                    color: Colors.grey.shade300,
-                    thickness: 0.5,
-                    height: 30,
-                  ),
-                  ButtonNote(),
-                  Divider(
-                    color: Colors.grey.shade300,
-                    thickness: 0.5,
-                    height: 30,
-                  ),
-                  OrderDetail(),
-                  SizedBox(height: 20),
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                        border:
-                            Border.all(color: Colors.grey.shade400, width: 1),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Transaction Number",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .copyWith(color: Colors.grey.shade800)),
-                            SizedBox(height: 5),
-                            Text("TRX-2021-0001",
-                                style: Theme.of(context).textTheme.labelMedium),
-                          ],
-                        ),
-                        Divider(
-                          color: Colors.grey.shade400,
-                          thickness: 1,
-                          height: 20,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Patient Name",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(color: Colors.grey.shade800),
-                            ),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(0),
-                                  border: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  hoverColor: Colors.transparent,
-                                  hintText: "Enter patient name",
-                                  hintStyle: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium!
-                                      .copyWith(color: Colors.grey.shade300)),
-                            ),
-                          ],
-                        )
-                      ],
+                  ListTile(
+                    onTap: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              height: 170,
+                              color: Colors.white,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ListTile(
+                                    title: Text(
+                                      "Choose Payment Method",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    trailing: IconButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        icon: Icon(HugeIcons
+                                            .strokeRoundedMultiplicationSign)),
+                                  ),
+                                  ListTile(
+                                    onTap: () {
+                                      setState(() {
+                                        selectPayment("Cash");
+                                        Navigator.pop(context);
+                                      });
+                                    },
+                                    leading:
+                                        Icon(HugeIcons.strokeRoundedWallet01),
+                                    title: Text("Cash"),
+                                  ),
+                                  ListTile(
+                                    onTap: () {
+                                      setState(() {
+                                        selectPayment("Debit");
+                                        Navigator.pop(context);
+                                      });
+                                    },
+                                    leading:
+                                        Icon(HugeIcons.strokeRoundedCreditCard),
+                                    title: Text("Debit"),
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
+                    },
+                    contentPadding: EdgeInsets.zero,
+                    leading: Icon(HugeIcons.strokeRoundedPayment01),
+                    title: Text("Payment Method",
+                        style: Theme.of(context).textTheme.labelSmall!),
+                    trailing: SizedBox(
+                      width: 100,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            '${_selectedPayment}',
+                            style: TextStyle(fontSize: 10, color: Colors.teal),
+                          ),
+                          Icon(
+                            HugeIcons.strokeRoundedArrowRight01,
+                            color: Colors.teal,
+                          ),
+                        ],
+                      ),
                     ),
-                  )
-                ])
+                  ),
+                  CustomLineWidget(),
+                  NoteOrderWidget(),
+                ]),
+            CustomLineWidget(),
+            SizedBox(height: 10),
+            OrderDetail(),
           ],
         ),
       ),

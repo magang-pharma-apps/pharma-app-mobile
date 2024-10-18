@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medpia_mobile/app/modules/product/views/product_view.dart';
 
 class CustomBanner extends StatelessWidget {
   const CustomBanner({
@@ -39,7 +40,14 @@ class CustomBanner extends StatelessWidget {
                       .copyWith(color: Colors.teal.shade800),
                 ),
                 SizedBox(height: 10),
-                ElevatedButton(onPressed: () {}, child: Text("Order Now"))
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductView()));
+                    },
+                    child: Text("Order Now"))
               ],
             ),
           ),

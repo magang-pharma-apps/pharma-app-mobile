@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:medpia_mobile/app/commons/ui/widgets/note_prescription.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
+
+Image getImagebyDrugClass(String drugClass) {
+  switch (drugClass) {
+    case 'W':
+      return Image.asset('assets/images/obt.png', width: 10);
+    case 'G':
+      return Image.asset('assets/images/ok.png', width: 10);
+    default:
+      return Image.asset('assets/images/ob.png', width: 10);
+  }
+}
 
 class CartItem extends StatefulWidget {
   ProductModel? productModel;
@@ -30,100 +42,99 @@ class _CartItemState extends State<CartItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.3,
-            child: Container(
-              width: 130,
-              height: 130,
-              padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade100),
+            borderRadius: BorderRadius.circular(10)),
+        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: ListTile(
+          visualDensity: VisualDensity.standard,
+          // isThreeLine: true,
+          contentPadding: EdgeInsets.only(left: 10),
+          leading: Container(
+              width: 70,
+              clipBehavior: Clip.antiAlias,
+              alignment: Alignment.topRight,
               decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.grey.shade300, width: 0.5),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Container(
-                  clipBehavior: Clip.antiAlias,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                  child: Image.asset(widget.productModel!.image!,
-                      fit: BoxFit.cover)),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(5),
+                      topLeft: Radius.circular(5)),
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage(widget.productModel!.image!))),
+              child: getImagebyDrugClass(widget.productModel!.drugClass!)),
+          title: Text(
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            widget.productModel!.name!,
+            style: Theme.of(context)
+                .textTheme
+                .titleSmall!
+                .copyWith(color: Colors.black),
+          ),
+          subtitle: SizedBox(
+            width: 250,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    "Rp ${widget.productModel!.sellingPrice}",
+                    style: Theme.of(context).textTheme.titleSmall),
+                SizedBox(height: 5),
+                NotePrescription(),
+              ],
             ),
           ),
-          SizedBox(width: 20),
-          Expanded(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
-              child: Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.productModel!.name!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium!
-                          .copyWith(color: Colors.black),
-                    ),
-                    SizedBox(height: 10),
-                    Text("Rp ${widget.productModel!.sellingPrice}",
-                        style: Theme.of(context).textTheme.titleSmall),
-                    SizedBox(height: 30),
-                    Row(
-                      children: [
-                        IconButton(
-                            highlightColor: Colors.deepPurple.shade900,
-                            onPressed: () {
-                              _reduceQuantity();
-                            },
-                            icon: CircleAvatar(
-                              child: Icon(HugeIcons.strokeRoundedMinusSign),
-                            )),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            "${quantity}",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(color: Colors.black),
-                          ),
-                        ),
-                        IconButton(
-                            highlightColor: Colors.deepPurple.shade900,
-                            autofocus: true,
-                            onPressed: () {
-                              _addQuantity();
-                            },
-                            icon: CircleAvatar(
-                              child: Icon(HugeIcons.strokeRoundedPlusSign),
-                            )),
-                        SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.2),
-                        // Spacer(),
-                        IconButton(
-                          hoverColor: Colors.red.shade600,
-                          onPressed: () {},
-                          icon: CircleAvatar(
-                              backgroundColor: Colors.red.shade50,
-                              child: Icon(
-                                HugeIcons.strokeRoundedDelete01,
-                                color: Colors.red,
-                              )),
-                        )
-                      ],
-                    )
-                  ],
+          trailing: SizedBox(
+            width: 180,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      _reduceQuantity();
+                    },
+                    icon: CircleAvatar(
+                      radius: 12,
+                      child: Icon(
+                        HugeIcons.strokeRoundedMinusSign,
+                        size: 12,
+                      ),
+                    )),
+                Text(
+                  "${quantity}",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      color: Colors.black, fontWeight: FontWeight.bold),
                 ),
-              ),
+                IconButton(
+                    autofocus: true,
+                    onPressed: () {
+                      _addQuantity();
+                    },
+                    icon: CircleAvatar(
+                      radius: 12,
+                      child: Icon(
+                        HugeIcons.strokeRoundedPlusSign,
+                        size: 12,
+                      ),
+                    )),
+                IconButton(
+                  onPressed: () {},
+                  icon: CircleAvatar(
+                      radius: 12,
+                      backgroundColor: Colors.red.shade50,
+                      child: Icon(
+                        HugeIcons.strokeRoundedDelete01,
+                        size: 12,
+                        color: Colors.red,
+                      )),
+                )
+              ],
             ),
-          )
-        ],
-      ),
-    );
+          ),
+        ));
   }
 }

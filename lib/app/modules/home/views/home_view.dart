@@ -4,12 +4,15 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/barcode_button_widget.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/card_category.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/card_product.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/custom_app_bar.dart';
+import 'package:medpia_mobile/app/commons/ui/widgets/custom_home_app_bar.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_banner.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/search_widget.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/section_header.dart';
 import 'package:medpia_mobile/app/models/category_model.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
+import 'package:medpia_mobile/app/modules/category/views/category_view.dart';
+import 'package:medpia_mobile/app/modules/product/views/product_detail_view.dart';
+import 'package:medpia_mobile/app/modules/product/views/product_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -62,7 +65,7 @@ class _HomeViewState extends State<HomeView> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                CustomAppBar(),
+                CustomHomeAppBar(),
                 SizedBox(height: 40),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,6 +91,12 @@ class _HomeViewState extends State<HomeView> {
                 SectionHeader(
                   sectionName: "Category",
                   sectionIcon: HugeIcons.strokeRoundedGridView,
+                  viewAllPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CategoryView()));
+                  },
                 ),
               ],
             ),
@@ -125,17 +134,29 @@ class _HomeViewState extends State<HomeView> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: SectionHeader(
+                viewAllPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ProductView()));
+                },
                 sectionName: "Products",
                 sectionIcon: HugeIcons.strokeRoundedPackage),
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: 250,
+            height: 260,
             child: ListView.builder(
               itemExtent: MediaQuery.of(context).size.width / 3,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                return CardProduct(productModel: products.elementAt(index));
+                return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductDetailView()));
+                    },
+                    child:
+                        CardProduct(productModel: products.elementAt(index)));
               },
               itemCount: 5,
             ),

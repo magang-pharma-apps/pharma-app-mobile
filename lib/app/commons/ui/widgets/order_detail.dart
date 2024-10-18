@@ -12,7 +12,7 @@ class OrderDetail extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: 30,
+          height: 20,
           child: Text("Order Info",
               textHeightBehavior: TextHeightBehavior(
                   applyHeightToLastDescent: true,

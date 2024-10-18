@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/modules/home/views/home_view.dart';
+import 'package:medpia_mobile/app/modules/prescription/views/prescription_list.dart';
+import 'package:medpia_mobile/app/modules/profile/views/user_view.dart';
 
 class CoreView extends StatefulWidget {
   const CoreView({super.key});
@@ -19,15 +21,11 @@ class _CoreViewState extends State<CoreView> {
         index: currentPage,
         children: [
           HomeView(),
-          Container(
-            color: Colors.yellow,
-          ),
+          PrescriptionList(),
           Container(
             color: Colors.green,
           ),
-          Container(
-            color: Colors.grey,
-          )
+          UserView(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -43,7 +41,7 @@ class _CoreViewState extends State<CoreView> {
             icon: Icon(HugeIcons.strokeRoundedHome09),
           ),
           BottomNavigationBarItem(
-              label: 'Perceptions',
+              label: 'Prescription',
               icon: Icon(HugeIcons.strokeRoundedInvoice01)),
           BottomNavigationBarItem(
               label: 'Order', icon: Icon(Icons.point_of_sale_outlined)),

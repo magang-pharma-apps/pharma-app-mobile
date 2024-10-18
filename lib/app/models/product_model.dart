@@ -11,6 +11,7 @@ class ProductModel {
   String? expiryDate;
   bool? status;
   String? image;
+  String? drugClass;
 
   ProductModel(
       {this.id,
@@ -24,7 +25,8 @@ class ProductModel {
       this.description,
       this.expiryDate,
       this.status,
-      this.image});
+      this.image,
+      this.drugClass});
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
@@ -39,7 +41,8 @@ class ProductModel {
         description: json['description'],
         expiryDate: json['expiry_date'],
         status: json['status'],
-        image: json['image_assets']);
+        image: json['image_assets'],
+        drugClass: json['drug_class']);
   }
 }
 
@@ -58,7 +61,8 @@ class ProductRepository {
         "description": "Pereda nyeri",
         "expiry_date": "2025-12-31",
         "status": true,
-        "image_assets": "assets/images/paracet.jpg"
+        "image_assets": "assets/images/paracet.jpg",
+        "drug_class": "B"
       },
       {
         "id": 2,
@@ -72,7 +76,8 @@ class ProductRepository {
         "description": "Antibiotik",
         "expiry_date": "2024-11-30",
         "status": true,
-        "image_assets": "assets/images/paracet.jpg"
+        "image_assets": "assets/images/paracet.jpg",
+        "drug_class": "G"
       },
       {
         "id": 3,
@@ -86,7 +91,8 @@ class ProductRepository {
         "description": "Meningkatkan daya tahan tubuh",
         "expiry_date": "2026-01-31",
         "status": true,
-        "image_assets": "assets/images/paracet.jpg"
+        "image_assets": "assets/images/paracet.jpg",
+        "drug_class": "W"
       },
       {
         "id": 4,
@@ -100,7 +106,8 @@ class ProductRepository {
         "description": "Pereda nyeri, anti-inflamasi",
         "expiry_date": "2025-08-15",
         "status": true,
-        "image_assets": "assets/images/paracet.jpg"
+        "image_assets": "assets/images/paracet.jpg",
+        "drug_class": "B"
       },
       {
         "id": 5,
@@ -114,7 +121,8 @@ class ProductRepository {
         "description": "Pereda alergi",
         "expiry_date": "2024-12-10",
         "status": true,
-        "image_assets": "assets/images/paracet.jpg"
+        "image_assets": "assets/images/paracet.jpg",
+        "drug_class": "G"
       },
       {
         "id": 6,
@@ -128,7 +136,8 @@ class ProductRepository {
         "description": "Pereda nyeri, pengencer darah",
         "expiry_date": "2025-10-01",
         "status": true,
-        "image_assets": "assets/images/paracet.jpg"
+        "image_assets": "assets/images/paracet.jpg",
+        "drug_class": "B"
       },
       {
         "id": 7,
@@ -142,7 +151,8 @@ class ProductRepository {
         "description": "Pengurang asam lambung",
         "expiry_date": "2026-03-20",
         "status": true,
-        "image_assets": "assets/images/paracet.jpg"
+        "image_assets": "assets/images/paracet.jpg",
+        "drug_class": "G"
       },
       {
         "id": 8,
@@ -156,7 +166,8 @@ class ProductRepository {
         "description": "Dukungan kesehatan umum",
         "expiry_date": "2026-05-01",
         "status": true,
-        "image_assets": "assets/images/paracet.jpg"
+        "image_assets": "assets/images/paracet.jpg",
+        "drug_class": "W"
       },
       {
         "id": 9,
@@ -170,7 +181,8 @@ class ProductRepository {
         "description": "Pereda nyeri, anti-inflamasi",
         "expiry_date": "2025-06-30",
         "status": true,
-        "image_assets": "assets/images/paracet.jpg"
+        "image_assets": "assets/images/paracet.jpg",
+        "drug_class": "B"
       },
       {
         "id": 10,
@@ -184,7 +196,8 @@ class ProductRepository {
         "description": "Pereda diare",
         "expiry_date": "2025-07-25",
         "status": true,
-        "image_assets": "assets/images/paracet.jpg"
+        "image_assets": "assets/images/paracet.jpg",
+        "drug_class": "G"
       }
     ];
   }
