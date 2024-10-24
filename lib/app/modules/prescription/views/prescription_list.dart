@@ -4,6 +4,7 @@ import 'package:medpia_mobile/app/commons/ui/widgets/custom_app_bar.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_expansiontile.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_line_widget.dart';
 import 'package:medpia_mobile/app/modules/prescription/views/acceptance_tab_view.dart';
+import 'package:medpia_mobile/app/modules/prescription/views/prescription_form.dart';
 import 'package:medpia_mobile/app/modules/prescription/views/redemption_tab_view.dart';
 
 class PrescriptionList extends StatefulWidget {
@@ -26,7 +27,12 @@ class _PrescriptionListState extends State<PrescriptionList> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PrescriptionForm()));
+                },
                 child: CircleAvatar(
                   backgroundColor: Colors.teal.shade900,
                   child: Icon(

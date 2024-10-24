@@ -3,6 +3,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:medpia_mobile/app/commons/ui/theme.dart';
 import 'package:medpia_mobile/app/core_view.dart';
 import 'package:medpia_mobile/app/modules/auth/views/auth_view.dart';
+import 'package:medpia_mobile/app/modules/category/views/category_view.dart';
 
 class MainApp extends StatelessWidget {
   MainApp({super.key});

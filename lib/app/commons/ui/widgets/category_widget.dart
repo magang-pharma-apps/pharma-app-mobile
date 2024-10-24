@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:medpia_mobile/app/models/category_model.dart';
+import 'package:medpia_mobile/app/repositories/category_repository.dart';
 
-class ListCategory extends StatefulWidget {
+class CategoryWidget extends StatefulWidget {
   CategoryModel? categoryModel;
-  ListCategory({super.key, this.categoryModel});
+  CategoryWidget({super.key, this.categoryModel});
 
   @override
-  State<ListCategory> createState() => _ListCategoryState();
+  State<CategoryWidget> createState() => _CategoryWidgetState();
 }
 
-class _ListCategoryState extends State<ListCategory> {
+class _CategoryWidgetState extends State<CategoryWidget> {
   CategoryRepository categoryRepository = CategoryRepository();
 
-  void getCategory() {
-    final response = categoryRepository.getCategory();
+  void getCategory() async {
+    final response = await categoryRepository.getCategories();
     setState(() {
-      categories = response.map((data) {
-        return CategoryModel.fromJson(data);
-      }).toList();
+      categories = response;
     });
   }
 
@@ -38,8 +37,8 @@ class _ListCategoryState extends State<ListCategory> {
       child: ListTile(
         onTap: () {},
         shape: Border.all(color: Colors.grey.shade300, width: 1),
-        leading: Image.asset(
-          widget.categoryModel!.image!,
+        leading: Image.network(
+          widget.categoryModel!.categoryImageUrl!,
           width: 100,
         ),
         title: Row(

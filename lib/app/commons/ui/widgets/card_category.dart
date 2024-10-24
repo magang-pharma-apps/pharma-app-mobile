@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medpia_mobile/app/models/category_model.dart';
+import 'package:medpia_mobile/app/repositories/category_repository.dart';
 
 class CardCategory extends StatefulWidget {
   CategoryModel? categoryModel;
@@ -10,7 +11,23 @@ class CardCategory extends StatefulWidget {
 }
 
 class _CardCategoryState extends State<CardCategory> {
+  CategoryRepository categoryRepository = CategoryRepository();
   bool _isHovered = false;
+
+  void getCategory() async {
+    final response = await categoryRepository.getCategories();
+    setState(() {
+      categories = response;
+    });
+  }
+
+  @override
+  initState() {
+    super.initState();
+    getCategory();
+  }
+
+  List<CategoryModel> categories = [];
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +50,10 @@ class _CardCategoryState extends State<CardCategory> {
             decoration: BoxDecoration(
                 color: _isHovered ? Colors.blue.shade200 : Colors.blue.shade100,
                 borderRadius: BorderRadius.circular(30)),
-            child: Image.asset(widget.categoryModel!.image!),
+            child: Image.network(
+              widget.categoryModel!.categoryImageUrl!,
+              width: 150,
+            ),
           ),
           SizedBox(height: 10),
           Text(widget.categoryModel!.name!,

@@ -1,0 +1,21 @@
+import 'package:medpia_mobile/app/providers/api_provider.dart';
+import 'package:http/http.dart' as http;
+
+class CategoryProvider extends ApiProvider {
+  CategoryProvider()
+      : super(headers: {
+          'Content-Type': 'application/json',
+          'Authorization':
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhOTRkNWNmNS03OGFmLTRjODYtYTc5Zi05ZWJmMWU0MmMzZWUiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsInBlcm1pc3Npb25zIjpbIkNSRUFURV9VU0VSIiwiUkVBRF9VU0VSIiwiVVBEQVRFX1VTRVIiLCJERUxFVEVfVVNFUiIsInJlYWQ6cm9sZSIsImNyZWF0ZTpyb2xlIiwidXBkYXRlOnJvbGUiLCJkZWxldGU6cm9sZSIsInJlYWQ6cGVybWlzc2lvbiIsImNyZWF0ZTpwZXJtaXNzaW9uIiwidXBkYXRlOnBlcm1pc3Npb24iLCJkZWxldGU6cGVybWlzc2lvbiIsInJlYWQ6dXNlci1yb2xlIiwiY3JlYXRlOnVzZXItcm9sZSIsInVwZGF0ZTp1c2VyLXJvbGUiLCJkZWxldGU6dXNlci1yb2xlIiwicmVhZDpyb2xlLXBlcm1pc3Npb24iLCJjcmVhdGU6cm9sZS1wZXJtaXNzaW9uIiwidXBkYXRlOnJvbGUtcGVybWlzc2lvbiIsImRlbGV0ZTpyb2xlLXBlcm1pc3Npb24iLCJyZWFkOmNhdGVnb3J5IiwiY3JlYXRlOmNhdGVnb3J5IiwidXBkYXRlOmNhdGVnb3J5IiwiZGVsZXRlOmNhdGVnb3J5IiwicmVhZDp1bml0IiwiY3JlYXRlOnVuaXQiLCJ1cGRhdGU6dW5pdCIsImRlbGV0ZTp1bml0IiwicmVhZDpwcm9kdWN0IiwiY3JlYXRlOnByb2R1Y3QiLCJ1cGRhdGU6cHJvZHVjdCIsImRlbGV0ZTpwcm9kdWN0IiwicmVhZDpwcm9kdWN0IGltYWdlIiwiY3JlYXRlOnByb2R1Y3QgaW1hZ2UiLCJ1cGRhdGU6cHJvZHVjdCBpbWFnZSIsImRlbGV0ZTpwcm9kdWN0IGltYWdlIiwicmVhZDpjb21wb3VuZCBwcm9kdWN0IiwiY3JlYXRlOmNvbXBvdW5kIHByb2R1Y3QiLCJ1cGRhdGU6Y29tcG91bmQgcHJvZHVjdCIsImRlbGV0ZTpjb21wb3VuZCBwcm9kdWN0IiwicmVhZDpzdXBwbGllciIsImNyZWF0ZTpzdXBwbGllciIsInVwZGF0ZTpzdXBwbGllciIsImRlbGV0ZTpzdXBwbGllciIsInJlYWQ6d2FyZWhvdXNlIiwiY3JlYXRlOndhcmVob3VzZSIsInVwZGF0ZTp3YXJlaG91c2UiLCJkZWxldGU6d2FyZWhvdXNlIiwicmVhZDppbnZlbnRvcnkiLCJjcmVhdGU6aW52ZW50b3J5IiwidXBkYXRlOmludmVudG9yeSIsImRlbGV0ZTppbnZlbnRvcnkiLCJyZWFkOnRyYW5zYWN0aW9uIiwiY3JlYXRlOnRyYW5zYWN0aW9uIiwidXBkYXRlOnRyYW5zYWN0aW9uIiwiZGVsZXRlOnRyYW5zYWN0aW9uIl0sImlhdCI6MTcyOTYxNDcxNCwiZXhwIjoxNzYxMTUwNzE0fQ.XjjP2mss7_J9BM9vghVR2BIzQ8vgqk_a_EW9iAMoPlk'
+        });
+
+  Future<http.Response> getCategories() async {
+    final response = await get('categories');
+    return response;
+  }
+
+  Future<http.Response> getCategoryById(String id) async {
+    final response = await get('categories/$id');
+    return response;
+  }
+}

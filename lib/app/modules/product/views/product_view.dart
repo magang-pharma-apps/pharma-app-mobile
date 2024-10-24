@@ -41,8 +41,7 @@ class _ProductViewState extends State<ProductView> {
             CustomAppBar(appBarTitle: 'All Products'),
             SearchWidget(),
             SizedBox(height: 5),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.75,
+            Expanded(
               child: GridView.builder(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   itemCount: products.length,

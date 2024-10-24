@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -13,6 +15,8 @@ import 'package:medpia_mobile/app/models/product_model.dart';
 import 'package:medpia_mobile/app/modules/category/views/category_view.dart';
 import 'package:medpia_mobile/app/modules/product/views/product_detail_view.dart';
 import 'package:medpia_mobile/app/modules/product/views/product_view.dart';
+import 'package:http/http.dart' as http;
+import 'package:medpia_mobile/app/repositories/category_repository.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -24,17 +28,6 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   CategoryRepository categoryRepository = CategoryRepository();
   ProductRepository productRepository = ProductRepository();
-
-  // Kita mau mengambil data dari model CategoryModel dan ProductModel ditampung
-  /// kedalam list categories dan products
-  void getCategory() {
-    final response = categoryRepository.getCategory();
-    setState(() {
-      categories = response.map((data) {
-        return CategoryModel.fromJson(data);
-      }).toList();
-    });
-  }
 
   void getProduct() {
     final response = productRepository.getProduct();
@@ -48,11 +41,10 @@ class _HomeViewState extends State<HomeView> {
   @override
   initState() {
     super.initState();
-    getCategory();
+    // getCategory();
     getProduct();
   }
 
-  List<CategoryModel> categories = [];
   List<ProductModel> products = [];
 
   @override
@@ -60,6 +52,7 @@ class _HomeViewState extends State<HomeView> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20),
       child: ListView(
+        shrinkWrap: true,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -103,28 +96,34 @@ class _HomeViewState extends State<HomeView> {
           ),
           SizedBox(height: 10),
           Container(
-            height: 150,
-            width: MediaQuery.of(context).size.width,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ...List.generate(
-                    categories.length,
-                    (index) {
-                      final category = categories.elementAt(index);
-                      return SizedBox(
-                        width: 120,
-                        child: CardCategory(categoryModel: category),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
+              height: 150,
+              width: MediaQuery.of(context).size.width,
+              child: FutureBuilder<List<CategoryModel>>(
+                future: fetchCategory(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text(snapshot.error.toString()));
+                  } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        final category = snapshot.data![index];
+                        return SizedBox(
+                          width: 120,
+                          child: CardCategory(categoryModel: category),
+                        );
+                      },
+                      itemCount: snapshot.data!.length,
+                    );
+                  } else {
+                    return const Center(child: Text('No data found!'));
+                  }
+                  return const SizedBox
+                      .shrink(); // Ensure a widget is always returned
+                },
+              )),
           Divider(
               height: 20,
               color: Colors.grey.shade300,
@@ -164,5 +163,14 @@ class _HomeViewState extends State<HomeView> {
         ],
       ),
     );
+  }
+
+  Future<List<CategoryModel>> fetchCategory() async {
+    try {
+      return categoryRepository.getCategories();
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Failed to load category $e');
+    }
   }
 }
