@@ -1,8 +1,13 @@
+import 'dart:convert';
+
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:medpia_mobile/app/commons/ui/theme.dart';
 import 'package:medpia_mobile/app/core_view.dart';
 import 'package:http/http.dart' as http;
+import 'package:medpia_mobile/app/providers/auth_provider.dart';
 
 class AuthView extends StatefulWidget {
   const AuthView({super.key});
@@ -12,34 +17,126 @@ class AuthView extends StatefulWidget {
 }
 
 class _AuthViewState extends State<AuthView> {
+  String? _usernameErr;
+  String? _passwordErr;
   bool _isChecked = false;
   bool _isVisible = false;
+  bool _isLoading = false;
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
   final storage = GetStorage();
+  final AuthProvider authProvider = AuthProvider();
 
   Future<void> _login() async {
-    final url = Uri.parse('http://192.168.1.12:3000/auth/login');
+    setState(() {
+      _isLoading = true;
+      _usernameErr = null;
+      _passwordErr = null;
+    });
+
+    if (username.text.isEmpty) {
+      setState(() {
+        _usernameErr = 'Please enter your username';
+        _isLoading = false;
+      });
+    }
+
+    if (password.text.isEmpty) {
+      setState(() {
+        _passwordErr = 'Please enter your password';
+        _isLoading = false;
+      });
+    } else if (password.text.length < 8) {
+      setState(() {
+        _passwordErr = 'Password must be at least 8 characters';
+        _isLoading = false;
+      });
+    }
+
     try {
       // request ke url
 
-      final response = await http.post(url, body: {
-        "username": username.value.text,
-        "password": password.value.text
-      });
+      final response = await authProvider.login(username.text, password.text);
       print(response.statusCode);
-      print(response.body);
+
       if (response.statusCode == 200 || response.statusCode == 201) {
+        final token = json.decode(response.body)['accessToken'];
+        // print('tokennya: $token');
+
+        storage.write('accessToken', token); // simpan token ke storage
         if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const CoreView()),
           );
+          const snackBar = SnackBar(
+            /// need to set following properties for best effect of awesome_snackbar_content
+            elevation: 0,
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.transparent,
+            content: AwesomeSnackbarContent(
+              title: 'Success!',
+              message:
+                  'Congratulation! You are successfully login MedPIA Account!',
+
+              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+              contentType: ContentType.success,
+            ),
+          );
+
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(snackBar);
         }
-        storage.write('isLogin', true);
+      } else if (response.statusCode == 404 ||
+          response.statusCode == 401 ||
+          response.statusCode == 400 &&
+              username.text.isNotEmpty &&
+              password.text.isNotEmpty) {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+          const snackBar = SnackBar(
+            /// need to set following properties for best effect of awesome_snackbar_content
+            elevation: 0,
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.transparent,
+            content: AwesomeSnackbarContent(
+              title: 'Failed!',
+              message: 'Username or Password is incorrect!',
+
+              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+              contentType: ContentType.failure,
+            ),
+          );
+
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(snackBar);
+        }
       }
     } catch (e) {
-      print(e);
+      setState(() {
+        _isLoading = false;
+      });
+      const snackBar = SnackBar(
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Error!',
+          message: 'Something went wrong!',
+          contentType: ContentType.failure,
+        ),
+      );
+
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBar);
     }
 
     // bikin url
@@ -118,37 +215,37 @@ class _AuthViewState extends State<AuthView> {
                 TextField(
                   controller: username,
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(30),
-                    hintText: 'johndoe@mail.com',
-                    prefixIcon: Icon(
-                      Icons.person_outline,
-                      size: 35.0,
-                    ),
-                    label: Text('Username or email'),
-                  ),
+                      contentPadding: const EdgeInsets.all(30),
+                      hintText: 'johndoe@mail.com',
+                      prefixIcon: Icon(
+                        Icons.person_outline,
+                        size: 35.0,
+                      ),
+                      label: Text('Username or email'),
+                      errorText: _usernameErr),
                 ),
                 SizedBox(height: 20),
                 TextField(
                   controller: password,
                   obscureText: _isVisible == false,
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(30),
-                    hintText: 'password',
-                    prefixIcon: Icon(
-                      Icons.lock_outline_rounded,
-                      size: 35.0,
-                    ),
-                    suffixIcon: InkWell(
-                      onTap: () {
-                        _togglePassword();
-                      },
-                      child: Icon(
-                        _isVisible ? Icons.visibility : Icons.visibility_off,
+                      contentPadding: const EdgeInsets.all(30),
+                      hintText: 'password',
+                      prefixIcon: Icon(
+                        Icons.lock_outline_rounded,
                         size: 35.0,
                       ),
-                    ),
-                    label: Text('Password'),
-                  ),
+                      suffixIcon: InkWell(
+                        onTap: () {
+                          _togglePassword();
+                        },
+                        child: Icon(
+                          _isVisible ? Icons.visibility : Icons.visibility_off,
+                          size: 35.0,
+                        ),
+                      ),
+                      label: Text('Password'),
+                      errorText: _passwordErr),
                 ),
                 SizedBox(
                   height: 20,
@@ -170,10 +267,14 @@ class _AuthViewState extends State<AuthView> {
                 SizedBox(height: 20),
                 ElevatedButton(
                     onPressed: () {
-                      _login();
+                      _isLoading ? null : _login();
                     },
-                    child: const Text("Login",
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    child: _isLoading
+                        ? CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                          )
+                        : const Text("Login",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                     style: ElevatedButton.styleFrom(minimumSize: Size(10, 60)))
               ],
             ),

@@ -17,6 +17,7 @@ import 'package:medpia_mobile/app/modules/product/views/product_detail_view.dart
 import 'package:medpia_mobile/app/modules/product/views/product_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:medpia_mobile/app/repositories/category_repository.dart';
+import 'package:medpia_mobile/app/repositories/product_repository.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -29,23 +30,23 @@ class _HomeViewState extends State<HomeView> {
   CategoryRepository categoryRepository = CategoryRepository();
   ProductRepository productRepository = ProductRepository();
 
-  void getProduct() {
-    final response = productRepository.getProduct();
-    setState(() {
-      products = response.map((data) {
-        return ProductModel.fromJson(data);
-      }).toList();
-    });
-  }
+  // void getProduct() {
+  //   final response = productRepository.getProduct();
+  //   setState(() {
+  //     products = response.map((data) {
+  //       return ProductModel.fromJson(data);
+  //     }).toList();
+  //   });
+  // }
 
   @override
   initState() {
     super.initState();
     // getCategory();
-    getProduct();
+    // getProduct();
   }
 
-  List<ProductModel> products = [];
+  // List<ProductModel> products = [];
 
   @override
   Widget build(BuildContext context) {
@@ -101,12 +102,11 @@ class _HomeViewState extends State<HomeView> {
               child: FutureBuilder<List<CategoryModel>>(
                 future: fetchCategory(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
+                  // print(snapshot);
+                  if (snapshot.hasError) {
                     return Center(child: Text(snapshot.error.toString()));
                   } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                    ListView.builder(
+                    return ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         final category = snapshot.data![index];
@@ -120,8 +120,7 @@ class _HomeViewState extends State<HomeView> {
                   } else {
                     return const Center(child: Text('No data found!'));
                   }
-                  return const SizedBox
-                      .shrink(); // Ensure a widget is always returned
+                  // Ensure a widget is always returned
                 },
               )),
           Divider(
@@ -143,22 +142,41 @@ class _HomeViewState extends State<HomeView> {
           SizedBox(
             width: MediaQuery.of(context).size.width,
             height: 260,
-            child: ListView.builder(
-              itemExtent: MediaQuery.of(context).size.width / 3,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProductDetailView()));
-                    },
-                    child:
-                        CardProduct(productModel: products.elementAt(index)));
-              },
-              itemCount: 5,
-            ),
+            child: FutureBuilder<List<ProductModel>>(
+                future: fetchProduct(),
+                builder: (context, snapshot) {
+                  // print(snapshot);
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    // print(snapshot);
+
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text(snapshot.error.toString()));
+                  } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    return ListView.builder(
+                      itemExtent: MediaQuery.of(context).size.width / 3,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        final product = snapshot.data![index];
+                        print('product : ${product.name}');
+                        return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ProductDetailView()));
+                            },
+                            child: CardProduct(productModel: product));
+                      },
+                      itemCount: snapshot.data!.length,
+                    );
+                  } else {
+                    return const Center(child: Text('No data found!'));
+                  }
+                }),
           )
         ],
       ),
@@ -171,6 +189,15 @@ class _HomeViewState extends State<HomeView> {
     } catch (e) {
       print('Error: $e');
       throw Exception('Failed to load category $e');
+    }
+  }
+
+  Future<List<ProductModel>> fetchProduct() async {
+    try {
+      return productRepository.getProducts();
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Failed to load product $e');
     }
   }
 }

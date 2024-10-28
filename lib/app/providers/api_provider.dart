@@ -1,9 +1,13 @@
+import 'dart:convert';
+
+import 'package:get_storage/get_storage.dart';
 import 'package:medpia_mobile/app/providers/base_provider.dart';
 import 'package:http/http.dart' as http;
 
 class ApiProvider implements BaseProvider {
-  String? baseUrl = 'http://192.168.1.12:3000';
+  String? baseUrl = 'http://192.168.100.48:3000';
   Map<String, String>? headers = {'Content-Type': 'application/json'};
+  final storage = GetStorage();
 
   ApiProvider({this.headers});
 
@@ -14,7 +18,9 @@ class ApiProvider implements BaseProvider {
     try {
       final url = getUrl(endpoint);
 
-      return await http.get(Uri.parse(url), headers: headers);
+      final response = await http.get(Uri.parse(url), headers: headers);
+
+      return response;
     } catch (e) {
       throw ('Error Get Data $e');
     }

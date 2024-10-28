@@ -1,21 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
+import 'package:medpia_mobile/app/repositories/product_repository.dart';
 
 Image getImagebyDrugClass(String drugClass) {
   switch (drugClass) {
-    case 'W':
+    case 'obat bebas terbatas':
       return Image.asset('assets/images/obt.png', width: 20);
-    case 'G':
+    case 'obat keras':
       return Image.asset('assets/images/ok.png', width: 20);
     default:
       return Image.asset('assets/images/ob.png', width: 20);
   }
 }
 
-class CardProduct extends StatelessWidget {
+class CardProduct extends StatefulWidget {
   ProductModel? productModel;
   CardProduct({super.key, this.productModel});
+
+  @override
+  State<CardProduct> createState() => _CardProductState();
+}
+
+class _CardProductState extends State<CardProduct> {
+  ProductRepository productRepository = ProductRepository();
+
+  void getProduct() async {
+    final response = await productRepository.getProducts();
+    setState(() {
+      products = response;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getProduct();
+  }
+
+  List<ProductModel> products = [];
 
   @override
   Widget build(BuildContext context) {
@@ -42,16 +66,16 @@ class CardProduct extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: AssetImage(productModel!.image!))),
-                  child: getImagebyDrugClass(productModel!.drugClass!))),
+                          image: AssetImage('assets/images/Amoxicilin.jpg'))),
+                  child: Image.asset('assets/images/obt.png', width: 20))),
           Text(
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            productModel!.name!,
+            widget.productModel!.name!,
             style: Theme.of(context).textTheme.titleSmall!.copyWith(height: 2),
           ),
           Text(
-            productModel!.description!,
+            'Ini descripsi',
             overflow: TextOverflow.ellipsis,
             textHeightBehavior:
                 TextHeightBehavior(applyHeightToLastDescent: true),
@@ -63,14 +87,13 @@ class CardProduct extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("Rp ${productModel!.sellingPrice}",
+              Text("Rp ${widget.productModel!.sellingPrice!}",
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       color: Colors.teal.shade800,
                       fontWeight: FontWeight.bold,
                       height: 3)),
               Spacer(),
-              Text("(${productModel!.quantity})",
-                  style: Theme.of(context).textTheme.bodySmall)
+              Text("(10)", style: Theme.of(context).textTheme.bodySmall)
             ],
           ),
           ElevatedButton(

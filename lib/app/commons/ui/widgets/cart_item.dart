@@ -5,9 +5,9 @@ import 'package:medpia_mobile/app/models/product_model.dart';
 
 Image getImagebyDrugClass(String drugClass) {
   switch (drugClass) {
-    case 'W':
+    case 'obat bebas terbatas':
       return Image.asset('assets/images/obt.png', width: 10);
-    case 'G':
+    case 'obat keras':
       return Image.asset('assets/images/ok.png', width: 10);
     default:
       return Image.asset('assets/images/ob.png', width: 10);
@@ -60,8 +60,8 @@ class _CartItemState extends State<CartItem> {
                       topLeft: Radius.circular(5)),
                   image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: AssetImage(widget.productModel!.image!))),
-              child: getImagebyDrugClass(widget.productModel!.drugClass!)),
+                      image: AssetImage('assets/images/antibiotics.png'))),
+              child: Image.asset('assets/images/obt.png', width: 20)),
           title: Text(
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -79,7 +79,7 @@ class _CartItemState extends State<CartItem> {
                 Text(
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    "Rp ${widget.productModel!.sellingPrice}",
+                    "Rp ${widget.productModel!.sellingPrice!}",
                     style: Theme.of(context).textTheme.titleSmall),
                 SizedBox(height: 5),
                 NotePrescription(),

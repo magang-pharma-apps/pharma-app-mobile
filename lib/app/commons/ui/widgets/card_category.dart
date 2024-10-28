@@ -52,7 +52,6 @@ class _CardCategoryState extends State<CardCategory> {
                 borderRadius: BorderRadius.circular(30)),
             child: Image.network(
               widget.categoryModel!.categoryImageUrl!,
-              width: 150,
             ),
           ),
           SizedBox(height: 10),
