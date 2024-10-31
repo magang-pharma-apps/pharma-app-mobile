@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:medpia_mobile/app/commons/ui/theme.dart';
 import 'package:medpia_mobile/app/core_view.dart';
@@ -11,10 +12,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       home: storage.read('isLogin') ? CoreView() : AuthView(),
-      theme: ThemeData(
+      theme: ThemeData( 
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
             backgroundColor: Colors.white,
             elevation: 10,

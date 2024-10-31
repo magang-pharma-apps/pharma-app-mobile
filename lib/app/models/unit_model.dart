@@ -3,7 +3,7 @@ class UnitModel {
   String? name;
   String? description;
 
-  UnitModel({id, name, description});
+  UnitModel({this.id, this.name, this.description});
 
   factory UnitModel.fromJson(Map<String, dynamic> json) {
     return UnitModel(

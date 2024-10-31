@@ -11,24 +11,9 @@ class CardCategory extends StatefulWidget {
 }
 
 class _CardCategoryState extends State<CardCategory> {
-  CategoryRepository categoryRepository = CategoryRepository();
   bool _isHovered = false;
 
-  void getCategory() async {
-    final response = await categoryRepository.getCategories();
-    setState(() {
-      categories = response;
-    });
-  }
-
-  @override
-  initState() {
-    super.initState();
-    getCategory();
-  }
-
-  List<CategoryModel> categories = [];
-
+  
   @override
   Widget build(BuildContext context) {
     return InkWell(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/modules/home/views/home_view.dart';
-import 'package:medpia_mobile/app/modules/prescription/views/prescription_list.dart';
+import 'package:medpia_mobile/app/modules/prescription/views/prescription_screen.dart';
 import 'package:medpia_mobile/app/modules/profile/views/user_view.dart';
 
 class CoreView extends StatefulWidget {
@@ -21,7 +21,7 @@ class _CoreViewState extends State<CoreView> {
         index: currentPage,
         children: [
           HomeView(),
-          PrescriptionList(),
+          PrescriptionScreen(),
           Container(
             color: Colors.green,
           ),

@@ -10,7 +10,7 @@ class ProductRepository {
 
   Future<List<ProductModel>> getProducts() async {
     final response = await productProvider.getProducts();
-    print(response.body);
+    // print(response.body);
     // print(response.statusCode);
 
     if (response.statusCode == 200 || response.statusCode == 201) {

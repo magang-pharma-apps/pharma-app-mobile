@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/barcode_button_widget.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/card_category.dart';
@@ -10,8 +11,10 @@ import 'package:medpia_mobile/app/commons/ui/widgets/custom_home_app_bar.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_banner.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/search_widget.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/section_header.dart';
+import 'package:medpia_mobile/app/models/cart_item_model.dart';
 import 'package:medpia_mobile/app/models/category_model.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
+import 'package:medpia_mobile/app/modules/cart/controllers/cart_controller.dart';
 import 'package:medpia_mobile/app/modules/category/views/category_view.dart';
 import 'package:medpia_mobile/app/modules/product/views/product_detail_view.dart';
 import 'package:medpia_mobile/app/modules/product/views/product_view.dart';
@@ -29,6 +32,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   CategoryRepository categoryRepository = CategoryRepository();
   ProductRepository productRepository = ProductRepository();
+  final cartController = Get.put(CartController());
 
   // void getProduct() {
   //   final response = productRepository.getProduct();
@@ -160,18 +164,21 @@ class _HomeViewState extends State<HomeView> {
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         final product = snapshot.data![index];
-                        print('product : ${product.name}');
+                        // Text('${product.name}');
                         return InkWell(
                             onTap: () {
-                              Navigator.push(
+                              Navigator.push( 
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const ProductDetailView()));
+                                          ProductDetailView(productModel: product,)));
                             },
-                            child: CardProduct(productModel: product));
+                            child: CardProduct(productModel: product,
+                            onAddToCart: () {
+                              cartController.addItemToCart(CartItemModel(product: product, quantity: 1, note: ''));
+                            }));
                       },
-                      itemCount: snapshot.data!.length,
+                      itemCount: 5,
                     );
                   } else {
                     return const Center(child: Text('No data found!'));
@@ -182,6 +189,17 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
   }
+  /// Fetches a list of categories from the repository.
+  ///
+  /// This method attempts to retrieve categories by calling the 
+  /// `getCategories` method of the `categoryRepository`. If an 
+  /// error occurs during the fetch, it catches the exception, 
+  /// logs the error, and throws a new exception indicating the 
+  /// failure to load categories.
+  ///
+  /// Returns a `Future` that resolves to a `List` of `CategoryModel`.
+  ///
+  /// Throws an `Exception` if the categories cannot be loaded.
 
   Future<List<CategoryModel>> fetchCategory() async {
     try {

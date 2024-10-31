@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/note_prescription.dart';
+import 'package:medpia_mobile/app/models/cart_item_model.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
+import 'package:medpia_mobile/app/modules/cart/controllers/cart_controller.dart';
+import 'package:medpia_mobile/app/repositories/product_repository.dart';
 
 Image getImagebyDrugClass(String drugClass) {
   switch (drugClass) {
-    case 'obat bebas terbatas':
+    case 'Obat Bebas Terbatas':
       return Image.asset('assets/images/obt.png', width: 10);
-    case 'obat keras':
+    case 'Obat Keras':
       return Image.asset('assets/images/ok.png', width: 10);
     default:
       return Image.asset('assets/images/ob.png', width: 10);
@@ -15,26 +19,32 @@ Image getImagebyDrugClass(String drugClass) {
 }
 
 class CartItem extends StatefulWidget {
-  ProductModel? productModel;
-  CartItem({super.key, this.productModel});
+  VoidCallback? onQtyChange;
+  CartItemModel? cartItemModel;
+  CartItem({super.key, this.cartItemModel, this.onQtyChange});
 
   @override
   State<CartItem> createState() => _CartItemState();
 }
 
 class _CartItemState extends State<CartItem> {
-  int quantity = 1;
+  final cartController = Get.put(CartController());
 
   void _addQuantity() {
     setState(() {
-      quantity++;
+      if (widget.cartItemModel!.quantity != null) {
+        widget.cartItemModel!.quantity = widget.cartItemModel!.quantity! + 1;
+      }
     });
   }
 
   void _reduceQuantity() {
     setState(() {
-      if (quantity > 1) {
-        quantity--;
+      if (widget.cartItemModel!.quantity != null &&
+          widget.cartItemModel!.quantity! > 1) {
+        widget.cartItemModel!.quantity = widget.cartItemModel!.quantity! - 1;
+      } else if (widget.cartItemModel!.quantity! <= 1) {
+        widget.cartItemModel!.quantity = 1;
       }
     });
   }
@@ -60,12 +70,14 @@ class _CartItemState extends State<CartItem> {
                       topLeft: Radius.circular(5)),
                   image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: AssetImage('assets/images/antibiotics.png'))),
-              child: Image.asset('assets/images/obt.png', width: 20)),
+                      image: NetworkImage(
+                          widget.cartItemModel!.product!.productImageUrl!))),
+              child: getImagebyDrugClass(
+                  widget.cartItemModel!.product!.drugClass!)),
           title: Text(
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            widget.productModel!.name!,
+            widget.cartItemModel!.product!.name!,
             style: Theme.of(context)
                 .textTheme
                 .titleSmall!
@@ -79,7 +91,7 @@ class _CartItemState extends State<CartItem> {
                 Text(
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    "Rp ${widget.productModel!.sellingPrice!}",
+                    "Rp ${widget.cartItemModel!.product!.sellingPrice!}",
                     style: Theme.of(context).textTheme.titleSmall),
                 SizedBox(height: 5),
                 NotePrescription(),
@@ -95,6 +107,7 @@ class _CartItemState extends State<CartItem> {
                 IconButton(
                     onPressed: () {
                       _reduceQuantity();
+                      widget.onQtyChange!();
                     },
                     icon: CircleAvatar(
                       radius: 12,
@@ -104,7 +117,7 @@ class _CartItemState extends State<CartItem> {
                       ),
                     )),
                 Text(
-                  "${quantity}",
+                  "${widget.cartItemModel!.quantity}",
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       color: Colors.black, fontWeight: FontWeight.bold),
@@ -113,6 +126,7 @@ class _CartItemState extends State<CartItem> {
                     autofocus: true,
                     onPressed: () {
                       _addQuantity();
+                      widget.onQtyChange!();
                     },
                     icon: CircleAvatar(
                       radius: 12,
@@ -122,7 +136,9 @@ class _CartItemState extends State<CartItem> {
                       ),
                     )),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    cartController.removeItemFromCart(widget.cartItemModel!);
+                  },
                   icon: CircleAvatar(
                       radius: 12,
                       backgroundColor: Colors.red.shade50,

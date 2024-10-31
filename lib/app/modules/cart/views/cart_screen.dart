@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/state_manager.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_line_widget.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/note_order_widget.dart';
@@ -6,42 +8,16 @@ import 'package:medpia_mobile/app/commons/ui/widgets/custom_app_bar.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/cart_item.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/order_detail.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
+import 'package:medpia_mobile/app/modules/cart/controllers/cart_controller.dart';
 import 'package:medpia_mobile/app/repositories/product_repository.dart';
 
-class CartScreen extends StatefulWidget {
+// Get View ini generic class dari getX bis adikasi type data, type data dari controller
+class CartScreen extends GetView<CartController> {
   CartScreen({super.key});
 
   @override
-  State<CartScreen> createState() => _CartScreenState();
-}
-
-class _CartScreenState extends State<CartScreen> {
-  ProductRepository productRepository = ProductRepository();
-  String _selectedPayment = "Cash";
-
-  void selectPayment(String payMethod) {
-    setState(() {
-      _selectedPayment = payMethod;
-    });
-  }
-
-  void getProduct() {
-    final response = productRepository.getProduct();
-    setState(() {
-      products = response.map((data) {
-        return ProductModel.fromJson(data);
-      }).toList();
-    });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getProduct();
-  }
-
-  List<ProductModel> products = [];
+  get controller => Get.put(
+      CartController()); // fungsi get put, melakukan binding dari controller
 
   @override
   Widget build(BuildContext context) {
@@ -49,44 +25,46 @@ class _CartScreenState extends State<CartScreen> {
       persistentFooterButtons: [
         Container(
           padding: EdgeInsets.all(10),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("You've Added",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(color: Colors.grey.shade800)),
-                    Row(
-                      children: [
-                        Text("5",
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium!
-                                .copyWith(color: Colors.green)),
-                        Text(" Items",
-                            style: Theme.of(context).textTheme.labelMedium)
-                      ],
-                    ),
-                  ],
+          child: Obx(() {
+            return Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("You've Added",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(color: Colors.grey.shade800)),
+                      Row(
+                        children: [
+                          Text(controller.cart.value.items!.length.toString(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium!
+                                  .copyWith(color: Colors.green)),
+                          Text(" Items",
+                              style: Theme.of(context).textTheme.labelMedium)
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text(
-                  "Purchase Rp. 55.000",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelMedium!
-                      .copyWith(color: Colors.white),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Purchase Rp. ${controller.cart.value.grandtotal}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelMedium!
+                        .copyWith(color: Colors.white),
+                  ),
+                  style: ElevatedButton.styleFrom(padding: EdgeInsets.all(20)),
                 ),
-                style: ElevatedButton.styleFrom(padding: EdgeInsets.all(20)),
-              ),
-            ],
-          ),
+              ],
+            );
+          }),
         )
       ],
       body: Container(
@@ -104,15 +82,23 @@ class _CartScreenState extends State<CartScreen> {
                   SizedBox(height: 10),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.6,
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return CartItem(
-                          productModel: products.elementAt(index),
-                        );
-                      },
-                    ),
+                    child: Obx(() {
+                      return ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: controller.cart.value.items!.length,
+                        itemBuilder: (context, index) {
+                          final product = controller.cart.value.items![index];
+                          return CartItem(
+                            cartItemModel: product,
+                            onQtyChange: () {
+                              controller.calculateSubtotal();
+                              controller.calculateTax();
+                              controller.calculateGrandtotal();
+                            },
+                          );
+                        },
+                      );
+                    }),
                   ),
                   ListTile(
                     onTap: () {
@@ -142,10 +128,12 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                   ListTile(
                                     onTap: () {
-                                      setState(() {
-                                        selectPayment("Cash");
-                                        Navigator.pop(context);
-                                      });
+                                      controller.selectPaymentMethod("Cash");
+
+                                      // setState(() {
+                                      //   // selectPayment("Cash");
+                                      Navigator.pop(context);
+                                      // });
                                     },
                                     leading:
                                         Icon(HugeIcons.strokeRoundedWallet01),
@@ -153,10 +141,11 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                   ListTile(
                                     onTap: () {
-                                      setState(() {
-                                        selectPayment("Debit");
-                                        Navigator.pop(context);
-                                      });
+                                      controller.selectPaymentMethod("Debit");
+                                      // setState(() {
+                                      //   selectPayment("Debit");
+                                      Navigator.pop(context);
+                                      // });
                                     },
                                     leading:
                                         Icon(HugeIcons.strokeRoundedCreditCard),
@@ -173,19 +162,22 @@ class _CartScreenState extends State<CartScreen> {
                         style: Theme.of(context).textTheme.labelSmall!),
                     trailing: SizedBox(
                       width: 100,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            '${_selectedPayment}',
-                            style: TextStyle(fontSize: 10, color: Colors.teal),
-                          ),
-                          Icon(
-                            HugeIcons.strokeRoundedArrowRight01,
-                            color: Colors.teal,
-                          ),
-                        ],
-                      ),
+                      child: Obx(() {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              controller.cart.value.paymentMethod!,
+                              // '${_selectedPayment}',
+                              // style: TextStyle(fontSize: 10, color: Colors.teal),
+                            ),
+                            Icon(
+                              HugeIcons.strokeRoundedArrowRight01,
+                              color: Colors.teal,
+                            ),
+                          ],
+                        );
+                      }),
                     ),
                   ),
                   CustomLineWidget(),

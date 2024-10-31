@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_line_widget.dart';
 
-class CustomExpandCard extends StatefulWidget {
-  CustomExpandCard({super.key});
+class CustomExpantiontileRedemption extends StatefulWidget {
+  CustomExpantiontileRedemption({super.key});
 
   @override
-  State<CustomExpandCard> createState() => _CustomExpandCardState();
+  State<CustomExpantiontileRedemption> createState() => _CustomExpantiontileRedemptionState();
 }
 
-class _CustomExpandCardState extends State<CustomExpandCard>
+class _CustomExpantiontileRedemptionState extends State<CustomExpantiontileRedemption>
     with SingleTickerProviderStateMixin {
   bool _isExpanded = false;
   late AnimationController _controller;
@@ -16,7 +16,7 @@ class _CustomExpandCardState extends State<CustomExpandCard>
       ExpansionTileController();
 
   @override
-  void dispose() {
+  void dispose() {  
     _controller.dispose();
     super.dispose();
   }

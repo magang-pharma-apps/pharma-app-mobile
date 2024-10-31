@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_line_widget.dart';
+import 'package:medpia_mobile/app/models/prescription_model.dart';
 
-class CustomExpansionTile extends StatefulWidget {
-  CustomExpansionTile({super.key});
-
-  @override
-  State<CustomExpansionTile> createState() => _CustomExpansionTileState();
+String getPrescriptionStatus(bool status) {
+  switch (status) {
+    case true:
+      return 'Redeemed';
+    default:
+      return 'Unreedemed';
+  }
 }
 
-class _CustomExpansionTileState extends State<CustomExpansionTile>
+class CustomExpansiontileAcceptance extends StatefulWidget {
+  PrescriptionModel? prescriptionModel;
+  CustomExpansiontileAcceptance({super.key, this.prescriptionModel});
+
+  @override
+  State<CustomExpansiontileAcceptance> createState() =>
+      _CustomExpansiontileAcceptanceState();
+}
+
+class _CustomExpansiontileAcceptanceState
+    extends State<CustomExpansiontileAcceptance>
     with SingleTickerProviderStateMixin {
   bool _isExpanded = false;
   late AnimationController _controller;
@@ -23,7 +36,6 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 300));
@@ -59,7 +71,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
               tilePadding: EdgeInsets.only(left: 15),
               childrenPadding: EdgeInsets.zero,
               title: Text(
-                '15 Mei 2024',
+                widget.prescriptionModel!.prescriptionDate!,
                 style: Theme.of(context)
                     .textTheme
                     .labelMedium!
@@ -69,7 +81,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Recipe Code: #R03I20",
+                    "Prescription Code: #${widget.prescriptionModel!.prescriptionCode!}",
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         color: Colors.teal.shade800,
                         fontWeight: FontWeight.bold),
@@ -82,19 +94,17 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.amber.shade50),
-                child: Text(
-                  'Unreedemed',
+                child: Text(getPrescriptionStatus(widget.prescriptionModel!.isRedeem!),
                   style: TextStyle(color: Colors.amber.shade500),
                 ),
               ),
               children: [
                 ListTile(
                   title: Text(
-                    'Recipe',
+                    'Prescriptions',
                     style: TextStyle(fontSize: 14),
                   ),
-                  subtitle: Text(
-                    "Amoxicilline 350 mg X Diabetasol 100mg X Paracetamol 100mg",
+                  subtitle: Text(widget.prescriptionModel!.prescriptions!,
                     style: Theme.of(context)
                         .textTheme
                         .labelMedium!
@@ -115,11 +125,11 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        'Subagyo',
+                        widget.prescriptionModel!.customer!.name!,
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
                       Text(
-                        '24',
+                      widget.prescriptionModel!.customer!.age!.toString(),
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
                     ],
@@ -131,7 +141,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
                   trailing: Text(
-                    "Dr. Susilo",
+                    widget.prescriptionModel!.doctor!.name!,  
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
                 )

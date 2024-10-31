@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/card_product.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_app_bar.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/search_widget.dart';
+import 'package:medpia_mobile/app/models/cart_item_model.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
+import 'package:medpia_mobile/app/modules/cart/controllers/cart_controller.dart';
+import 'package:medpia_mobile/app/modules/cart/views/cart_screen.dart';
 import 'package:medpia_mobile/app/modules/product/views/product_detail_view.dart';
 import 'package:medpia_mobile/app/repositories/product_repository.dart';
 
@@ -15,22 +20,11 @@ class ProductView extends StatefulWidget {
 }
 
 class _ProductViewState extends State<ProductView> {
+  final cartController = Get.put(CartController());
+
   ProductRepository productRepository = ProductRepository();
 
-  // void getProduct() {
-  //   final response = productRepository.getProduct();
-  //   products = response.map((data) {
-  //     return ProductModel.fromJson(data);
-  //   }).toList();
-  // }
-
-  // @override
-  // initState() {
-  //   super.initState();
-  //   getProduct();
-  // }
-
-  // List<ProductModel> products = [];
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +33,15 @@ class _ProductViewState extends State<ProductView> {
         decoration: BoxDecoration(color: Colors.white),
         child: Column(
           children: [
-            CustomAppBar(appBarTitle: 'All Products'),
+            CustomAppBar(
+              appBarTitle: 'All Products',
+              appBarTrailing: IconButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CartScreen()));
+                  },
+                  icon: Icon(HugeIcons.strokeRoundedShoppingCart01)),
+            ),
             SearchWidget(),
             SizedBox(height: 5),
             Expanded(
@@ -61,17 +63,27 @@ class _ProductViewState extends State<ProductView> {
                             mainAxisExtent:
                                 MediaQuery.of(context).size.height / 3),
                         itemBuilder: (context, index) {
-                          final products = snapshot.data![index];
+                          final product = snapshot.data![index];
                           return InkWell(
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          ProductDetailView()),
+                                      builder: (context) => ProductDetailView(
+                                            productModel: product,
+                                          )),
                                 );
                               },
-                              child: CardProduct(productModel: products));
+                              child: CardProduct(
+                                productModel: product,
+                                onAddToCart: () {
+                                  cartController.addItemToCart(CartItemModel(
+                                    product: product,
+                                    quantity: 1,
+                                    note: '',
+                                  ));
+                                },
+                              ));
                         });
                   } else {
                     return const Center(child: Text('No data found!'));

@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_app_bar.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_line_widget.dart';
+import 'package:medpia_mobile/app/models/cart_item_model.dart';
+import 'package:medpia_mobile/app/models/product_model.dart';
+import 'package:medpia_mobile/app/modules/cart/controllers/cart_controller.dart';
 import 'package:medpia_mobile/app/modules/cart/views/cart_screen.dart';
 
 class ProductDetailView extends StatefulWidget {
-  const ProductDetailView({super.key});
+  ProductModel? productModel;
+  VoidCallback? onAddToCart;
+
+  ProductDetailView({super.key, this.productModel, this.onAddToCart});
 
   @override
   State<ProductDetailView> createState() => _ProductDetailViewState();
 }
 
 class _ProductDetailViewState extends State<ProductDetailView> {
+
+  final cartController = Get.put(CartController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         persistentFooterButtons: [
           ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                cartController.addItemToCart(CartItemModel(product: widget.productModel, quantity: 1, note: ''));
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -41,13 +52,13 @@ class _ProductDetailViewState extends State<ProductDetailView> {
             ],
             backgroundColor: Colors.white,
             pinned: true,
-            expandedHeight: 350.0,
-            flexibleSpace: const FlexibleSpaceBar(
+            expandedHeight: 410.0,
+            flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.parallax,
               centerTitle: true,
               background: Image(
                   fit: BoxFit.cover,
-                  image: AssetImage("assets/images/Amoxicillin.jpg")),
+                  image: NetworkImage(widget.productModel!.productImageUrl!)),
             ),
           ),
           SliverToBoxAdapter(
@@ -74,7 +85,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              'KODE00201',
+                              widget.productModel!.productCode!,
                               style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -83,9 +94,9 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                             SizedBox(width: 5),
                           ],
                         ),
-                        Text("Amoxicillin Capsules 250 mg",
+                        Text(widget.productModel!.name!,
                             style: Theme.of(context).textTheme.displaySmall),
-                        Text("Rp 120000",
+                        Text('Rp. ${widget.productModel!.sellingPrice!}',
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium!
@@ -103,13 +114,14 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                   color: Colors.amber.shade200,
                                   borderRadius: BorderRadius.circular(5)),
                               child: Text(
-                                'Antibiotics',
+                                widget.productModel!.category!.name!,
                                 style: TextStyle(
                                     fontSize: 11, color: Colors.teal.shade800),
                               ),
                             ),
                             Spacer(),
-                            Text("In stock (10)",
+                            Text(
+                                "In stock (${widget.productModel!.stockQuantity!})",
                                 style: Theme.of(context).textTheme.labelSmall),
                           ],
                         ),
@@ -160,19 +172,19 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                         CustomLineWidget(),
                                         ListTile(
                                           title: Text("Date Expired"),
-                                          trailing: Text("15 September 2025"),
+                                          trailing: Text(widget.productModel!.expiryDate!),
                                         ),
                                         ListTile(
                                           title: Text("Available Stock"),
-                                          trailing: Text('10'),
+                                          trailing: Text(widget.productModel!.stockQuantity!.toString() ),
                                         ),
                                         ListTile(
                                           title: Text("Units"),
-                                          trailing: Text('STRIP'),
+                                          trailing: Text(widget.productModel!.unit!.name!),
                                         ),
                                         ListTile(
                                           title: Text("Drug Class"),
-                                          trailing: Text('Obat Bebas Terbatas'),
+                                          trailing: Text(widget.productModel!.drugClass!),
                                         ),
                                         Spacer(),
                                         SizedBox(
@@ -212,7 +224,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                               TextStyle(fontWeight: FontWeight.bold, height: 3),
                         ),
                         Text(
-                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.',
+                          widget.productModel!.description!,
                           style: TextStyle(color: Colors.grey.shade700),
                         )
                       ],

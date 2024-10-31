@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/custom_expand_card.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/custom_expansiontile.dart';
+import 'package:medpia_mobile/app/commons/ui/widgets/custom_expansiontile_acceptance.dart';
+import 'package:medpia_mobile/app/commons/ui/widgets/custom_expansiontile_redemption.dart';
 
 class RedemptionTabView extends StatelessWidget {
   const RedemptionTabView({
@@ -18,7 +18,7 @@ class RedemptionTabView extends StatelessWidget {
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 20),
-                child: CustomExpandCard(),
+                child: CustomExpantiontileRedemption(),
               );
             },
             scrollDirection: Axis.vertical,

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
+import 'package:medpia_mobile/app/modules/cart/controllers/cart_controller.dart';
 import 'package:medpia_mobile/app/repositories/product_repository.dart';
 
 Image getImagebyDrugClass(String drugClass) {
   switch (drugClass) {
-    case 'obat bebas terbatas':
+    case 'Obat Bebas Terbatas':
       return Image.asset('assets/images/obt.png', width: 20);
-    case 'obat keras':
+    case 'Obat Keras':
       return Image.asset('assets/images/ok.png', width: 20);
     default:
       return Image.asset('assets/images/ob.png', width: 20);
@@ -16,35 +17,36 @@ Image getImagebyDrugClass(String drugClass) {
 
 class CardProduct extends StatefulWidget {
   ProductModel? productModel;
-  CardProduct({super.key, this.productModel});
+  VoidCallback? onAddToCart;
+  CardProduct({super.key, this.productModel, this.onAddToCart});
 
   @override
   State<CardProduct> createState() => _CardProductState();
 }
 
 class _CardProductState extends State<CardProduct> {
-  ProductRepository productRepository = ProductRepository();
+  // ProductRepository productRepository = ProductRepository();
 
-  void getProduct() async {
-    final response = await productRepository.getProducts();
-    setState(() {
-      products = response;
-    });
-  }
+  // void getProduct() async {
+  //   final response = await productRepository.getProducts();
+  //   setState(() {
+  //     products = response;
+  //   });
+  // }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getProduct();
-  }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   getProduct();
+  // }
 
-  List<ProductModel> products = [];
+  // List<ProductModel> products = [];
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 7, left: 7, bottom: 15),
+      margin: EdgeInsets.only(right: 7, left: 7, bottom: 5),
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -58,16 +60,18 @@ class _CardProductState extends State<CardProduct> {
           Expanded(
               child: Container(
                   padding: EdgeInsets.all(5),
-                  height: 300,
+                  height: 500,
                   width: double.maxFinite,
-                  clipBehavior: Clip.antiAlias,
+                  clipBehavior: Clip.hardEdge,
                   alignment: Alignment.topRight,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: AssetImage('assets/images/Amoxicilin.jpg'))),
-                  child: Image.asset('assets/images/obt.png', width: 20))),
+                          image: NetworkImage(
+                              widget.productModel!.productImageUrl!,
+                              scale: 500))),
+                  child: getImagebyDrugClass(widget.productModel!.drugClass!))),
           Text(
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -75,7 +79,7 @@ class _CardProductState extends State<CardProduct> {
             style: Theme.of(context).textTheme.titleSmall!.copyWith(height: 2),
           ),
           Text(
-            'Ini descripsi',
+            widget.productModel!.description!,
             overflow: TextOverflow.ellipsis,
             textHeightBehavior:
                 TextHeightBehavior(applyHeightToLastDescent: true),
@@ -93,11 +97,14 @@ class _CardProductState extends State<CardProduct> {
                       fontWeight: FontWeight.bold,
                       height: 3)),
               Spacer(),
-              Text("(10)", style: Theme.of(context).textTheme.bodySmall)
+              Text("(${widget.productModel!.stockQuantity!})",
+                  style: Theme.of(context).textTheme.bodySmall)
             ],
           ),
           ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                widget.onAddToCart!();
+              },
               child: Text(
                 "+ Add to Chart",
                 style: Theme.of(context)

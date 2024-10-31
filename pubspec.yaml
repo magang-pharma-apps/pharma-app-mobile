@@ -7,11 +7,13 @@ environment:
   sdk: ^3.6.0-216.1.beta
 
 dependencies:
+  add_to_cart_animation: ^2.0.4
   awesome_snackbar_content: ^0.1.4
   custom_refresh_indicator: ^4.0.1
   flutter:
     sdk: flutter
   fluttertoast: ^8.2.8
+  get: ^4.6.6
   get_storage: ^2.1.1
   http: ^1.2.2
   hugeicons: ^0.0.7

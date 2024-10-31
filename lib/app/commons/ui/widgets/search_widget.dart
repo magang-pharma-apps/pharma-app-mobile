@@ -29,11 +29,16 @@ class SearchWidget extends StatelessWidget {
         suffixIcon: IconButton(
             onPressed: () {},
             hoverColor: Colors.transparent,
-            icon: Icon(
-              Icons.filter_alt,
-              color: Colors.teal,
-              size: 35,
+            icon: CircleAvatar(
+              radius: 15,
+              backgroundColor: Colors.teal.shade300,
+              child: Icon(
+              Icons.close,
+              color: Colors.white,
+              size: 20,
             )),
+            )
+            
       ),
     );
   }
