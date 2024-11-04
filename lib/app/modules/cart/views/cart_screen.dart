@@ -52,7 +52,9 @@ class CartScreen extends GetView<CartController> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    controller.createTransaction();
+                  },
                   child: Text(
                     "Purchase Rp. ${controller.cart.value.grandtotal}",
                     style: Theme.of(context)
@@ -83,7 +85,12 @@ class CartScreen extends GetView<CartController> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.6,
                     child: Obx(() {
-                      return ListView.builder(
+                      return controller.cart.value.items!.isEmpty
+                          ? Center(
+                              child: Text("No item in cart"),
+                            )
+                          :
+                      ListView.builder(
                         scrollDirection: Axis.vertical,
                         itemCount: controller.cart.value.items!.length,
                         itemBuilder: (context, index) {
@@ -181,7 +188,9 @@ class CartScreen extends GetView<CartController> {
                     ),
                   ),
                   CustomLineWidget(),
-                  NoteOrderWidget(),
+                  NoteOrderWidget(onChanged: (value){
+                    controller.cart.value.note = value;
+                  }),
                 ]),
             CustomLineWidget(),
             SizedBox(height: 10),

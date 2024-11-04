@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:intl/intl.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_app_bar.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_line_widget.dart';
 import 'package:medpia_mobile/app/models/cart_item_model.dart';
@@ -19,15 +20,19 @@ class ProductDetailView extends StatefulWidget {
 }
 
 class _ProductDetailViewState extends State<ProductDetailView> {
-
   final cartController = Get.put(CartController());
   @override
   Widget build(BuildContext context) {
+    DateTime parsedExpiryDate =
+        DateTime.parse(widget.productModel!.expiryDate!);
+    String formattedExpiryDate =
+        DateFormat('yyyy/MM/dd').format(parsedExpiryDate);
     return Scaffold(
         persistentFooterButtons: [
           ElevatedButton(
               onPressed: () {
-                cartController.addItemToCart(CartItemModel(product: widget.productModel, quantity: 1, note: ''));
+                cartController.addItemToCart(CartItemModel(
+                    product: widget.productModel, quantity: 1, note: ''));
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -172,19 +177,23 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                         CustomLineWidget(),
                                         ListTile(
                                           title: Text("Date Expired"),
-                                          trailing: Text(widget.productModel!.expiryDate!),
+                                          trailing: Text(formattedExpiryDate),
                                         ),
                                         ListTile(
                                           title: Text("Available Stock"),
-                                          trailing: Text(widget.productModel!.stockQuantity!.toString() ),
+                                          trailing: Text(widget
+                                              .productModel!.stockQuantity!
+                                              .toString()),
                                         ),
                                         ListTile(
                                           title: Text("Units"),
-                                          trailing: Text(widget.productModel!.unit!.name!),
+                                          trailing: Text(
+                                              widget.productModel!.unit!.name!),
                                         ),
                                         ListTile(
                                           title: Text("Drug Class"),
-                                          trailing: Text(widget.productModel!.drugClass!),
+                                          trailing: Text(
+                                              widget.productModel!.drugClass!),
                                         ),
                                         Spacer(),
                                         SizedBox(

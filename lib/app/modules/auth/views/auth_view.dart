@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:medpia_mobile/app/commons/ui/theme.dart';
+import 'package:medpia_mobile/app/commons/ui/widgets/custom_snackbar.dart';
 import 'package:medpia_mobile/app/core_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:medpia_mobile/app/providers/auth_provider.dart';
@@ -72,24 +73,10 @@ class _AuthViewState extends State<AuthView> {
             context,
             MaterialPageRoute(builder: (context) => const CoreView()),
           );
-          const snackBar = SnackBar(
-            /// need to set following properties for best effect of awesome_snackbar_content
-            elevation: 0,
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Colors.transparent,
-            content: AwesomeSnackbarContent(
+          CustomSnackbar.showSnackbar(context,
               title: 'Success!',
-              message:
-                  'Congratulation! You are successfully login MedPIA Account!',
-
-              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-              contentType: ContentType.success,
-            ),
-          );
-
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(snackBar);
+              message: 'Congratulation. Successfully Login Account!',
+              contentType: ContentType.success);
         }
       } else if (response.statusCode == 404 ||
           response.statusCode == 401 ||
@@ -100,43 +87,20 @@ class _AuthViewState extends State<AuthView> {
           setState(() {
             _isLoading = false;
           });
-          const snackBar = SnackBar(
-            /// need to set following properties for best effect of awesome_snackbar_content
-            elevation: 0,
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Colors.transparent,
-            content: AwesomeSnackbarContent(
+          CustomSnackbar.showSnackbar(context,
               title: 'Failed!',
-              message: 'Username or Password is incorrect!',
-
-              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-              contentType: ContentType.failure,
-            ),
-          );
-
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(snackBar);
+              message: 'Username or password is incorrect!',
+              contentType: ContentType.failure);
         }
       }
     } catch (e) {
       setState(() {
         _isLoading = false;
       });
-      const snackBar = SnackBar(
-        elevation: 0,
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        content: AwesomeSnackbarContent(
+      CustomSnackbar.showSnackbar(context,
           title: 'Error!',
           message: 'Something went wrong!',
-          contentType: ContentType.failure,
-        ),
-      );
-
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(snackBar);
+          contentType: ContentType.failure);
     }
 
     // bikin url

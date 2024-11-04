@@ -94,7 +94,11 @@ class _CartItemState extends State<CartItem> {
                     "Rp ${widget.cartItemModel!.product!.sellingPrice!}",
                     style: Theme.of(context).textTheme.titleSmall),
                 SizedBox(height: 5),
-                NotePrescription(),
+                NotePrescription(
+                  onChanged: (value) {
+                    widget.cartItemModel!.note = value;
+                  },
+                ),
               ],
             ),
           ),

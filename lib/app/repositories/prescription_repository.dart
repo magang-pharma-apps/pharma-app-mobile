@@ -11,6 +11,7 @@ class PrescriptionRepository {
 
   Future<List<PrescriptionModel>> getPrescriptions() async {
     final response = await prescriptionProvider.getPrescriptions();
+    // print(response.body);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonResponse = json.decode(response.body);
@@ -23,6 +24,24 @@ class PrescriptionRepository {
     }
   }
 
+  Future<void> createPrescription(Map<String, dynamic> body) async {
+    try {
+      final response = await prescriptionProvider.createPrescriptions((body));
+      print(response.body);
+      print('status ${response.statusCode}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+      } else {
+        final errorResponse = json.decode(response.body);
+        throw Exception(
+            'Failed to create prescription: ${errorResponse['message']}');
+      }
+    } catch (e) {
+      throw Exception('Failed to create prescription: $e');
+    }
+  }
+
+  postPrescriptionById() {}
 
   getPrescription() {}
 }

@@ -25,23 +25,7 @@ class CardProduct extends StatefulWidget {
 }
 
 class _CardProductState extends State<CardProduct> {
-  // ProductRepository productRepository = ProductRepository();
-
-  // void getProduct() async {
-  //   final response = await productRepository.getProducts();
-  //   setState(() {
-  //     products = response;
-  //   });
-  // }
-
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   getProduct();
-  // }
-
-  // List<ProductModel> products = [];
+  
 
   @override
   Widget build(BuildContext context) {

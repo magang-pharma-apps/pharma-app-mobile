@@ -25,6 +25,9 @@ class _CoreViewState extends State<CoreView> {
           Container(
             color: Colors.green,
           ),
+          Container(
+            color: Colors.blue,
+          ),
           UserView(),
         ],
       ),
@@ -46,7 +49,10 @@ class _CoreViewState extends State<CoreView> {
           BottomNavigationBarItem(
               label: 'Order', icon: Icon(Icons.point_of_sale_outlined)),
           BottomNavigationBarItem(
-              label: 'Profile', icon: Icon(HugeIcons.strokeRoundedUser))
+              label: 'Master',
+              icon: Icon(HugeIcons.strokeRoundedDashboardCircleSettings)),
+          BottomNavigationBarItem(
+              label: 'Profile', icon: Icon(HugeIcons.strokeRoundedUser)),
         ],
       ),
     );

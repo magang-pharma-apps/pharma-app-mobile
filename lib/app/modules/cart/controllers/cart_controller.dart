@@ -1,8 +1,13 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
+import 'package:medpia_mobile/app/commons/ui/widgets/custom_snackbar.dart';
 import 'package:medpia_mobile/app/models/cart_item_model.dart';
 import 'package:medpia_mobile/app/models/cart_model.dart';
+import 'package:medpia_mobile/app/repositories/transaction_repository.dart';
 
 class CartController extends GetxController {
+  final transactionRespository = TransactionRepository();
   // isinya semua state yang ada di dalam ui nya
   Rx<CartModel> cart = CartModel(
           items: [],
@@ -63,10 +68,32 @@ class CartController extends GetxController {
 
   void removeItemFromCart(CartItemModel item) {
     // logic untuk menghapus item dari cart
-    cart.value.items!.removeWhere((element) => element.product!.id == item.product!.id);
+    cart.value.items!
+        .removeWhere((element) => element.product!.id == item.product!.id);
     calculateSubtotal();
     calculateTax();
     calculateGrandtotal();
     cart.refresh();
+  }
+
+  void createTransaction() async {
+    try {
+      final isCreated =
+          await transactionRespository.createTransaction(cart.value.toJson());
+      if (isCreated) {
+        CustomSnackbar.showSnackbar(Get.context!,
+            message: "Successfully created transaction",
+            title: "Created!",
+            contentType: ContentType.success);
+      } else {
+        CustomSnackbar.showSnackbar(Get.context!,
+            message: "Failed to created transaction",
+            title: "Failed!",
+            contentType: ContentType.failure);
+      }
+    } catch (e) {
+      // TODO
+      print("Error transaction $e");
+    }
   }
 }

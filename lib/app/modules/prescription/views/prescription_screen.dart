@@ -34,10 +34,8 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
             children: [
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PrescriptionForm()));
+                  navigateToCreatePage();
+                  
                 },
                 child: CircleAvatar(
                   backgroundColor: Colors.teal.shade900,
@@ -143,6 +141,16 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
       return prescriptionRepository.getPrescriptions();
     } catch (e) {
       throw Exception("Error load prescriotion data $e");
+    }
+  }
+
+
+    Future<void> navigateToCreatePage() async {
+    final result = await Navigator.push(context, MaterialPageRoute(builder: 
+    (context) => PrescriptionForm()));
+
+    if (result == true){
+      fetchPrescription();
     }
   }
 }

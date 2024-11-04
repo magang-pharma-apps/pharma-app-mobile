@@ -5,8 +5,8 @@ import 'package:medpia_mobile/app/providers/base_provider.dart';
 import 'package:http/http.dart' as http;
 
 class ApiProvider implements BaseProvider {
-  // String? baseUrl = 'http://192.168.1.10:3000';  // KOSAN
-  String? baseUrl = 'http://192.168.100.48:3000'; // APS RE 2
+  String? baseUrl = 'http://localhost:3000'; // KOSAN
+  // String? baseUrl = 'http://192.168.100.48:3000'; // APS RE 2
 
   Map<String, String>? headers = {'Content-Type': 'application/json'};
   final storage = GetStorage();
@@ -33,7 +33,8 @@ class ApiProvider implements BaseProvider {
     try {
       final url = getUrl(endpoint);
 
-      return await http.post(Uri.parse(url), body: body, headers: headers);
+      return await http.post(Uri.parse(url),
+          body: jsonEncode(body), headers: headers);
     } catch (e) {
       throw ('Error Post Data $e');
     }
@@ -44,7 +45,8 @@ class ApiProvider implements BaseProvider {
     try {
       final url = getUrl(endpoint);
 
-      return await http.put(Uri.parse(url), body: body, headers: headers);
+      return await http.put(Uri.parse(url),
+          body: jsonEncode(body), headers: headers);
     } catch (e) {
       throw ('Error Put Data $e');
     }
@@ -56,7 +58,8 @@ class ApiProvider implements BaseProvider {
     try {
       final url = getUrl(endpoint);
 
-      return await http.patch(Uri.parse(url), body: body, headers: headers);
+      return await http.patch(Uri.parse(url),
+          body: jsonEncode(body), headers: headers);
     } catch (e) {
       throw ('Error Patch Data $e');
     }

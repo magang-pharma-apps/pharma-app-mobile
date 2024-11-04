@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class NotePrescription extends StatefulWidget {
+  final Function(String) onChanged;
   const NotePrescription({
-    super.key,
+    super.key, required this.onChanged,
   });
 
   @override
@@ -17,6 +18,7 @@ class _NotePrescriptionState extends State<NotePrescription> {
   Widget build(BuildContext context) {
     return _isClicked
         ? TextFormField(
+          onChanged: (value) => widget.onChanged(value),
             maxLines: 1,
             decoration: InputDecoration(
               labelStyle: TextStyle(fontSize: 10),

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class NoteOrderWidget extends StatefulWidget {
+  final Function(String) onChanged;
   const NoteOrderWidget({
-    super.key,
+    super.key, required this.onChanged,
   });
 
   @override
@@ -17,12 +18,16 @@ class _NoteOrderWidgetState extends State<NoteOrderWidget> {
   Widget build(BuildContext context) {
     return _isClicked
         ? TextFormField(
+          onChanged: (value) {
+                  widget.onChanged(value);
+                },
             decoration: InputDecoration(
               suffixIcon: IconButton(
                 icon: Icon(
                   HugeIcons.strokeRoundedCancelCircle,
                   color: Colors.red,
                 ),
+                
                 onPressed: () {
                   setState(() {
                     _isClicked = false;

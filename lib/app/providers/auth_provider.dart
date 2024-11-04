@@ -5,7 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:medpia_mobile/app/providers/api_provider.dart';
 
 class AuthProvider extends ApiProvider {
-  AuthProvider() : super();
+  AuthProvider() : super(
+    headers: {'Content-Type': 'application/json'},
+  );
 
   Future<http.Response> login(String username, String password) async {
     try {
