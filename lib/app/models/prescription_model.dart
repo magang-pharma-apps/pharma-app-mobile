@@ -1,4 +1,5 @@
 import 'package:medpia_mobile/app/models/cart_item_model.dart';
+import 'package:medpia_mobile/app/models/cart_model.dart';
 import 'package:medpia_mobile/app/models/customer_model.dart';
 import 'package:medpia_mobile/app/models/doctor_model.dart';
 import 'package:medpia_mobile/app/modules/prescription/views/prescription_form.dart';
@@ -11,7 +12,7 @@ class PrescriptionModel {
   DoctorModel? doctor;
   CustomerModel? customer;
   bool? isRedeem;
-  List<CartItemModel>? medicines;
+  CartModel? cart;
 
   PrescriptionModel(
       {this.id,
@@ -21,7 +22,7 @@ class PrescriptionModel {
       this.doctor,
       this.customer,
       this.isRedeem,
-      this.medicines
+      this.cart 
       });
 
   factory PrescriptionModel.fromJson(Map<String, dynamic> json) {

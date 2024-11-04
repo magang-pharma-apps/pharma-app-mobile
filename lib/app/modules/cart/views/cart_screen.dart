@@ -54,6 +54,7 @@ class CartScreen extends GetView<CartController> {
                 ElevatedButton(
                   onPressed: () {
                     controller.createTransaction();
+                    Get.back();
                   },
                   child: Text(
                     "Purchase Rp. ${controller.cart.value.grandtotal}",
@@ -89,22 +90,22 @@ class CartScreen extends GetView<CartController> {
                           ? Center(
                               child: Text("No item in cart"),
                             )
-                          :
-                      ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: controller.cart.value.items!.length,
-                        itemBuilder: (context, index) {
-                          final product = controller.cart.value.items![index];
-                          return CartItem(
-                            cartItemModel: product,
-                            onQtyChange: () {
-                              controller.calculateSubtotal();
-                              controller.calculateTax();
-                              controller.calculateGrandtotal();
-                            },
-                          );
-                        },
-                      );
+                          : ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              itemCount: controller.cart.value.items!.length,
+                              itemBuilder: (context, index) {
+                                final product =
+                                    controller.cart.value.items![index];
+                                return CartItem(
+                                  cartItemModel: product,
+                                  onQtyChange: () {
+                                    controller.calculateSubtotal();
+                                    controller.calculateTax();
+                                    controller.calculateGrandtotal();
+                                  },
+                                );
+                              },
+                            );
                     }),
                   ),
                   ListTile(
@@ -188,7 +189,7 @@ class CartScreen extends GetView<CartController> {
                     ),
                   ),
                   CustomLineWidget(),
-                  NoteOrderWidget(onChanged: (value){
+                  NoteOrderWidget(onChanged: (value) {
                     controller.cart.value.note = value;
                   }),
                 ]),

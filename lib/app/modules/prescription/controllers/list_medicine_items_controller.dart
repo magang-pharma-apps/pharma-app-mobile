@@ -21,15 +21,17 @@ class ListMedicineItemsController extends GetxController {
     products.value = response;
   }
 
-  void addMedicine(CartItemModel medicineItem){
-    final items = redemptionController.prescription.value.medicines;
-    final index = items!.indexWhere((element)=>element.product!.id == medicineItem.product!.id);
-    if (index >= 0){
+  void addMedicine(CartItemModel medicineItem) {
+    final items = redemptionController.prescription.value.cart!.items;
+    final index = items!.indexWhere(
+        (element) => element.product!.id == medicineItem.product!.id);
+    if (index >= 0) {
       items[index].quantity = items[index].quantity! + 1;
     } else {
       items.add(medicineItem);
     }
-    
-
+    redemptionController.calculateSubtotal();
+    redemptionController.calculateGrandtotal();
+    redemptionController.calculateTax();
   }
 }

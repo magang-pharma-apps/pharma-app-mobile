@@ -20,7 +20,7 @@ class CartModel {
 
   Map<String, dynamic> toJson() {
     return {
-      // 'items': items!.map((item) => item.toJson()).toList(),
+      'items': items!.map((item) => item.toJson()).toList(),
       'userId': "95d1e1f3-9adc-46c0-8638-c018369b1f10",
       'tax': tax,
       'subTotal': subtotal,
@@ -28,7 +28,7 @@ class CartModel {
       'transactionType': 'purchase',
       'categoryType': 'transaction',
       'transactionDate': DateTime.now().toIso8601String(),
-      // 'paymentMethod': paymentMethod,
+      'paymentMethod': paymentMethod,
       'note': note,
     };
   }

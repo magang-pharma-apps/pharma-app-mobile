@@ -7,6 +7,7 @@ import 'package:medpia_mobile/app/commons/ui/widgets/cart_item.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_line_widget.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/list_medicine_items_widget.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/order_detail.dart';
+import 'package:medpia_mobile/app/commons/ui/widgets/redemption_payment_detail_widget.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/search_widget.dart';
 import 'package:medpia_mobile/app/modules/prescription/controllers/redemption_controller.dart';
 
@@ -49,7 +50,9 @@ class RedemptionForm extends GetView<RedemptionController> {
                               .copyWith(color: Colors.grey.shade800)),
                       Row(
                         children: [
-                          Text(controller.prescription.value.medicines!.length.toString(),
+                          Text(
+                              controller.prescription.value.cart!.items!.length
+                                  .toString(),
                               style: Theme.of(context)
                                   .textTheme
                                   .labelMedium!
@@ -63,16 +66,17 @@ class RedemptionForm extends GetView<RedemptionController> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // controller.createTransaction();
+                    controller.createTransaction();
                   },
+                  style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.all(20)),
                   child: Text(
-                    "Purchase Rp. 90000",
+                    "Purchase Rp. ${controller.prescription.value.cart!.grandtotal}",
                     style: Theme.of(context)
                         .textTheme
                         .labelMedium!
                         .copyWith(color: Colors.white),
                   ),
-                  style: ElevatedButton.styleFrom(padding: EdgeInsets.all(20)),
                 ),
               ],
             );
@@ -80,7 +84,7 @@ class RedemptionForm extends GetView<RedemptionController> {
         )
       ],
       appBar: AppBar(
-        title: Text("Prescription Redemption"),
+        title: const Text("Prescription Redemption"),
       ),
       body: Column(
         children: [
@@ -174,22 +178,22 @@ class RedemptionForm extends GetView<RedemptionController> {
                   style: Theme.of(context).textTheme.displaySmall)),
           Expanded(
             child: Obx(() {
-              return controller.prescription.value.medicines!.isEmpty
+              return controller.prescription.value.cart!.items!.isEmpty
                   ? const Center(child: Text("No Medicine Added"))
                   : ListView.builder(
                       // shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       itemCount:
-                          controller.prescription.value.medicines!.length,
+                          controller.prescription.value.cart!.items!.length,
                       itemBuilder: (context, index) {
                         final product =
-                            controller.prescription.value.medicines![index];
+                            controller.prescription.value.cart!.items![index];
                         return CartItem(
                           cartItemModel: product,
                           onQtyChange: () {
-                            // controller.calculateSubtotal();
-                            // controller.calculateTax();
-                            // controller.calculateGrandtotal();
+                            controller.calculateSubtotal();
+                            controller.calculateTax();
+                            controller.calculateGrandtotal();
                           },
                         );
                       },
@@ -198,9 +202,7 @@ class RedemptionForm extends GetView<RedemptionController> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: 
-
-            OrderDetail(),
+            child: RedemptionPaymentDetailWidget(controller: controller),
           )
         ],
       ),
