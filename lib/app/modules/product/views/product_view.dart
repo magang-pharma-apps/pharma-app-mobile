@@ -24,26 +24,34 @@ class _ProductViewState extends State<ProductView> {
 
   ProductRepository productRepository = ProductRepository();
 
- 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        shadowColor: Colors.white,
+        surfaceTintColor: Colors.white,
+        backgroundColor: Colors.white,
+        title:
+            Text('All Products', style: Theme.of(context).textTheme.labelLarge),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CartScreen()));
+              },
+              icon: Padding(
+                padding: const EdgeInsets.only(right: 15),
+                child: Icon(HugeIcons.strokeRoundedShoppingCart01),
+              ))
+        ],
+      ),
       body: Container(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(color: Colors.white),
         child: Column(
           children: [
-            CustomAppBar(
-              appBarTitle: 'All Products',
-              appBarTrailing: IconButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CartScreen()));
-                  },
-                  icon: Icon(HugeIcons.strokeRoundedShoppingCart01)),
-            ),
             SearchWidget(),
-            SizedBox(height: 5),
             Expanded(
               child: FutureBuilder<List<ProductModel>>(
                 future: fetchProduct(),
@@ -59,7 +67,7 @@ class _ProductViewState extends State<ProductView> {
                         padding: EdgeInsets.symmetric(vertical: 10),
                         itemCount: snapshot.data!.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
+                            crossAxisCount: 2,
                             mainAxisExtent:
                                 MediaQuery.of(context).size.height / 3),
                         itemBuilder: (context, index) {

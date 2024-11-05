@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_app_bar.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_expansiontile_acceptance.dart';
@@ -19,8 +20,6 @@ class PrescriptionScreen extends StatefulWidget {
 class _PrescriptionScreenState extends State<PrescriptionScreen> {
   PrescriptionRepository prescriptionRepository = PrescriptionRepository();
 
-
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -35,7 +34,6 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
               InkWell(
                 onTap: () {
                   navigateToCreatePage();
-                  
                 },
                 child: CircleAvatar(
                   backgroundColor: Colors.teal.shade900,
@@ -81,8 +79,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                                     decoration: InputDecoration(
                                         suffixIcon: IconButton(
                                           icon: const Icon(Icons.close),
-                                          onPressed: () {
-                                          },
+                                          onPressed: () {},
                                         ),
                                         hintText:
                                             'Search by Prescription Number',
@@ -93,7 +90,6 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                                                 color: Colors.black))),
                                   ),
                                 ),
-                                
                                 ElevatedButton(
                                   child: const Text('Redeem Prescription'),
                                   onPressed: () => Navigator.pop(context),
@@ -117,10 +113,11 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
           ),
           appBar: AppBar(
             centerTitle: true,
+            titleTextStyle: TextStyle(fontSize: 16, color: Colors.black),
             title: Text(
               "Prescriptions",
             ),
-            bottom: const TabBar(tabs: [
+            bottom: const TabBar(labelStyle: TextStyle(fontSize: 12), tabs: [
               Tab(
                 text: "Prescription Acceptance",
               ),
@@ -144,12 +141,11 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
     }
   }
 
+  Future<void> navigateToCreatePage() async {
+    final result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => PrescriptionForm()));
 
-    Future<void> navigateToCreatePage() async {
-    final result = await Navigator.push(context, MaterialPageRoute(builder: 
-    (context) => PrescriptionForm()));
-
-    if (result == true){
+    if (result == true) {
       fetchPrescription();
     }
   }

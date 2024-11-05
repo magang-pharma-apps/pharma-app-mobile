@@ -9,13 +9,10 @@ class CustomBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 10),
-      width: MediaQuery.of(context).size.width * 0.9,
-      height: 160,
-      padding: EdgeInsets.all(20),
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: Colors.teal.shade50,
-        borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         children: [
@@ -26,11 +23,12 @@ class CustomBanner extends StatelessWidget {
               children: [
                 Text(
                   "Order Medicine",
-                  style: Theme.of(context).textTheme.displaySmall,
+                  style: Theme.of(context).textTheme.labelSmall,
                 ),
                 Spacer(),
                 Text(
-                    "Upload Prescription and tell us what you need. We do the rest"),
+                    "Upload Prescription and tell us what you need. We do the rest",
+                    style: Theme.of(context).textTheme.bodySmall),
                 Spacer(),
                 Text(
                   "Save Upto 60% off",
@@ -47,7 +45,13 @@ class CustomBanner extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => ProductView()));
                     },
-                    child: Text("Order Now"))
+                    child: Text(
+                      "Order Now",
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelSmall!
+                          .copyWith(color: Colors.white),
+                    ))
               ],
             ),
           ),

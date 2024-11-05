@@ -15,7 +15,8 @@ class MainApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       home: storage.read('isLogin') ? CoreView() : AuthView(),
-      theme: ThemeData( 
+      theme: ThemeData(
+        visualDensity: VisualDensity.compact,
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
             backgroundColor: Colors.white,
             elevation: 10,
@@ -54,8 +55,6 @@ class MainApp extends StatelessWidget {
             hintStyle: TextStyle(fontSize: 14, color: Colors.grey),
             prefixIconColor: ThemeManager.primaryColor,
             suffixIconColor: Colors.grey,
-            prefixIconConstraints: BoxConstraints(minWidth: 100),
-            suffixIconConstraints: BoxConstraints(minWidth: 70),
             filled: true,
             fillColor: Colors.white,
             border: const OutlineInputBorder(
@@ -80,9 +79,9 @@ class MainApp extends StatelessWidget {
                 fontSize: 16, color: Colors.teal, fontWeight: FontWeight.bold),
             titleSmall: TextStyle(
                 fontSize: 14, color: Colors.teal, fontWeight: FontWeight.bold),
-            bodyLarge: TextStyle(fontSize: 16, color: Colors.black),
-            bodyMedium: TextStyle(fontSize: 14, color: Colors.black),
-            bodySmall: TextStyle(fontSize: 12, color: Colors.black),
+            bodyLarge: TextStyle(fontSize: 14, color: Colors.black),
+            bodyMedium: TextStyle(fontSize: 12, color: Colors.black),
+            bodySmall: TextStyle(fontSize: 10, color: Colors.black),
             labelLarge: TextStyle(
                 fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
             labelMedium: TextStyle(

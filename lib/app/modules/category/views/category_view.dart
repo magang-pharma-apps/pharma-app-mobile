@@ -26,6 +26,14 @@ class _CategoryViewState extends State<CategoryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        shadowColor: Colors.white,
+        surfaceTintColor: Colors.white,
+        backgroundColor: Colors.white,
+        title: Text('All Categories',
+            style: Theme.of(context).textTheme.labelLarge),
+      ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
@@ -33,8 +41,6 @@ class _CategoryViewState extends State<CategoryView> {
         ),
         child: Column(
           children: [
-            CustomAppBar(appBarTitle: "All Categories"),
-            SizedBox(height: 15),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.8,
               child: FutureBuilder<List<CategoryModel>>(

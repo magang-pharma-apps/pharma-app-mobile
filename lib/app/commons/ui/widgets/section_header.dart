@@ -6,7 +6,8 @@ class SectionHeader extends StatefulWidget {
   String? sectionName;
   IconData? sectionIcon;
   final VoidCallback? viewAllPressed;
-  SectionHeader({super.key, this.sectionName, this.sectionIcon, this.viewAllPressed});
+  SectionHeader(
+      {super.key, this.sectionName, this.sectionIcon, this.viewAllPressed});
 
   @override
   State<SectionHeader> createState() => _SectionHeaderState();
@@ -21,20 +22,21 @@ class _SectionHeaderState extends State<SectionHeader> {
         Icon(
           widget.sectionIcon!,
           color: Colors.grey.shade700,
+          size: 20,
         ),
         SizedBox(width: 10),
         Text(
           widget.sectionName!,
           style: Theme.of(context)
               .textTheme
-              .titleMedium!
+              .labelMedium!
               .copyWith(color: Colors.grey.shade700),
         ),
         Spacer(),
         TextButton(
-          
             onPressed: widget.viewAllPressed,
-            child: Text("View All")),
+            child: Text("View All",
+                style: Theme.of(context).textTheme.titleSmall)),
       ],
     );
   }

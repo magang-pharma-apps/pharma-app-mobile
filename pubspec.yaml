@@ -4,7 +4,7 @@ publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: ^3.6.0-216.1.beta
+  sdk: ^3.5.3
 
 dependencies:
   add_to_cart_animation: ^2.0.4

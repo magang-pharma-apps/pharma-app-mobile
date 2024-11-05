@@ -57,11 +57,12 @@ class _CartItemState extends State<CartItem> {
             borderRadius: BorderRadius.circular(10)),
         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         child: ListTile(
-          visualDensity: VisualDensity.standard,
+          dense: true,
+          visualDensity: VisualDensity(horizontal: -4, vertical: -4),
           // isThreeLine: true,
-          contentPadding: EdgeInsets.only(left: 10),
+          contentPadding: EdgeInsets.only(left: 5),
           leading: Container(
-              width: 70,
+              width: 50,
               clipBehavior: Clip.antiAlias,
               alignment: Alignment.topRight,
               decoration: BoxDecoration(
@@ -80,11 +81,11 @@ class _CartItemState extends State<CartItem> {
             widget.cartItemModel!.product!.name!,
             style: Theme.of(context)
                 .textTheme
-                .titleSmall!
+                .bodyMedium!
                 .copyWith(color: Colors.black),
           ),
           subtitle: SizedBox(
-            width: 250,
+            width: 300,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -92,7 +93,8 @@ class _CartItemState extends State<CartItem> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     "Rp ${widget.cartItemModel!.product!.sellingPrice!}",
-                    style: Theme.of(context).textTheme.titleSmall),
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Colors.teal, fontWeight: FontWeight.bold)),
                 SizedBox(height: 5),
                 NotePrescription(
                   onChanged: (value) {
@@ -103,7 +105,7 @@ class _CartItemState extends State<CartItem> {
             ),
           ),
           trailing: SizedBox(
-            width: 180,
+            width: 170,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -113,12 +115,9 @@ class _CartItemState extends State<CartItem> {
                       _reduceQuantity();
                       widget.onQtyChange!();
                     },
-                    icon: CircleAvatar(
-                      radius: 12,
-                      child: Icon(
-                        HugeIcons.strokeRoundedMinusSign,
-                        size: 12,
-                      ),
+                    icon: Icon(
+                      HugeIcons.strokeRoundedMinusSign,
+                      size: 16,
                     )),
                 Text(
                   "${widget.cartItemModel!.quantity}",
@@ -132,25 +131,19 @@ class _CartItemState extends State<CartItem> {
                       _addQuantity();
                       widget.onQtyChange!();
                     },
-                    icon: CircleAvatar(
-                      radius: 12,
-                      child: Icon(
-                        HugeIcons.strokeRoundedPlusSign,
-                        size: 12,
-                      ),
+                    icon: Icon(
+                      HugeIcons.strokeRoundedPlusSign,
+                      size: 16,
                     )),
                 IconButton(
                   onPressed: () {
                     cartController.removeItemFromCart(widget.cartItemModel!);
                   },
-                  icon: CircleAvatar(
-                      radius: 12,
-                      backgroundColor: Colors.red.shade50,
-                      child: Icon(
-                        HugeIcons.strokeRoundedDelete01,
-                        size: 12,
-                        color: Colors.red,
-                      )),
+                  icon: Icon(
+                    HugeIcons.strokeRoundedDelete01,
+                    size: 16,
+                    color: Colors.red,
+                  ),
                 )
               ],
             ),

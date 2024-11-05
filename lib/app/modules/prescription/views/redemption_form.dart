@@ -58,7 +58,7 @@ class RedemptionForm extends GetView<RedemptionController> {
                                   .labelMedium!
                                   .copyWith(color: Colors.green)),
                           Text(" Items",
-                              style: Theme.of(context).textTheme.labelMedium)
+                              style: Theme.of(context).textTheme.labelSmall)
                         ],
                       ),
                     ],
@@ -69,7 +69,7 @@ class RedemptionForm extends GetView<RedemptionController> {
                     controller.createTransaction();
                   },
                   style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.all(20)),
+                      padding: const EdgeInsets.all(15)),
                   child: Text(
                     "Purchase Rp. ${controller.prescription.value.cart!.grandtotal}",
                     style: Theme.of(context)
@@ -84,20 +84,29 @@ class RedemptionForm extends GetView<RedemptionController> {
         )
       ],
       appBar: AppBar(
-        title: const Text("Prescription Redemption"),
-      ),
-      body: Column(
+          title: Text("Prescription Redemption",
+              style: Theme.of(context).textTheme.labelMedium)),
+      body: ListView(
         children: [
-          ListTile(
-            title: Text("Prescription Information",
-                style: Theme.of(context).textTheme.displaySmall),
+          Container(
+            width: Get.width,
+            height: 30,
+            child: ListTile(
+              dense: true,
+              contentPadding: EdgeInsets.only(left: 10, right: 10),
+              visualDensity: VisualDensity(horizontal: -4.0, vertical: -4.0),
+              title: Text("Prescription Information",
+                  style: Theme.of(context).textTheme.labelMedium),
+            ),
           ),
           ListTile(
+            dense: true,
+            contentPadding: EdgeInsets.only(left: 10, right: 10),
             title: Text(
               formattedPrescriptionDate,
               style: Theme.of(context)
                   .textTheme
-                  .labelMedium!
+                  .labelSmall!
                   .copyWith(color: Colors.teal),
             ),
             subtitle: Column(
@@ -105,27 +114,29 @@ class RedemptionForm extends GetView<RedemptionController> {
               children: [
                 Text(
                   "Prescription Code: #${controller.prescription.value.prescriptionCode!}",
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                  style: Theme.of(context).textTheme.labelSmall!.copyWith(
                       color: Colors.teal.shade800, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
             trailing: Container(
-              margin: EdgeInsets.only(right: 10),
+              margin: EdgeInsets.only(right: 2),
               padding: EdgeInsets.all(5),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.amber.shade50),
               child: Text(
                 getPrescriptionStatus(controller.prescription.value.isRedeem!),
-                style: TextStyle(color: Colors.amber.shade500),
+                style: TextStyle(color: Colors.amber.shade500, fontSize: 11),
               ),
             ),
           ),
           ListTile(
+            dense: true,
+            contentPadding: EdgeInsets.only(left: 10, right: 10),
             title: Text(
               'Prescriptions',
-              style: Theme.of(context).textTheme.labelMedium!,
+              style: Theme.of(context).textTheme.labelSmall!,
             ),
             subtitle: Text(
               controller.prescription.value.prescriptions!,
@@ -133,12 +144,16 @@ class RedemptionForm extends GetView<RedemptionController> {
             ),
           ),
           ListTile(
+            dense: true,
+            contentPadding: EdgeInsets.only(left: 10, right: 10),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Nama Pasien',
-                    style: Theme.of(context).textTheme.labelMedium!),
-                Text('Usia', style: Theme.of(context).textTheme.labelMedium!),
+                    style:
+                        TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                Text('Usia',
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold))
               ],
             ),
             trailing: Column(
@@ -156,31 +171,47 @@ class RedemptionForm extends GetView<RedemptionController> {
             ),
           ),
           ListTile(
+            dense: true,
+            contentPadding: EdgeInsets.only(left: 10, right: 10),
             title: Text(
               "Doctor",
-              style: Theme.of(context).textTheme.labelMedium!,
+              style: Theme.of(context).textTheme.labelSmall!,
             ),
             trailing: Text(
               controller.prescription.value.doctor!.name!,
               style: Theme.of(context).textTheme.bodyMedium!,
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Get.bottomSheet(const ListMedicineItemsWidget());
-            },
-            style:
-                ElevatedButton.styleFrom(fixedSize: Size(Get.width * 0.8, 30)),
-            child: const Text("Add Medicine Items"),
+          Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10),
+            child: ElevatedButton(
+              onPressed: () {
+                Get.bottomSheet(const ListMedicineItemsWidget());
+              },
+              style: ElevatedButton.styleFrom(
+                  fixedSize: Size(Get.width * 0.9, 15)),
+              child: Text(
+                "Add Medicine Items",
+                style: Theme.of(context)
+                    .textTheme
+                    .labelSmall!
+                    .copyWith(color: Colors.white),
+              ),
+            ),
           ),
           ListTile(
+              splashColor: Colors.grey.shade200,
+              dense: true,
+              contentPadding: EdgeInsets.only(left: 10, right: 10),
               title: Text("Medicine Items",
-                  style: Theme.of(context).textTheme.displaySmall)),
-          Expanded(
+                  style: Theme.of(context).textTheme.labelMedium)),
+          SizedBox(
+            height: Get.height * 0.5,
             child: Obx(() {
               return controller.prescription.value.cart!.items!.isEmpty
                   ? const Center(child: Text("No Medicine Added"))
                   : ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
                       // shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       itemCount:

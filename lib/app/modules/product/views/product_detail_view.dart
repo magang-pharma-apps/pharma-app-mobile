@@ -30,6 +30,10 @@ class _ProductDetailViewState extends State<ProductDetailView> {
     return Scaffold(
         persistentFooterButtons: [
           ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.only(top: 5),
+                  side: BorderSide(color: Colors.transparent)),
               onPressed: () {
                 cartController.addItemToCart(CartItemModel(
                     product: widget.productModel, quantity: 1, note: ''));
@@ -39,25 +43,36 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                 children: [
                   Icon(
                     Icons.add,
-                    color: Colors.white,
+                    size: 17,
                   ),
-                  Text('Add To Cart')
+                  Text(
+                    'Add To Cart',
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelSmall!
+                        .copyWith(color: Colors.white),
+                  )
                 ],
               ))
         ],
         body: CustomScrollView(slivers: [
           SliverAppBar(
             actions: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CartScreen()));
-                  },
-                  icon: Icon(HugeIcons.strokeRoundedShoppingCart01))
+              Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CartScreen()));
+                    },
+                    icon: Icon(HugeIcons.strokeRoundedShoppingCart01)),
+              )
             ],
             backgroundColor: Colors.white,
             pinned: true,
-            expandedHeight: 410.0,
+            expandedHeight: 300.0,
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.parallax,
               centerTitle: true,
@@ -100,11 +115,11 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                           ],
                         ),
                         Text(widget.productModel!.name!,
-                            style: Theme.of(context).textTheme.displaySmall),
+                            style: Theme.of(context).textTheme.labelMedium),
                         Text('Rp. ${widget.productModel!.sellingPrice!}',
                             style: Theme.of(context)
                                 .textTheme
-                                .titleMedium!
+                                .titleSmall!
                                 .copyWith(
                                     color: Colors.teal.shade800,
                                     fontWeight: FontWeight.bold,
@@ -127,7 +142,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                             Spacer(),
                             Text(
                                 "In stock (${widget.productModel!.stockQuantity!})",
-                                style: Theme.of(context).textTheme.labelSmall),
+                                style: Theme.of(context).textTheme.bodyMedium),
                           ],
                         ),
                       ],
@@ -146,7 +161,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                       title: Text(
                         'Product Details',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 14),
+                            fontWeight: FontWeight.bold, fontSize: 12),
                       ),
                       trailing: IconButton(
                           onPressed: () {
@@ -156,7 +171,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                   return Container(
                                     padding: EdgeInsets.only(top: 10),
                                     alignment: Alignment.center,
-                                    height: 500,
+                                    height: 300,
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.horizontal(
@@ -171,26 +186,38 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                         Text(
                                           "Product Details",
                                           style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize: 12,
                                               fontWeight: FontWeight.bold),
                                         ),
                                         CustomLineWidget(),
                                         ListTile(
+                                          titleTextStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium,
                                           title: Text("Date Expired"),
                                           trailing: Text(formattedExpiryDate),
                                         ),
                                         ListTile(
+                                          titleTextStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium,
                                           title: Text("Available Stock"),
                                           trailing: Text(widget
                                               .productModel!.stockQuantity!
                                               .toString()),
                                         ),
                                         ListTile(
+                                          titleTextStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium,
                                           title: Text("Units"),
                                           trailing: Text(
                                               widget.productModel!.unit!.name!),
                                         ),
                                         ListTile(
+                                          titleTextStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium,
                                           title: Text("Drug Class"),
                                           trailing: Text(
                                               widget.productModel!.drugClass!),

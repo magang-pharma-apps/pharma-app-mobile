@@ -22,7 +22,7 @@ class RedemptionPaymentDetailWidget extends StatelessWidget {
               textHeightBehavior: TextHeightBehavior(
                   applyHeightToLastDescent: true,
                   applyHeightToFirstAscent: true),
-              style: Theme.of(context).textTheme.displaySmall),
+              style: Theme.of(context).textTheme.labelMedium),
         ),
         SizedBox(
           height: 20,

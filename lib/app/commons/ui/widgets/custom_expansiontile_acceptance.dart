@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_line_widget.dart';
@@ -89,7 +90,7 @@ class _CustomExpansiontileAcceptanceState
                   formattedPrescriptionDate,
                   style: Theme.of(context)
                       .textTheme
-                      .labelMedium!
+                      .labelSmall!
                       .copyWith(color: Colors.teal),
                 ),
                 subtitle: Column(
@@ -97,7 +98,7 @@ class _CustomExpansiontileAcceptanceState
                   children: [
                     Text(
                       "Prescription Code: #${widget.prescriptionModel!.prescriptionCode!}",
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
                           color: Colors.teal.shade800,
                           fontWeight: FontWeight.bold),
                     ),
@@ -111,55 +112,66 @@ class _CustomExpansiontileAcceptanceState
                       color: Colors.amber.shade50),
                   child: Text(
                     getPrescriptionStatus(widget.prescriptionModel!.isRedeem!),
-                    style: TextStyle(color: Colors.amber.shade500),
+                    style: TextStyle(color: Colors.orange),
                   ),
                 ),
                 children: [
                   ListTile(
+                    titleTextStyle: Theme.of(context).textTheme.labelMedium!,
                     title: Text(
                       'Prescriptions',
-                      style: TextStyle(fontSize: 14),
                     ),
                     subtitle: Text(
                       widget.prescriptionModel!.prescriptions!,
                       style: Theme.of(context)
                           .textTheme
                           .labelMedium!
-                          .copyWith(color: Colors.grey.shade700),
+                          .copyWith(color: Colors.teal.shade900),
                     ),
                   ),
                   ListTile(
+                    titleTextStyle: Theme.of(context).textTheme.labelMedium,
+                    dense: true,
                     title: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Nama Pasien',
-                            style: Theme.of(context).textTheme.labelLarge),
-                        Text('Usia',
-                            style: Theme.of(context).textTheme.labelLarge),
+                        Text('Nama Pasien'),
+                        Text('Usia'),
                       ],
                     ),
                     trailing: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
                           widget.prescriptionModel!.customer!.name!,
-                          style: Theme.of(context).textTheme.labelLarge,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelMedium!
+                              .copyWith(color: Colors.teal.shade900),
                         ),
                         Text(
                           widget.prescriptionModel!.customer!.age!.toString(),
-                          style: Theme.of(context).textTheme.labelLarge,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelMedium!
+                              .copyWith(color: Colors.teal.shade900),
                         ),
                       ],
                     ),
                   ),
                   ListTile(
+                    titleTextStyle: Theme.of(context).textTheme.labelMedium!,
                     title: Text(
                       "Doctor",
-                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                     trailing: Text(
                       widget.prescriptionModel!.doctor!.name!,
-                      style: Theme.of(context).textTheme.labelLarge,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelMedium!
+                          .copyWith(color: Colors.teal.shade900),
                     ),
                   )
                 ],
@@ -177,13 +189,21 @@ class _CustomExpansiontileAcceptanceState
                       VisualDensity(horizontal: -4.0, vertical: -4.0),
                   contentPadding: EdgeInsets.symmetric(horizontal: 5),
                   trailing: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.deepPurple,
+                        visualDensity:
+                            VisualDensity(horizontal: -3.0, vertical: -3),
+                      ),
                       onPressed: widget.prescriptionModel!.isRedeem! == true
-                            ? null
-                            :() {
-                         Get.to(const RedemptionForm(),
-                                arguments: widget.prescriptionModel);
-                      },
-                      child: Text("Redeem Prescription")),
+                          ? null
+                          : () {
+                              Get.to(const RedemptionForm(),
+                                  arguments: widget.prescriptionModel);
+                            },
+                      child: Text(
+                        "Redeem Prescription",
+                        style: TextStyle(fontSize: 11),
+                      )),
                 ),
               )
             ]),
@@ -204,14 +224,14 @@ class _CustomExpansiontileAcceptanceState
                     ExpansionTileController.of(context).collapse();
                   }
                 },
-                child: CircleAvatar(
+                child: const CircleAvatar(
                   backgroundColor: Colors.teal,
-                  radius: 15,
+                  radius: 12,
                   child: Center(
                     child: Icon(
                       Icons.expand_more,
                       color: Colors.white,
-                      size: 25,
+                      size: 22,
                     ),
                   ),
                 ),

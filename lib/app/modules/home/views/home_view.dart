@@ -55,16 +55,16 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.symmetric(vertical: 10),
       child: ListView(
         shrinkWrap: true,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               children: [
                 CustomHomeAppBar(),
-                SizedBox(height: 40),
+                SizedBox(height: 15),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -74,18 +74,21 @@ class _HomeViewState extends State<HomeView> {
                     BarcodeButtonWidget(),
                   ],
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 15),
                 Container(
                   // margin: EdgeInsets.symmetric(vertical: 10),
-                  height: 200,
-                  child: PageView.builder(
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      return CustomBanner();
-                    },
+                  height: 150,
+                  child: CarouselView(
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    elevation: 0,
+                    children: [
+                      CustomBanner(),
+                      CustomBanner(),
+                    ],
+                    itemExtent: MediaQuery.of(context).size.width,
                   ),
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 15),
                 SectionHeader(
                   sectionName: "Category",
                   sectionIcon: HugeIcons.strokeRoundedGridView,
@@ -101,7 +104,7 @@ class _HomeViewState extends State<HomeView> {
           ),
           SizedBox(height: 10),
           Container(
-              height: 150,
+              height: 120,
               width: MediaQuery.of(context).size.width,
               child: FutureBuilder<List<CategoryModel>>(
                 future: fetchCategory(),
@@ -110,16 +113,18 @@ class _HomeViewState extends State<HomeView> {
                   if (snapshot.hasError) {
                     return Center(child: Text(snapshot.error.toString()));
                   } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                    return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        final category = snapshot.data![index];
-                        return SizedBox(
-                          width: 120,
-                          child: CardCategory(categoryModel: category),
-                        );
-                      },
-                      itemCount: snapshot.data!.length,
+                    return SizedBox(
+                      child: ListView.separated(
+                        padding: EdgeInsets.only(left: 10),
+                        separatorBuilder: (context, index) =>
+                            SizedBox(width: 10),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          final category = snapshot.data![index];
+                          return CardCategory(categoryModel: category);
+                        },
+                        itemCount: snapshot.data!.length,
+                      ),
                     );
                   } else {
                     return const Center(child: Text('No data found!'));
@@ -127,14 +132,8 @@ class _HomeViewState extends State<HomeView> {
                   // Ensure a widget is always returned
                 },
               )),
-          Divider(
-              height: 20,
-              color: Colors.grey.shade300,
-              thickness: 1,
-              indent: 20,
-              endIndent: 20),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: SectionHeader(
                 viewAllPressed: () {
                   Navigator.push(context,
@@ -160,23 +159,26 @@ class _HomeViewState extends State<HomeView> {
                     return Center(child: Text(snapshot.error.toString()));
                   } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                     return ListView.builder(
-                      itemExtent: MediaQuery.of(context).size.width / 3,
+                      itemExtent: MediaQuery.of(context).size.width / 2.5,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         final product = snapshot.data![index];
                         // Text('${product.name}');
                         return InkWell(
                             onTap: () {
-                              Navigator.push( 
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          ProductDetailView(productModel: product,)));
+                                      builder: (context) => ProductDetailView(
+                                            productModel: product,
+                                          )));
                             },
-                            child: CardProduct(productModel: product,
-                            onAddToCart: () {
-                              cartController.addItemToCart(CartItemModel(product: product, quantity: 1, note: ''));
-                            }));
+                            child: CardProduct(
+                                productModel: product,
+                                onAddToCart: () {
+                                  cartController.addItemToCart(CartItemModel(
+                                      product: product, quantity: 1, note: ''));
+                                }));
                       },
                       itemCount: 5,
                     );
@@ -189,12 +191,13 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
   }
+
   /// Fetches a list of categories from the repository.
   ///
-  /// This method attempts to retrieve categories by calling the 
-  /// `getCategories` method of the `categoryRepository`. If an 
-  /// error occurs during the fetch, it catches the exception, 
-  /// logs the error, and throws a new exception indicating the 
+  /// This method attempts to retrieve categories by calling the
+  /// `getCategories` method of the `categoryRepository`. If an
+  /// error occurs during the fetch, it catches the exception,
+  /// logs the error, and throws a new exception indicating the
   /// failure to load categories.
   ///
   /// Returns a `Future` that resolves to a `List` of `CategoryModel`.

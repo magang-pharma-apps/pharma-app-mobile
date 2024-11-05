@@ -16,7 +16,7 @@ class ListMedicineItemsWidget extends GetView<ListMedicineItemsController> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -24,13 +24,12 @@ class ListMedicineItemsWidget extends GetView<ListMedicineItemsController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ListTile(
-              title: Text("List Medicines", style: Get.textTheme.displaySmall)),
-          SizedBox(
-            height: 10,
+          Center(
+            heightFactor: 2,
+            child: Text("List Medicines", style: Get.textTheme.labelMedium),
           ),
           SearchWidget(),
-          SizedBox(height: 10),
+          SizedBox(height: 5),
           Expanded(
             child: Obx(() {
               return ListView.builder(
@@ -39,13 +38,22 @@ class ListMedicineItemsWidget extends GetView<ListMedicineItemsController> {
                 itemBuilder: (context, index) {
                   final product = controller.products[index];
                   return ListTile(
+                      dense: true,
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 5, vertical: 0),
                       title: Text(product.name!),
                       trailing: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                          ),
                           onPressed: () {
                             controller.addMedicine(CartItemModel(
                                 product: product, quantity: 1, note: ""));
                           },
-                          child: Text("Add")));
+                          child: Text(
+                            "Add",
+                            style: TextStyle(fontSize: 11),
+                          )));
                 },
               );
             }),

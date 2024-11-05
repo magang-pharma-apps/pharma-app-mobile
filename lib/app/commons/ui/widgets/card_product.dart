@@ -7,11 +7,11 @@ import 'package:medpia_mobile/app/repositories/product_repository.dart';
 Image getImagebyDrugClass(String drugClass) {
   switch (drugClass) {
     case 'Obat Bebas Terbatas':
-      return Image.asset('assets/images/obt.png', width: 20);
+      return Image.asset('assets/images/obt.png', width: 15);
     case 'Obat Keras':
-      return Image.asset('assets/images/ok.png', width: 20);
+      return Image.asset('assets/images/ok.png', width: 15);
     default:
-      return Image.asset('assets/images/ob.png', width: 20);
+      return Image.asset('assets/images/ob.png', width: 15);
   }
 }
 
@@ -25,13 +25,12 @@ class CardProduct extends StatefulWidget {
 }
 
 class _CardProductState extends State<CardProduct> {
-  
-
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 150,
       margin: EdgeInsets.only(right: 7, left: 7, bottom: 5),
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(7),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.grey.shade300, width: 0.5),
@@ -44,9 +43,7 @@ class _CardProductState extends State<CardProduct> {
           Expanded(
               child: Container(
                   padding: EdgeInsets.all(5),
-                  height: 500,
-                  width: double.maxFinite,
-                  clipBehavior: Clip.hardEdge,
+                  clipBehavior: Clip.antiAlias,
                   alignment: Alignment.topRight,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -54,16 +51,16 @@ class _CardProductState extends State<CardProduct> {
                           fit: BoxFit.cover,
                           image: NetworkImage(
                               widget.productModel!.productImageUrl!,
-                              scale: 500))),
+                              scale: 100))),
                   child: getImagebyDrugClass(widget.productModel!.drugClass!))),
           Text(
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             widget.productModel!.name!,
-            style: Theme.of(context).textTheme.titleSmall!.copyWith(height: 2),
+            style: Theme.of(context).textTheme.labelSmall!.copyWith(height: 2),
           ),
           Text(
-            widget.productModel!.description!,
+            widget.productModel!.category!.name!,
             overflow: TextOverflow.ellipsis,
             textHeightBehavior:
                 TextHeightBehavior(applyHeightToLastDescent: true),
@@ -76,7 +73,7 @@ class _CardProductState extends State<CardProduct> {
           Row(
             children: [
               Text("Rp ${widget.productModel!.sellingPrice!}",
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: Colors.teal.shade800,
                       fontWeight: FontWeight.bold,
                       height: 3)),
@@ -90,17 +87,17 @@ class _CardProductState extends State<CardProduct> {
                 widget.onAddToCart!();
               },
               child: Text(
-                "+ Add to Chart",
+                "Add to Chart",
                 style: Theme.of(context)
                     .textTheme
                     .titleSmall!
-                    .copyWith(fontSize: 12),
+                    .copyWith(fontSize: 11),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 side: BorderSide(color: Colors.teal),
                 overlayColor: Colors.tealAccent.shade400,
-                elevation: 2,
+                elevation: 0,
               ))
         ],
       ),

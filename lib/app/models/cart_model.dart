@@ -9,8 +9,7 @@ class CartModel {
   String? note;
 
   CartModel(
-      {
-      this.items,
+      {this.items,
       this.subtotal,
       this.grandtotal,
       this.tax,

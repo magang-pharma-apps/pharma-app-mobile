@@ -13,34 +13,34 @@ class CustomHomeAppBar extends StatelessWidget {
     return Row(
       children: [
         Container(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           decoration: BoxDecoration(
             color: ThemeManager.onPrimaryContainer,
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(20),
           ),
           child: Row(
             children: [
               CircleAvatar(
+                radius: 16,
                 backgroundImage: NetworkImage(
                     'https://th.bing.com/th/id/OIP.2r9PsOkVBHqy4XP3BEUhaQHaHs?rs=1&pid=ImgDetMain'),
               ),
-              SizedBox(width: 20),
+              SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Welcome Back!",
                       style: Theme.of(context)
                           .textTheme
-                          .labelLarge!
+                          .labelSmall!
                           .copyWith(color: ThemeManager.tealColor)),
-                  TextButton(
-                      clipBehavior: Clip.antiAlias,
-                      onPressed: () {},
+                  InkWell(
+                      onTap: () {},
                       child: Text(
                         "John Doe",
                         style: Theme.of(context)
                             .textTheme
-                            .titleSmall!
+                            .labelSmall!
                             .copyWith(color: ThemeManager.tealColor),
                       ))
                 ],
@@ -51,12 +51,12 @@ class CustomHomeAppBar extends StatelessWidget {
         Spacer(),
         IconButton(
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => CartScreen()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => CartScreen()));
           },
           icon: Icon(HugeIcons.strokeRoundedShoppingCart01),
           color: Colors.grey.shade800,
-          iconSize: 30.0,
+          iconSize: 25.0,
         )
       ],
     );

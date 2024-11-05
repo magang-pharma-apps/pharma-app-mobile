@@ -52,7 +52,13 @@ class _PrescriptionFormState extends State<PrescriptionForm> {
           onPressed: () {
             createPrescription();
           },
-          child: const Text('Save Prescription'),
+          child: Text(
+            'Save Prescription',
+            style: Theme.of(context)
+                .textTheme
+                .labelSmall!
+                .copyWith(color: Colors.white),
+          ),
         ),
       ],
       appBar: AppBar(
@@ -66,22 +72,22 @@ class _PrescriptionFormState extends State<PrescriptionForm> {
           ),
         ),
         centerTitle: true,
-        title: const Text('Prescription Form'),
+        title: Text('Prescription Form',
+            style: Theme.of(context).textTheme.labelLarge),
       ),
       body: Container(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: const BoxDecoration(
             color: Colors.white,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
               ListTile(
                 contentPadding: const EdgeInsets.all(0),
                 visualDensity: VisualDensity.compact,
                 title: Text(
                   "Fill Prescription Detail",
-                  style: Theme.of(context).textTheme.labelLarge,
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
                 subtitle: const Text(
                     "Fill in required fields to fill prescription request"),
@@ -153,18 +159,24 @@ class _PrescriptionFormState extends State<PrescriptionForm> {
                     labelText: 'Prescription',
                     hintFadeDuration: Duration(seconds: 1),
                     alignLabelWithHint: true,
-                    hintText: 'Write prescription here',
+                    hintText: 'Write prescription here...',
+                    hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300),
                     constraints: BoxConstraints(maxHeight: 150)),
               ),
               const SizedBox(
                 height: 10,
               ),
               ListTile(
+                visualDensity:
+                    const VisualDensity(horizontal: -4.0, vertical: -4.0),
                 contentPadding: const EdgeInsets.all(0),
                 dense: true,
                 title: const Text(
                   'Directly redeem this prescription?',
-                  style: TextStyle(fontSize: 14),
+                  style: TextStyle(fontSize: 12),
                 ),
                 trailing: Switch(
                   value: isRedeem,

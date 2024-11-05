@@ -7,8 +7,8 @@ class ProductModel {
   CategoryModel? category;
   String? productCode;
   String? name;
-  double? purchasePrice;
-  double? sellingPrice;
+  int? purchasePrice;
+  int? sellingPrice;
   int? stockQuantity;
   String? description;
   String? expiryDate;

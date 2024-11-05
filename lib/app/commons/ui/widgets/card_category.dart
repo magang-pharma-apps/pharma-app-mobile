@@ -13,7 +13,6 @@ class CardCategory extends StatefulWidget {
 class _CardCategoryState extends State<CardCategory> {
   bool _isHovered = false;
 
-  
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -27,16 +26,20 @@ class _CardCategoryState extends State<CardCategory> {
         });
       },
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            padding: EdgeInsets.all(20),
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-                color: _isHovered ? Colors.blue.shade200 : Colors.blue.shade100,
-                borderRadius: BorderRadius.circular(30)),
-            child: Image.network(
-              widget.categoryModel!.categoryImageUrl!,
+          Expanded(
+            child: Container(
+              clipBehavior: Clip.antiAlias,
+              width: 90,
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color:
+                      _isHovered ? Colors.blue.shade200 : Colors.blue.shade100,
+                  borderRadius: BorderRadius.circular(20)),
+              child: Image.network(
+                widget.categoryModel!.categoryImageUrl!,
+              ),
             ),
           ),
           SizedBox(height: 10),

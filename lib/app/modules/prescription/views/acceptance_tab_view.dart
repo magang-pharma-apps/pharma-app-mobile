@@ -63,6 +63,4 @@ class _AcceptanceTabViewState extends State<AcceptanceTabView> {
       throw Exception("Error load prescriotion data $e");
     }
   }
-
-
 }

@@ -58,7 +58,7 @@ class _AuthViewState extends State<AuthView> {
       // request ke url
 
       final response = await authProvider.login(username.text, password.text);
-      print(response.statusCode);
+      // print(response.statusCode);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final token = json.decode(response.body)['accessToken'];
@@ -97,6 +97,7 @@ class _AuthViewState extends State<AuthView> {
       setState(() {
         _isLoading = false;
       });
+      print('Error Login $e');
       CustomSnackbar.showSnackbar(context,
           title: 'Error!',
           message: 'Something went wrong!',
@@ -122,9 +123,8 @@ class _AuthViewState extends State<AuthView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: ListView(
+        scrollDirection: Axis.vertical,
         children: [
           Padding(
             padding: EdgeInsets.only(top: 100, left: 20, right: 20),
@@ -145,14 +145,10 @@ class _AuthViewState extends State<AuthView> {
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.785,
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
+              borderRadius: BorderRadius.circular(20),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

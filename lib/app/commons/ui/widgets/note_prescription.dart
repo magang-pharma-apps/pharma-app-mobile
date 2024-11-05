@@ -4,7 +4,8 @@ import 'package:hugeicons/hugeicons.dart';
 class NotePrescription extends StatefulWidget {
   final Function(String) onChanged;
   const NotePrescription({
-    super.key, required this.onChanged,
+    super.key,
+    required this.onChanged,
   });
 
   @override
@@ -18,11 +19,14 @@ class _NotePrescriptionState extends State<NotePrescription> {
   Widget build(BuildContext context) {
     return _isClicked
         ? TextFormField(
-          onChanged: (value) => widget.onChanged(value),
+            style: Theme.of(context).textTheme.bodyMedium,
+            onChanged: (value) => widget.onChanged(value),
             maxLines: 1,
+            maxLength: 15,
             decoration: InputDecoration(
-              labelStyle: TextStyle(fontSize: 10),
-              constraints: BoxConstraints(minHeight: 10),
+              isDense: true,
+              contentPadding: EdgeInsets.all(8),
+              labelStyle: TextStyle(fontSize: 9),
               filled: false,
               fillColor: Colors.white,
               disabledBorder: InputBorder.none,
@@ -32,7 +36,7 @@ class _NotePrescriptionState extends State<NotePrescription> {
                 icon: Icon(
                   HugeIcons.strokeRoundedCancelCircle,
                   color: Colors.red,
-                  size: 20,
+                  size: 15,
                 ),
                 onPressed: () {
                   setState(() {
@@ -41,8 +45,6 @@ class _NotePrescriptionState extends State<NotePrescription> {
                 },
               ),
               label: Text("Recipe"),
-              border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey.shade300)),
             ),
             onTapOutside: (value) {},
           )

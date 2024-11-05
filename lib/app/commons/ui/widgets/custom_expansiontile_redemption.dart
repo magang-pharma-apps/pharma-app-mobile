@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_line_widget.dart';
 
 class CustomExpantiontileRedemption extends StatefulWidget {
   CustomExpantiontileRedemption({super.key});
 
   @override
-  State<CustomExpantiontileRedemption> createState() => _CustomExpantiontileRedemptionState();
+  State<CustomExpantiontileRedemption> createState() =>
+      _CustomExpantiontileRedemptionState();
 }
 
-class _CustomExpantiontileRedemptionState extends State<CustomExpantiontileRedemption>
+class _CustomExpantiontileRedemptionState
+    extends State<CustomExpantiontileRedemption>
     with SingleTickerProviderStateMixin {
   bool _isExpanded = false;
   late AnimationController _controller;
@@ -16,7 +19,7 @@ class _CustomExpantiontileRedemptionState extends State<CustomExpantiontileRedem
       ExpansionTileController();
 
   @override
-  void dispose() {  
+  void dispose() {
     _controller.dispose();
     super.dispose();
   }
@@ -70,9 +73,7 @@ class _CustomExpantiontileRedemptionState extends State<CustomExpantiontileRedem
                         .textTheme
                         .labelMedium!
                         .copyWith(color: Colors.teal),
-
                   ),
-                  
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -80,12 +81,11 @@ class _CustomExpantiontileRedemptionState extends State<CustomExpantiontileRedem
                         "Name/Recipe: #RECIPE R03I20",
                         style: Theme.of(context)
                             .textTheme
-                            .titleMedium!
+                            .labelMedium!
                             .copyWith(
                                 color: Colors.teal.shade800,
                                 fontWeight: FontWeight.bold),
                       ),
-                      
                     ],
                   ),
                   trailing: Container(
@@ -97,14 +97,16 @@ class _CustomExpantiontileRedemptionState extends State<CustomExpantiontileRedem
                     child: Text(
                       'Open',
                       style: TextStyle(
-                          color: Colors.green, fontWeight: FontWeight.bold),
+                          color: Colors.green,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   children: [
                     ListTile(
                       title: Text(
                         "Products",
-                        style: Theme.of(context).textTheme.labelLarge,
+                        style: Theme.of(context).textTheme.labelMedium,
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,24 +137,26 @@ class _CustomExpantiontileRedemptionState extends State<CustomExpantiontileRedem
                     ),
                     ListTile(
                       title: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Nama Pasien',
-                              style: Theme.of(context).textTheme.labelLarge),
+                              style: Theme.of(context).textTheme.labelMedium),
                           Text('Usia',
-                              style: Theme.of(context).textTheme.labelLarge),
+                              style: Theme.of(context).textTheme.labelMedium),
                         ],
                       ),
                       trailing: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
                             'Subagyo',
-                            style: Theme.of(context).textTheme.labelLarge,
+                            style: Theme.of(context).textTheme.labelMedium,
                           ),
                           Text(
                             '24',
-                            style: Theme.of(context).textTheme.labelLarge,
+                            style: Theme.of(context).textTheme.labelMedium,
                           ),
                         ],
                       ),
@@ -160,11 +164,11 @@ class _CustomExpantiontileRedemptionState extends State<CustomExpantiontileRedem
                     ListTile(
                       title: Text(
                         "Doctor",
-                        style: Theme.of(context).textTheme.labelLarge,
+                        style: Theme.of(context).textTheme.labelMedium,
                       ),
                       trailing: Text(
                         "Dr. Susilo",
-                        style: Theme.of(context).textTheme.labelLarge,
+                        style: Theme.of(context).textTheme.labelMedium,
                       ),
                     ),
                   ],
@@ -185,13 +189,13 @@ class _CustomExpantiontileRedemptionState extends State<CustomExpantiontileRedem
                     title: Text('Price',
                         style: TextStyle(
                             color: Colors.teal.shade800,
-                            fontSize: 16,
+                            fontSize: 13,
                             fontWeight: FontWeight.bold)),
                     trailing: Text(
                       "Rp.15000",
                       style: TextStyle(
                           color: Colors.teal.shade800,
-                          fontSize: 16,
+                          fontSize: 13,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -218,12 +222,12 @@ class _CustomExpantiontileRedemptionState extends State<CustomExpantiontileRedem
                   },
                   child: CircleAvatar(
                     backgroundColor: Colors.teal,
-                    radius: 15,
+                    radius: 12,
                     child: Center(
                         child: Icon(
                       Icons.expand_more,
                       color: Colors.white,
-                      size: 25,
+                      size: 22,
                     )),
                   ),
                 ),
