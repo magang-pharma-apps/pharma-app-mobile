@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:medpia_mobile/app/commons/ui/widgets/custom_confirm_modal.dart';
+import 'package:medpia_mobile/app/modules/auth/views/auth_view.dart';
 
 class UserView extends StatefulWidget {
   const UserView({super.key});
@@ -19,15 +23,35 @@ class _UserViewState extends State<UserView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20.0),
+      appBar: AppBar(
+        leading: null,
+        title: ListTile(
+            contentPadding: EdgeInsets.zero,
+            trailing: IconButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                      constraints:
+                          BoxConstraints(minHeight: 250, maxHeight: 250),
+                      context: context,
+                      builder: (context) {
+                        return const CustomConfirmModal();
+                      });
+                },
+                icon: Icon(
+                  HugeIcons.strokeRoundedLogout03,
+                  color: Colors.teal,
+                ))),
+      ),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(color: Colors.transparent),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CircleAvatar(
@@ -35,7 +59,7 @@ class _UserViewState extends State<UserView> {
                     backgroundImage: AssetImage("assets/images/user.png"),
                   ),
                   Text(
-                    "John Doe",
+                    "${GetStorage().read('username').toString().split(' ').map((word) => word[0].toUpperCase() + word.substring(1)).join(' ')}",
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                   Text(

@@ -29,9 +29,6 @@ class _NotePrescriptionState extends State<NotePrescription> {
               labelStyle: TextStyle(fontSize: 9),
               filled: false,
               fillColor: Colors.white,
-              disabledBorder: InputBorder.none,
-              enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey.shade300)),
               suffixIcon: IconButton(
                 icon: Icon(
                   HugeIcons.strokeRoundedCancelCircle,

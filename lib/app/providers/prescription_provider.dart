@@ -24,4 +24,10 @@ class PrescriptionProvider extends ApiProvider {
     final response = await post('prescriptions', body);
     return response;
   }
+
+  Future<http.Response> createRedemption(Map<String, dynamic> body) async {
+    final response = await post('prescription-redemptions', body);
+    
+    return response;
+  }
 }

@@ -23,6 +23,8 @@ class AuthProvider extends ApiProvider {
         storage.write('accessToken', token);
         storage.write('isLogin', true);
         storage.write('userId', json.decode(response.body)['data']['id']);
+        storage.write(
+            'username', json.decode(response.body)['data']['username']);
       } else {
         storage.write('isLogin', false);
       }

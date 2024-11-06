@@ -32,20 +32,18 @@ class _CategoryWidgetState extends State<CategoryWidget> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 5),
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300, width: 0.5)),
       child: ListTile(
         onTap: () {},
         shape: Border.all(color: Colors.grey.shade300, width: 1),
         leading: Image.network(
           widget.categoryModel!.categoryImageUrl!,
-          width: 100,
+          width: 70,
         ),
         title: Row(
           children: [
             Text(widget.categoryModel!.name!),
             SizedBox(
-              width: 10,
+              width: 5,
             ),
             Text(
               "(10)",

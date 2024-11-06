@@ -97,11 +97,16 @@ class _CustomExpansiontileAcceptanceState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Prescription Code: #${widget.prescriptionModel!.prescriptionCode!}",
+                      "Prescription Number: #${widget.prescriptionModel!.prescriptionCode!}",
                       style: Theme.of(context).textTheme.labelMedium!.copyWith(
                           color: Colors.teal.shade800,
                           fontWeight: FontWeight.bold),
                     ),
+                    Text("${widget.prescriptionModel!.customer!.name!}",
+                        style:
+                            Theme.of(context).textTheme.labelMedium!.copyWith(
+                                  color: Colors.purple.shade800,
+                                )),
                   ],
                 ),
                 trailing: Container(
@@ -109,10 +114,14 @@ class _CustomExpansiontileAcceptanceState
                   padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.amber.shade50),
+                      color: widget.prescriptionModel!.isRedeem! == false
+                          ? Colors.amber.shade50
+                          : Colors.red.shade50),
                   child: Text(
                     getPrescriptionStatus(widget.prescriptionModel!.isRedeem!),
-                    style: TextStyle(color: Colors.orange),
+                    style: widget.prescriptionModel!.isRedeem! == false
+                        ? TextStyle(color: Colors.orange)
+                        : TextStyle(color: Colors.red.shade400),
                   ),
                 ),
                 children: [

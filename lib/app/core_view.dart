@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:medpia_mobile/app/modules/cart/views/payment_success_view.dart';
 import 'package:medpia_mobile/app/modules/home/views/home_view.dart';
 import 'package:medpia_mobile/app/modules/prescription/views/prescription_screen.dart';
-import 'package:medpia_mobile/app/modules/profile/views/user_view.dart';
+import 'package:medpia_mobile/app/modules/profile/views/profile_view.dart';
 
 class CoreView extends StatefulWidget {
   const CoreView({super.key});
@@ -32,6 +33,8 @@ class _CoreViewState extends State<CoreView> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        selectedFontSize: 12,
+        unselectedFontSize: 10,
         currentIndex: currentPage,
         onTap: (index) {
           setState(() {

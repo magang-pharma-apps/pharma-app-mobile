@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/commons/ui/theme.dart';
 import 'package:medpia_mobile/app/modules/cart/views/cart_screen.dart';
@@ -37,11 +38,11 @@ class CustomHomeAppBar extends StatelessWidget {
                   InkWell(
                       onTap: () {},
                       child: Text(
-                        "John Doe",
+                        "${GetStorage().read('username').toString().split(' ').map((word) => word[0].toUpperCase() + word.substring(1)).join(' ')}",
                         style: Theme.of(context)
                             .textTheme
                             .labelSmall!
-                            .copyWith(color: ThemeManager.tealColor),
+                            .copyWith(color: Colors.teal.shade500),
                       ))
                 ],
               ),

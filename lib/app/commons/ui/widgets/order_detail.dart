@@ -22,7 +22,7 @@ class OrderDetail extends GetView<CartController> {
               textHeightBehavior: TextHeightBehavior(
                   applyHeightToLastDescent: true,
                   applyHeightToFirstAscent: true),
-              style: Theme.of(context).textTheme.displaySmall),
+              style: Theme.of(context).textTheme.labelMedium),
         ),
         SizedBox(
           height: 20,
@@ -37,7 +37,7 @@ class OrderDetail extends GetView<CartController> {
                       applyHeightToLastDescent: true,
                       applyHeightToFirstAscent: true),
                 ),
-                Text('Rp ${controller.cart.value.subtotal}',
+                Text('Rp ${controller.cart.value.subtotal!.toInt()}',
                     style: Theme.of(context).textTheme.bodyMedium),
               ],
             );
@@ -64,32 +64,30 @@ class OrderDetail extends GetView<CartController> {
         ),
         SizedBox(
           height: 20,
-          child: Obx(
-            () {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Total",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(fontWeight: FontWeight.bold),
-                    textHeightBehavior: TextHeightBehavior(
-                        applyHeightToLastDescent: true,
-                        applyHeightToFirstAscent: true),
-                  ),
-                  Text(
-                    "Rp ${controller.cart.value.grandtotal}",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  )
-                ],
-              );
-            }
-          ),
+          child: Obx(() {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Total",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(fontWeight: FontWeight.bold),
+                  textHeightBehavior: TextHeightBehavior(
+                      applyHeightToLastDescent: true,
+                      applyHeightToFirstAscent: true),
+                ),
+                Text(
+                  "Rp ${controller.cart.value.grandtotal!.toInt()}",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(fontWeight: FontWeight.bold),
+                )
+              ],
+            );
+          }),
         ),
       ],
     );

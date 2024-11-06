@@ -13,6 +13,7 @@ class PrescriptionModel {
   CustomerModel? customer;
   bool? isRedeem;
   CartModel? cart;
+  bool? isPaid;
 
   PrescriptionModel(
       {this.id,
@@ -22,8 +23,8 @@ class PrescriptionModel {
       this.doctor,
       this.customer,
       this.isRedeem,
-      this.cart 
-      });
+      this.cart,
+      this.isPaid});
 
   factory PrescriptionModel.fromJson(Map<String, dynamic> json) {
     return PrescriptionModel(
@@ -38,5 +39,15 @@ class PrescriptionModel {
             ? CustomerModel.fromJson(json['customer'])
             : null,
         isRedeem: json['isRedeem']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'prescriptionId': id ,
+      'isRedeem': true,
+      'price': 10000,
+      'isPaid': true,
+      'transaction': cart!.toJson()
+    };
   }
 }

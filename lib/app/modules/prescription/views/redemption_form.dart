@@ -10,6 +10,7 @@ import 'package:medpia_mobile/app/commons/ui/widgets/order_detail.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/redemption_payment_detail_widget.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/search_widget.dart';
 import 'package:medpia_mobile/app/modules/prescription/controllers/redemption_controller.dart';
+import 'package:medpia_mobile/app/modules/prescription/views/prescription_screen.dart';
 
 String getPrescriptionStatus(bool status) {
   switch (status) {
@@ -66,15 +67,15 @@ class RedemptionForm extends GetView<RedemptionController> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    controller.createTransaction();
+                    controller.createRedemption();
                   },
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.all(15)),
                   child: Text(
-                    "Purchase Rp. ${controller.prescription.value.cart!.grandtotal}",
+                    "Purchase Rp. ${controller.prescription.value.cart!.grandtotal!.toInt()}",
                     style: Theme.of(context)
                         .textTheme
-                        .labelMedium!
+                        .labelSmall!
                         .copyWith(color: Colors.white),
                   ),
                 ),
@@ -202,37 +203,119 @@ class RedemptionForm extends GetView<RedemptionController> {
           ListTile(
               splashColor: Colors.grey.shade200,
               dense: true,
+              visualDensity: VisualDensity(horizontal: -4, vertical: -4),
               contentPadding: EdgeInsets.only(left: 10, right: 10),
               title: Text("Medicine Items",
                   style: Theme.of(context).textTheme.labelMedium)),
-          SizedBox(
-            height: Get.height * 0.5,
-            child: Obx(() {
-              return controller.prescription.value.cart!.items!.isEmpty
-                  ? const Center(child: Text("No Medicine Added"))
-                  : ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      // shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemCount:
-                          controller.prescription.value.cart!.items!.length,
-                      itemBuilder: (context, index) {
-                        final product =
-                            controller.prescription.value.cart!.items![index];
-                        return CartItem(
-                          cartItemModel: product,
-                          onQtyChange: () {
-                            controller.calculateSubtotal();
-                            controller.calculateTax();
-                            controller.calculateGrandtotal();
-                          },
-                        );
-                      },
+          Obx(() {
+            return controller.prescription.value.cart!.items!.isEmpty
+                ? const Center(
+                    child: Image(
+                    image: AssetImage('assets/images/obat.png'),
+                  ))
+                : ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemCount:
+                        controller.prescription.value.cart!.items!.length,
+                    itemBuilder: (context, index) {
+                      final product =
+                          controller.prescription.value.cart!.items![index];
+                      return CartItem(
+                        cartItemModel: product,
+                        onRemove: () {
+                          controller.removeItemFromCart(product);
+                        },
+                        onQtyChange: () {
+                          controller.calculateSubtotal();
+                          controller.calculateTax();
+                          controller.calculateGrandtotal();
+                        },
+                      );
+                    },
+                  );
+          }),
+          ListTile(
+            dense: true,
+            contentPadding: EdgeInsets.only(left: 10, right: 10),
+            onTap: () {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                      height: 170,
+                      color: Colors.white,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListTile(
+                            title: Text(
+                              "Choose Payment Method",
+                              style: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.bold),
+                            ),
+                            trailing: IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: Icon(
+                                    HugeIcons.strokeRoundedMultiplicationSign)),
+                          ),
+                          ListTile(
+                            onTap: () {
+                              controller.selectPaymentMethod("Cash");
+
+                              // setState(() {
+                              //   // selectPayment("Cash");
+                              Navigator.pop(context);
+                              // });
+                            },
+                            leading: Icon(HugeIcons.strokeRoundedWallet01),
+                            title: Text("Cash"),
+                          ),
+                          ListTile(
+                            onTap: () {
+                              controller.selectPaymentMethod("Debit");
+                              // setState(() {
+                              //   selectPayment("Debit");
+                              Navigator.pop(context);
+                              // });
+                            },
+                            leading: Icon(HugeIcons.strokeRoundedCreditCard),
+                            title: Text("Debit"),
+                          ),
+                        ],
+                      ),
                     );
-            }),
+                  });
+            },
+            leading: Icon(HugeIcons.strokeRoundedPayment01),
+            title: Text("Payment Method",
+                style: Theme.of(context).textTheme.bodyMedium!),
+            trailing: SizedBox(
+              width: 100,
+              child: Obx(() {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      controller.prescription.value.cart!.paymentMethod!,
+                      // '${_selectedPayment}',
+                      // style: TextStyle(fontSize: 10, color: Colors.teal),
+                    ),
+                    Icon(
+                      HugeIcons.strokeRoundedArrowRight01,
+                      color: Colors.black,
+                    ),
+                  ],
+                );
+              }),
+            ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(left: 10, right: 10),
             child: RedemptionPaymentDetailWidget(controller: controller),
           )
         ],

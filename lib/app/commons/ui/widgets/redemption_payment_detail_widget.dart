@@ -37,7 +37,8 @@ class RedemptionPaymentDetailWidget extends StatelessWidget {
                       applyHeightToLastDescent: true,
                       applyHeightToFirstAscent: true),
                 ),
-                Text('Rp ${controller.prescription.value.cart!.subtotal}',
+                Text(
+                    'Rp ${controller.prescription.value.cart!.subtotal!.toInt()}',
                     style: Theme.of(context).textTheme.bodyMedium),
               ],
             );
@@ -79,7 +80,7 @@ class RedemptionPaymentDetailWidget extends StatelessWidget {
                       applyHeightToFirstAscent: true),
                 ),
                 Text(
-                  "Rp ${controller.prescription.value.cart!.grandtotal}",
+                  "Rp ${controller.prescription.value.cart!.grandtotal!.toInt()}",
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium!

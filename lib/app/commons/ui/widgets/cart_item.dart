@@ -21,7 +21,8 @@ Image getImagebyDrugClass(String drugClass) {
 class CartItem extends StatefulWidget {
   VoidCallback? onQtyChange;
   CartItemModel? cartItemModel;
-  CartItem({super.key, this.cartItemModel, this.onQtyChange});
+  VoidCallback? onRemove;
+  CartItem({super.key, this.cartItemModel, this.onQtyChange, this.onRemove});
 
   @override
   State<CartItem> createState() => _CartItemState();
@@ -55,7 +56,7 @@ class _CartItemState extends State<CartItem> {
         decoration: BoxDecoration(
             border: Border.all(color: Colors.grey.shade100),
             borderRadius: BorderRadius.circular(10)),
-        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        margin: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
         child: ListTile(
           dense: true,
           visualDensity: VisualDensity(horizontal: -4, vertical: -4),
@@ -137,7 +138,7 @@ class _CartItemState extends State<CartItem> {
                     )),
                 IconButton(
                   onPressed: () {
-                    cartController.removeItemFromCart(widget.cartItemModel!);
+                    widget.onRemove!();
                   },
                   icon: Icon(
                     HugeIcons.strokeRoundedDelete01,

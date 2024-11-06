@@ -4,6 +4,7 @@ import 'package:get/state_manager.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_snackbar.dart';
 import 'package:medpia_mobile/app/models/cart_item_model.dart';
 import 'package:medpia_mobile/app/models/cart_model.dart';
+import 'package:medpia_mobile/app/modules/cart/views/payment_success_view.dart';
 import 'package:medpia_mobile/app/repositories/transaction_repository.dart';
 
 class CartController extends GetxController {
@@ -81,10 +82,7 @@ class CartController extends GetxController {
       final isCreated =
           await transactionRespository.createTransaction(cart.value.toJson());
       if (isCreated) {
-        CustomSnackbar.showSnackbar(Get.context!,
-            message: "Successfully created transaction",
-            title: "Created!",
-            contentType: ContentType.success);
+        Get.dialog(PaymentSuccessView(data: cart.value.toJson()));
       } else {
         CustomSnackbar.showSnackbar(Get.context!,
             message: "Failed to created transaction",

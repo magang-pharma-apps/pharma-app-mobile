@@ -1,3 +1,4 @@
+import 'package:get_storage/get_storage.dart';
 import 'package:medpia_mobile/app/models/cart_item_model.dart';
 
 class CartModel {
@@ -20,7 +21,7 @@ class CartModel {
   Map<String, dynamic> toJson() {
     return {
       'items': items!.map((item) => item.toJson()).toList(),
-      'userId': "95d1e1f3-9adc-46c0-8638-c018369b1f10",
+      'userId': GetStorage().read('userId'),
       'tax': tax,
       'subTotal': subtotal,
       'grandTotal': grandtotal,

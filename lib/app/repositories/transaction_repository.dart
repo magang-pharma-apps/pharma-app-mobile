@@ -7,8 +7,8 @@ class TransactionRepository {
   Future<bool> createTransaction(Map<String, dynamic> body) async {
     try {
       final response = await transactionProvider.createTransaction(body);
-      print(response.body);
-      print(response.statusCode);
+      // print(response.body);
+      // print(response.statusCode);
       if (response.statusCode == 201) {
         return true;
       } else {
