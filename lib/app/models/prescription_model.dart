@@ -43,11 +43,11 @@ class PrescriptionModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'prescriptionId': id ,
+      'prescriptionId': id,
       'isRedeem': true,
       'price': 10000,
       'isPaid': true,
-      'transaction': cart!.toJson()
+      'transaction': cart!.toJson(transactionType: 'Prescription')
     };
   }
 }

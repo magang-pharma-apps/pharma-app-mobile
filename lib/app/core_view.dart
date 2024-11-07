@@ -27,7 +27,7 @@ class _CoreViewState extends State<CoreView> {
             color: Colors.green,
           ),
           Container(
-            color: Colors.blue,
+            
           ),
           UserView(),
         ],

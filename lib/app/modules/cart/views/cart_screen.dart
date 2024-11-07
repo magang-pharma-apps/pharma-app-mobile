@@ -32,57 +32,59 @@ class CartScreen extends GetView<CartController> {
         ),
       ),
       persistentFooterButtons: [
-        controller.cart.value.items!.isEmpty
-            ? Container()
-            : Container(
-                padding: EdgeInsets.all(5),
-                child: Obx(() {
-                  return Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("You've Added",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .copyWith(color: Colors.grey.shade800)),
-                            Row(
-                              children: [
-                                Text(
-                                    controller.cart.value.items!.length
-                                        .toString(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelMedium!
-                                        .copyWith(color: Colors.green)),
-                                Text(" Items",
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall)
-                              ],
-                            ),
-                          ],
-                        ),
+        Obx(() {
+          return Visibility(
+            visible: controller.cart.value.items!.isNotEmpty,
+            child: Container(
+              padding: EdgeInsets.all(5),
+              child: Obx(() {
+                return Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("You've Added",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(color: Colors.grey.shade800)),
+                          Row(
+                            children: [
+                              Text(
+                                  controller.cart.value.items!.length
+                                      .toString(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium!
+                                      .copyWith(color: Colors.green)),
+                              Text(" Items",
+                                  style: Theme.of(context).textTheme.labelSmall)
+                            ],
+                          ),
+                        ],
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          controller.createTransaction();
-                        },
-                        child: Text(
-                          "Purchase Rp. ${controller.cart.value.grandtotal!.toInt()}",
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall!
-                              .copyWith(color: Colors.white),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.all(15)),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        controller.createTransaction();
+                      },
+                      child: Text(
+                        "Purchase Rp. ${controller.cart.value.grandtotal!.toInt()}",
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelSmall!
+                            .copyWith(color: Colors.white),
                       ),
-                    ],
-                  );
-                }),
-              )
+                      style:
+                          ElevatedButton.styleFrom(padding: EdgeInsets.all(15)),
+                    ),
+                  ],
+                );
+              }),
+            ),
+          );
+        })
       ],
       body: Container(
         height: Get.height,
@@ -136,108 +138,116 @@ class CartScreen extends GetView<CartController> {
                             },
                           );
                   }),
-                  controller.cart.value.items!.isEmpty
-                      ? Container()
-                      : ListTile(
-                          onTap: () {
-                            showModalBottomSheet(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Container(
-                                    height: 170,
-                                    color: Colors.white,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        ListTile(
-                                          title: Text(
-                                            "Choose Payment Method",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          trailing: IconButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              icon: Icon(HugeIcons
-                                                  .strokeRoundedMultiplicationSign)),
+                  Obx(() {
+                    return Visibility(
+                      visible: controller.cart.value.items!.isNotEmpty,
+                      child: ListTile(
+                        onTap: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  height: 170,
+                                  color: Colors.white,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ListTile(
+                                        title: Text(
+                                          "Choose Payment Method",
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                        ListTile(
-                                          onTap: () {
-                                            controller
-                                                .selectPaymentMethod("Cash");
+                                        trailing: IconButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            icon: Icon(HugeIcons
+                                                .strokeRoundedMultiplicationSign)),
+                                      ),
+                                      ListTile(
+                                        onTap: () {
+                                          controller
+                                              .selectPaymentMethod("Cash");
 
-                                            // setState(() {
-                                            //   // selectPayment("Cash");
-                                            Navigator.pop(context);
-                                            // });
-                                          },
-                                          leading: Icon(
-                                              HugeIcons.strokeRoundedWallet01),
-                                          title: Text("Cash"),
-                                        ),
-                                        ListTile(
-                                          onTap: () {
-                                            controller
-                                                .selectPaymentMethod("Debit");
-                                            // setState(() {
-                                            //   selectPayment("Debit");
-                                            Navigator.pop(context);
-                                            // });
-                                          },
-                                          leading: Icon(HugeIcons
-                                              .strokeRoundedCreditCard),
-                                          title: Text("Debit"),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                });
-                          },
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                          leading: Icon(HugeIcons.strokeRoundedPayment01),
-                          title: Text("Payment Method",
-                              style: Theme.of(context).textTheme.labelSmall!),
-                          trailing: SizedBox(
-                            width: 100,
-                            child: Obx(() {
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    controller.cart.value.paymentMethod!,
-                                    // '${_selectedPayment}',
-                                    // style: TextStyle(fontSize: 10, color: Colors.teal),
+                                          // setState(() {
+                                          //   // selectPayment("Cash");
+                                          Navigator.pop(context);
+                                          // });
+                                        },
+                                        leading: Icon(
+                                            HugeIcons.strokeRoundedWallet01),
+                                        title: Text("Cash"),
+                                      ),
+                                      ListTile(
+                                        onTap: () {
+                                          controller
+                                              .selectPaymentMethod("Debit");
+                                          // setState(() {
+                                          //   selectPayment("Debit");
+                                          Navigator.pop(context);
+                                          // });
+                                        },
+                                        leading: Icon(
+                                            HugeIcons.strokeRoundedCreditCard),
+                                        title: Text("Debit"),
+                                      ),
+                                    ],
                                   ),
-                                  Icon(
-                                    HugeIcons.strokeRoundedArrowRight01,
-                                    color: Colors.black,
-                                  ),
-                                ],
-                              );
-                            }),
-                          ),
-                        ),
-                  controller.cart.value.items!.isEmpty
-                      ? Container()
-                      : Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: NoteOrderWidget(onChanged: (value) {
-                            controller.cart.value.note = value;
+                                );
+                              });
+                        },
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                        leading: Icon(HugeIcons.strokeRoundedPayment01),
+                        title: Text("Payment Method",
+                            style: Theme.of(context).textTheme.labelSmall!),
+                        trailing: SizedBox(
+                          width: 100,
+                          child: Obx(() {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  controller.cart.value.paymentMethod!,
+                                  // '${_selectedPayment}',
+                                  // style: TextStyle(fontSize: 10, color: Colors.teal),
+                                ),
+                                Icon(
+                                  HugeIcons.strokeRoundedArrowRight01,
+                                  color: Colors.black,
+                                ),
+                              ],
+                            );
                           }),
                         ),
+                      ),
+                    );
+                  }),
+                  Obx(() {
+                    return Visibility(
+                      visible: controller.cart.value.items!.isNotEmpty,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: NoteOrderWidget(onChanged: (value) {
+                          controller.cart.value.note = value;
+                        }),
+                      ),
+                    );
+                  }),
                 ]),
             const SizedBox(height: 10),
-            controller.cart.value.items!.isEmpty
-                ? Container()
-                : Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: OrderDetail(),
-                  ),
+            Obx(() {
+              return Visibility(
+                visible: controller.cart.value.items!.isNotEmpty,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: OrderDetail(),
+                ),
+              );
+            }),
           ],
         ),
       ),

@@ -74,6 +74,9 @@ class CartController extends GetxController {
     calculateSubtotal();
     calculateTax();
     calculateGrandtotal();
+    if (cart.value.items!.length == 0) {
+      cart.value.items = [];
+    }
     cart.refresh();
   }
 

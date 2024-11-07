@@ -74,6 +74,7 @@ class RedemptionController extends GetxController {
             message: "Prescription successfully redeemed",
             title: "Success!",
             contentType: ContentType.success);
+        Get.back(result: true);
       } else {
         CustomSnackbar.showSnackbar(Get.context!,
             message: "Failed to created transaction",

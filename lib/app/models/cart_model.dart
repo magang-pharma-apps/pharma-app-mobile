@@ -18,15 +18,15 @@ class CartModel {
       this.note}); //karena dikasih kurawal maka ini disebut named parameter
   // Bisa diambil dengan tidak berurutan namun harus menyebutkan nama parameternya
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson({String transactionType = 'Generic Drugs'}) {
     return {
       'items': items!.map((item) => item.toJson()).toList(),
       'userId': GetStorage().read('userId'),
       'tax': tax,
       'subTotal': subtotal,
       'grandTotal': grandtotal,
-      'transactionType': 'purchase',
-      'categoryType': 'transaction',
+      'transactionType': transactionType, 
+      'categoryType': 'Out Stock', // VS In Stock (untuk enum di be )
       'transactionDate': DateTime.now().toIso8601String(),
       'paymentMethod': paymentMethod,
       'note': note,

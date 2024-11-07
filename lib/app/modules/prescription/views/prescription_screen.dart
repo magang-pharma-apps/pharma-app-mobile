@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:hugeicons/hugeicons.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/custom_app_bar.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/custom_expansiontile_acceptance.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/custom_line_widget.dart';
 import 'package:medpia_mobile/app/models/prescription_model.dart';
 import 'package:medpia_mobile/app/modules/prescription/views/acceptance_tab_view.dart';
 import 'package:medpia_mobile/app/modules/prescription/views/prescription_form.dart';
@@ -17,53 +12,64 @@ class PrescriptionScreen extends StatefulWidget {
   State<PrescriptionScreen> createState() => _PrescriptionScreenState();
 }
 
-class _PrescriptionScreenState extends State<PrescriptionScreen> {
+class _PrescriptionScreenState extends State<PrescriptionScreen>
+    with SingleTickerProviderStateMixin {
+  late final tabBarController;
   PrescriptionRepository prescriptionRepository = PrescriptionRepository();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    tabBarController = TabController(length: 2, vsync: this);
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          floatingActionButton: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              InkWell(
-                onTap: () {
-                  navigateToCreatePage();
-                },
-                child: CircleAvatar(
-                  backgroundColor: Colors.teal.shade900,
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  ),
-                  radius: 20,
+      home: Scaffold(
+        floatingActionButton: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            InkWell(
+              onTap: () {
+                navigateToCreatePage();
+              },
+              child: CircleAvatar(
+                backgroundColor: Colors.teal.shade900,
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
                 ),
+                radius: 20,
               ),
-            ],
-          ),
-          appBar: AppBar(
-            centerTitle: true,
-            titleTextStyle: TextStyle(fontSize: 16, color: Colors.black),
-            title: Text(
-              "Prescriptions",
             ),
-            bottom: const TabBar(labelStyle: TextStyle(fontSize: 12), tabs: [
-              Tab(
-                text: "Prescription Acceptance",
-              ),
-              Tab(
-                text: "Prescription Redemption",
-              )
-            ]),
-          ),
-          body:
-              TabBarView(children: [AcceptanceTabView(), RedemptionTabView()]),
+          ],
         ),
+        appBar: AppBar(
+          centerTitle: true,
+          titleTextStyle: TextStyle(fontSize: 16, color: Colors.black),
+          title: Text(
+            "Prescriptions",
+          ),
+          bottom: TabBar(
+              controller: tabBarController,
+              labelStyle: TextStyle(fontSize: 12),
+              tabs: [
+                Tab(
+                  text: "Prescription Acceptance",
+                ),
+                Tab(
+                  text: "Prescription Redemption",
+                )
+              ]),
+        ),
+        body: TabBarView(controller: tabBarController, children: [
+          AcceptanceTabView(tabBarContoller: tabBarController),
+          RedemptionTabView()
+        ]),
       ),
     );
   }

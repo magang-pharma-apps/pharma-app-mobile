@@ -17,8 +17,10 @@ String getPrescriptionStatus(bool status) {
 }
 
 class CustomExpansiontileAcceptance extends StatefulWidget {
+  VoidCallback? onNavigateToRedeemPage;
   PrescriptionModel? prescriptionModel;
-  CustomExpansiontileAcceptance({super.key, this.prescriptionModel});
+  CustomExpansiontileAcceptance(
+      {super.key, this.prescriptionModel, this.onNavigateToRedeemPage});
 
   @override
   State<CustomExpansiontileAcceptance> createState() =>
@@ -206,8 +208,7 @@ class _CustomExpansiontileAcceptanceState
                       onPressed: widget.prescriptionModel!.isRedeem! == true
                           ? null
                           : () {
-                              Get.to(const RedemptionForm(),
-                                  arguments: widget.prescriptionModel);
+                              widget.onNavigateToRedeemPage!();
                             },
                       child: Text(
                         "Redeem Prescription",
