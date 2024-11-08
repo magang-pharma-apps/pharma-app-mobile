@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_snackbar.dart';
 import 'package:medpia_mobile/app/models/customer_model.dart';
 import 'package:medpia_mobile/app/models/doctor_model.dart';
+import 'package:medpia_mobile/app/modules/prescription/views/redemption_form.dart';
 import 'package:medpia_mobile/app/repositories/customer_repository.dart';
 import 'package:medpia_mobile/app/repositories/doctor_repository.dart';
 import 'package:medpia_mobile/app/repositories/prescription_repository.dart';
@@ -206,25 +207,70 @@ class _PrescriptionFormState extends State<PrescriptionForm> {
     });
   }
 
+  // void createPrescription() async {
+  //   await prescriptionRepository.createPrescription({
+  //     'prescriptionCode': prescriptionCode,
+  //     'prescriptions': prescription,
+  //     'prescriptionDate': DateFormat('yyyy-MM-dd').format(DateTime.now()),
+  //     'doctorId': selectedDoctor!.id,
+  //     'customerId': selectedCustomer!.id,
+  //     'isRedeem': isRedeem,
+  //   }).then((value) {
+  //     setState(() {
+  //       Navigator.pop(context, true);
+  //     });
+  //     CustomSnackbar.showSnackbar(context,
+  //         title: 'Success!',
+  //         message: 'Prescription created successfully',
+  //         contentType: ContentType.success);
+  //   }).catchError((e) {
+  //     CustomSnackbar.showSnackbar(context,
+  //         title: 'Failed!',
+  //         message: 'Failed to create prescription',
+  //         contentType: ContentType.failure);
+  //   });
+  // }
+
   void createPrescription() async {
-    await prescriptionRepository.createPrescription({
-      'prescriptionCode': prescriptionCode,
-      'prescriptions': prescription,
-      'prescriptionDate': DateFormat('yyyy-MM-dd').format(DateTime.now()),
-      'doctorId': selectedDoctor!.id,
-      'customerId': selectedCustomer!.id,
-      'isRedeem': isRedeem,
-    }).then((value) {
-      Navigator.pop(context, true);
-      CustomSnackbar.showSnackbar(context,
-          title: 'Success!',
-          message: 'Prescription created successfully',
-          contentType: ContentType.success);
-    }).catchError((e) {
-      CustomSnackbar.showSnackbar(context,
-          title: 'Failed!',
-          message: 'Failed to create prescription',
-          contentType: ContentType.failure);
-    });
+    try {
+      await prescriptionRepository.createPrescription({
+        'prescriptionCode': prescriptionCode,
+        'prescriptions': prescription,
+        'prescriptionDate': DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        'doctorId': selectedDoctor!.id,
+        'customerId': selectedCustomer!.id,
+        'isRedeem': isRedeem,
+      });
+      print('Value IsRedeem $isRedeem');
+
+      if (isRedeem) {
+        // If isRedeem is true, navigate to RedemptionForm and pass the result
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RedemptionForm(),
+          ),
+        );
+      } else {
+        // Otherwise, pop back and return true
+        Navigator.pop(context, true);
+      }
+
+      // Show success snackbar
+      CustomSnackbar.showSnackbar(
+        context,
+        title: 'Success!',
+        message: 'Prescription created successfully',
+        contentType: ContentType.success,
+      );
+    } catch (e) {
+      // Show failure snackbar if there's an error
+      CustomSnackbar.showSnackbar(
+        context,
+        title: 'Failed!',
+        message: 'Failed to create prescription',
+        contentType: ContentType.failure,
+      );
+    }
   }
 }

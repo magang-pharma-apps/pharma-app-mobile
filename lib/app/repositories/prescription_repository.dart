@@ -19,7 +19,8 @@ class PrescriptionRepository {
       final jsonResponse = json.decode(response.body);
       final data = jsonResponse['data'];
       return data
-          .map<PrescriptionModel>((json) => PrescriptionModel.fromJson(json))
+          .map<PrescriptionModel>(
+              (json) => PrescriptionModel.prescriptionFromJson(json))
           .toList();
     } else {
       throw Exception('Failed to load prescription ${response.statusCode}');
@@ -29,8 +30,8 @@ class PrescriptionRepository {
   Future<void> createPrescription(Map<String, dynamic> body) async {
     try {
       final response = await prescriptionProvider.createPrescriptions((body));
-      // print(response.body);
-      // print('status ${response.statusCode}');
+      print(response.body);
+      print('status ${response.statusCode}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
       } else {
@@ -43,6 +44,23 @@ class PrescriptionRepository {
     }
   }
 
+  Future<List<PrescriptionModel>> getRedemptions() async {
+    final response = await prescriptionProvider.getRedemptions();
+    // print(response.body);
+    // print('status ${response.statusCode}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final jsonResponse = json.decode(response.body);
+      final data = jsonResponse['data'];
+      return data
+          .map<PrescriptionModel>(
+              (json) => PrescriptionModel.redemptionFromJson(json))
+          .toList();
+    } else {
+      throw Exception('Failed to load redemptions ${response.statusCode}');
+    }
+  }
+
   Future<bool> createRedemption(Map<String, dynamic> body) async {
     try {
       final response = await prescriptionProvider.createRedemption(body);
@@ -51,7 +69,6 @@ class PrescriptionRepository {
 
       if (response.statusCode == 201) {
         return true;
-      
       } else {
         return false;
       }
@@ -59,8 +76,4 @@ class PrescriptionRepository {
       throw Exception('Failed to create redemption: $e');
     }
   }
-
-  postPrescriptionById() {}
-
-  getPrescription() {}
 }

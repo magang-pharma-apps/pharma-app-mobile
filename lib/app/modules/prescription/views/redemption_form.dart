@@ -65,22 +65,24 @@ class RedemptionForm extends GetView<RedemptionController> {
                     ],
                   ),
                 ),
-                controller.prescription.value.cart!.items!.isEmpty
-                    ? Container()
-                    : ElevatedButton(
-                        onPressed: () {
-                          controller.createRedemption();
-                        },
-                        style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.all(15)),
-                        child: Text(
-                          "Purchase Rp. ${controller.prescription.value.cart!.grandtotal!.toInt()}",
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall!
-                              .copyWith(color: Colors.white),
-                        ),
-                      ),
+                Visibility(
+                  visible:
+                      controller.prescription.value.cart!.items!.isNotEmpty,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      controller.createRedemption();
+                    },
+                    style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(15)),
+                    child: Text(
+                      "Purchase Rp. ${controller.prescription.value.cart!.grandtotal!.toInt()}",
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelSmall!
+                          .copyWith(color: Colors.white),
+                    ),
+                  ),
+                ),
               ],
             );
           }),

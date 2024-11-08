@@ -87,7 +87,9 @@ class _PrescriptionScreenState extends State<PrescriptionScreen>
         context, MaterialPageRoute(builder: (context) => PrescriptionForm()));
 
     if (result == true) {
-      fetchPrescription();
+      setState(() {
+        fetchPrescription();
+      });
     }
   }
 }

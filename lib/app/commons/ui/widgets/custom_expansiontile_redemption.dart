@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/custom_line_widget.dart';
+import 'package:intl/intl.dart';
+import 'package:medpia_mobile/app/commons/ui/widgets/summary_text.dart';
+import 'package:medpia_mobile/app/models/cart_item_model.dart';
+import 'package:medpia_mobile/app/models/prescription_model.dart';
 
 class CustomExpantiontileRedemption extends StatefulWidget {
-  CustomExpantiontileRedemption({super.key});
+  PrescriptionModel? prescriptionModel;
+  CustomExpantiontileRedemption({super.key, this.prescriptionModel});
 
   @override
   State<CustomExpantiontileRedemption> createState() =>
@@ -34,6 +38,14 @@ class _CustomExpantiontileRedemptionState
 
   @override
   Widget build(BuildContext context) {
+    final items = widget.prescriptionModel!.cart != null
+        ? widget.prescriptionModel!.cartItems
+        : [];
+    DateTime parsedDate =
+        DateTime.parse(widget.prescriptionModel!.transactionDate!);
+    String formattedTransactionDate =
+        DateFormat('MM/dd/yyyy hh:mm a').format(parsedDate);
+
     return Stack(
         alignment: Alignment.center,
         clipBehavior: Clip.none,
@@ -68,7 +80,7 @@ class _CustomExpantiontileRedemptionState
                   tilePadding: EdgeInsets.only(left: 15),
                   childrenPadding: EdgeInsets.zero,
                   title: Text(
-                    '15 Mei 2024',
+                    formattedTransactionDate,
                     style: Theme.of(context)
                         .textTheme
                         .labelMedium!
@@ -78,7 +90,7 @@ class _CustomExpantiontileRedemptionState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Name/Recipe: #RECIPE R03I20",
+                        "Prescription Number #${widget.prescriptionModel!.prescriptionCode}",
                         style: Theme.of(context)
                             .textTheme
                             .labelMedium!
@@ -86,6 +98,11 @@ class _CustomExpantiontileRedemptionState
                                 color: Colors.teal.shade800,
                                 fontWeight: FontWeight.bold),
                       ),
+                      Text("Pt. ${widget.prescriptionModel!.patient}",
+                          style:
+                              Theme.of(context).textTheme.labelMedium!.copyWith(
+                                    color: const Color.fromARGB(255, 1, 67, 59),
+                                  )),
                     ],
                   ),
                   trailing: Container(
@@ -95,7 +112,9 @@ class _CustomExpantiontileRedemptionState
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.green.shade100),
                     child: Text(
-                      'Open',
+                      widget.prescriptionModel!.isPaid == true
+                          ? 'Closed'
+                          : 'Open',
                       style: TextStyle(
                           color: Colors.green,
                           fontSize: 12,
@@ -104,77 +123,69 @@ class _CustomExpantiontileRedemptionState
                   ),
                   children: [
                     ListTile(
-                      title: Text(
-                        "Products",
-                        style: Theme.of(context).textTheme.labelMedium,
+                      contentPadding: EdgeInsets.zero,
+                      title: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Text(
+                          "Products",
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelMedium!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "1 STRIP Amoxicilline 350 mg",
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium!
-                                .copyWith(color: Colors.grey.shade700),
-                          ),
-                          Text(
-                            "1 STRIP Paracetaml 350 mg",
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium!
-                                .copyWith(color: Colors.grey.shade700),
-                          ),
-                          Text(
-                            "1 STRIP Diabetasol 100mg",
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium!
-                                .copyWith(color: Colors.grey.shade700),
-                          ),
+                          ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: items!.length,
+                              itemBuilder: (context, index) {
+                                final item = items[index] as CartItemModel;
+
+                                return SummaryText(
+                                  leftText: item.productLabel,
+                                  rightText: item.totalPrice,
+                                );
+                              }),
                         ],
                       ),
                     ),
-                    ListTile(
-                      title: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Nama Pasien',
-                              style: Theme.of(context).textTheme.labelMedium),
-                          Text('Usia',
-                              style: Theme.of(context).textTheme.labelMedium),
-                        ],
-                      ),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            'Subagyo',
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ),
-                          Text(
-                            '24',
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ),
-                        ],
-                      ),
+                    SummaryText(
+                      leftText: 'Patient Name',
+                      rightText: widget.prescriptionModel!.patient,
+                      leftStyle: Theme.of(context)
+                          .textTheme
+                          .labelMedium!
+                          .copyWith(fontWeight: FontWeight.bold),
                     ),
-                    ListTile(
-                      title: Text(
-                        "Doctor",
-                        style: Theme.of(context).textTheme.labelMedium,
-                      ),
-                      trailing: Text(
-                        "Dr. Susilo",
-                        style: Theme.of(context).textTheme.labelMedium,
-                      ),
+                    SummaryText(
+                        leftText: 'Age',
+                        rightText: widget.prescriptionModel!.customer!.age!
+                            .toString()),
+                    SizedBox(height: 10),
+                    SummaryText(
+                      leftText: 'Doctor',
+                      rightText: widget.prescriptionModel!.doctorName,
+                      leftStyle: Theme.of(context)
+                          .textTheme
+                          .labelMedium!
+                          .copyWith(fontWeight: FontWeight.bold),
                     ),
+                    SizedBox(height: 10),
+                    SummaryText(
+                      leftText: 'Subtotal',
+                      rightText: widget.prescriptionModel!.subtotalFormatted,
+                    ),
+                    SummaryText(
+                      leftText: 'Tax (10%)',
+                      rightText: widget.prescriptionModel!.taxFormatted,
+                    ),
+                    SizedBox(height: 10)
                   ],
                 ),
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       border:
@@ -182,23 +193,18 @@ class _CustomExpantiontileRedemptionState
                       borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(10),
                           bottomRight: Radius.circular(10))),
-                  child: ListTile(
-                    visualDensity:
-                        VisualDensity(horizontal: -4.0, vertical: -4.0),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                    title: Text('Price',
-                        style: TextStyle(
-                            color: Colors.teal.shade800,
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold)),
-                    trailing: Text(
-                      "Rp.15000",
-                      style: TextStyle(
+                  child: SummaryText(
+                      leftText: "Nominal",
+                      leftStyle: TextStyle(
+                        color: Colors.teal.shade800,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      rightText: widget.prescriptionModel!.grandtotalFormatted,
+                      rightStyle: TextStyle(
                           color: Colors.teal.shade800,
                           fontSize: 13,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                          fontWeight: FontWeight.bold)),
                 )
               ],
             ),
@@ -220,7 +226,7 @@ class _CustomExpantiontileRedemptionState
                       ExpansionTileController.of(context).collapse();
                     }
                   },
-                  child: CircleAvatar(
+                  child: const CircleAvatar(
                     backgroundColor: Colors.teal,
                     radius: 12,
                     child: Center(

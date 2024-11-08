@@ -20,7 +20,7 @@ class CustomExpansiontileAcceptance extends StatefulWidget {
   VoidCallback? onNavigateToRedeemPage;
   PrescriptionModel? prescriptionModel;
   CustomExpansiontileAcceptance(
-      {super.key, this.prescriptionModel, this.onNavigateToRedeemPage});
+      {super.key, this.onNavigateToRedeemPage, this.prescriptionModel});
 
   @override
   State<CustomExpansiontileAcceptance> createState() =>
@@ -104,10 +104,10 @@ class _CustomExpansiontileAcceptanceState
                           color: Colors.teal.shade800,
                           fontWeight: FontWeight.bold),
                     ),
-                    Text("${widget.prescriptionModel!.customer!.name!}",
+                    Text("Pt. ${widget.prescriptionModel!.customer!.name!}",
                         style:
                             Theme.of(context).textTheme.labelMedium!.copyWith(
-                                  color: Colors.purple.shade800,
+                                  color: Colors.teal.shade900,
                                 )),
                   ],
                 ),

@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class ApiProvider implements BaseProvider {
   // String? baseUrl = 'http://localhost:3000'; // KOS
-  String? baseUrl = 'http://192.168.1.82:3000'; // Hifi Applimetis
+  String? baseUrl = 'http://192.168.1.76:3000'; // Hifi Applimetis
   // String? baseUrl = 'http://192.168.1.3:3000'; // KOS
 
   Map<String, String>? headers = {'Content-Type': 'application/json'};

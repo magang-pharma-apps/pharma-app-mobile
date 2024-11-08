@@ -24,7 +24,7 @@ class _AcceptanceTabViewState extends State<AcceptanceTabView> {
       children: [
         Expanded(
           child: FutureBuilder<List<PrescriptionModel>>(
-            future: fetchPrescription(),
+            future: fetchPrescriptions(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
@@ -61,21 +61,21 @@ class _AcceptanceTabViewState extends State<AcceptanceTabView> {
     );
   }
 
-  Future<List<PrescriptionModel>> fetchPrescription() async {
+  Future<List<PrescriptionModel>> fetchPrescriptions() async {
     try {
       return prescriptionRepository.getPrescriptions();
     } catch (e) {
-      throw Exception("Error load prescriotion data $e");
+      throw Exception("Error fetch prescription data $e");
     }
   }
 
   Future<void> navigateToRedeemPage(PrescriptionModel prescriptionModel) async {
     final result =
         await Get.to(const RedemptionForm(), arguments: prescriptionModel);
-    print('Nih hasilnya : ${result}');
+    // print('Nih hasilnya : ${result}');
     if (result == true) {
       setState(() {
-        fetchPrescription();
+        fetchPrescriptions();
       });
       widget.tabBarContoller!.animateTo(1);
     }

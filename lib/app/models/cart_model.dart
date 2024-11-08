@@ -8,6 +8,7 @@ class CartModel {
   int? tax;
   String? paymentMethod;
   String? note;
+  String? transactionDate;
 
   CartModel(
       {this.items,
@@ -15,18 +16,37 @@ class CartModel {
       this.grandtotal,
       this.tax,
       this.paymentMethod,
-      this.note}); //karena dikasih kurawal maka ini disebut named parameter
+      this.note,
+      this.transactionDate}); //karena dikasih kurawal maka ini disebut named parameter
   // Bisa diambil dengan tidak berurutan namun harus menyebutkan nama parameternya
 
-  Map<String, dynamic> toJson({String transactionType = 'Generic Drugs'}) {
+  factory CartModel.transactionFromJson(Map<String, dynamic> json) {
+    print(json);
+    print('SUBTOTAL : ${json['subTotal']}');
+    return CartModel(
+      items: json['items'] is List
+          ? List<CartItemModel>.from(
+              json['items'].map((x) => CartItemModel.fromJson(x)))
+          : [],
+      subtotal: json['subTotal'] != null ? json['subTotal'].toDouble() : 0.0,
+      grandtotal:
+          json['grandTotal'] != null ? json['grandTotal'].toDouble() : 0.0,
+      tax: json['tax'],
+      paymentMethod: json['paymentMethod'],
+      note: json['note'],
+      transactionDate: json['transactionDate'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson({String transactionType = 'Generic'}) {
     return {
       'items': items!.map((item) => item.toJson()).toList(),
       'userId': GetStorage().read('userId'),
       'tax': tax,
       'subTotal': subtotal,
       'grandTotal': grandtotal,
-      'transactionType': transactionType, 
-      'categoryType': 'Out Stock', // VS In Stock (untuk enum di be )
+      'transactionType': transactionType,
+      'categoryType': 'Out', // VS In Stock (untuk enum di be )
       'transactionDate': DateTime.now().toIso8601String(),
       'paymentMethod': paymentMethod,
       'note': note,

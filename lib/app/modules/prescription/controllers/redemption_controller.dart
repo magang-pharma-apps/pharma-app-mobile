@@ -69,6 +69,7 @@ class RedemptionController extends GetxController {
     try {
       final isCreated = await prescriptionRepository
           .createRedemption(prescription.value.toJson());
+          
       if (isCreated) {
         CustomSnackbar.showSnackbar(Get.context!,
             message: "Prescription successfully redeemed",

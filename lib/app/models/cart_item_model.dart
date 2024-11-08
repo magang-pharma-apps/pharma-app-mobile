@@ -1,3 +1,4 @@
+import 'package:medpia_mobile/app/commons/utils/format_rupiah.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
 
 class CartItemModel {
@@ -7,6 +8,16 @@ class CartItemModel {
 
   CartItemModel({this.product, this.quantity, this.note});
 
+  factory CartItemModel.fromJson(Map<String, dynamic> json) {
+    return CartItemModel(
+      product: json['product'] != null
+          ? ProductModel.fromJson(json['product'])
+          : null,
+      quantity: json['quantity'],
+      note: json['note'],
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'productId': product!.id,
@@ -15,4 +26,8 @@ class CartItemModel {
       // 'total_price': product!.sellingPrice! * quantity!,
     };
   }
+
+  String get productLabel => '$quantity x ${product!.name ?? ''}';
+
+  String get totalPrice => FormatRupiah.format(product!.sellingPrice! * quantity!);
 }

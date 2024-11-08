@@ -8,7 +8,6 @@ class PrescriptionProvider extends ApiProvider {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${GetStorage().read('accessToken')}'
         });
-  
 
   Future<http.Response> getPrescriptions() async {
     final response = await get('prescriptions');
@@ -25,9 +24,16 @@ class PrescriptionProvider extends ApiProvider {
     return response;
   }
 
+  // Kumpulan method untuk redemption
+
   Future<http.Response> createRedemption(Map<String, dynamic> body) async {
     final response = await post('prescription-redemptions', body);
-    
+
+    return response;
+  }
+
+  Future<http.Response> getRedemptions() async {
+    final response = await get('prescription-redemptions');
     return response;
   }
 }
