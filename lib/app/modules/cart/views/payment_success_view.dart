@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
+import 'package:medpia_mobile/app/core_view.dart';
 import 'package:medpia_mobile/app/modules/cart/controllers/cart_controller.dart';
+import 'package:medpia_mobile/app/modules/home/views/home_view.dart';
 
 class PaymentSuccessView extends StatelessWidget {
   final Map<String, dynamic> data;
@@ -16,7 +18,7 @@ class PaymentSuccessView extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () {
-            Get.back();
+            Get.offAll(CoreView());
           },
         ),
         backgroundColor: Colors.white,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SummaryText extends StatelessWidget {
+  EdgeInsets? padding;
   String? leftText;
   String? rightText;
   TextStyle? leftStyle;
@@ -8,6 +9,7 @@ class SummaryText extends StatelessWidget {
 
   SummaryText({
     super.key,
+    this.padding,
     this.leftText,
     this.rightText,
     this.leftStyle,
@@ -17,7 +19,7 @@ class SummaryText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: padding ?? EdgeInsets.symmetric(horizontal: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

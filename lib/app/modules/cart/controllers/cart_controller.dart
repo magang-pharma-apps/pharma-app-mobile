@@ -5,10 +5,12 @@ import 'package:medpia_mobile/app/commons/ui/widgets/custom_snackbar.dart';
 import 'package:medpia_mobile/app/models/cart_item_model.dart';
 import 'package:medpia_mobile/app/models/cart_model.dart';
 import 'package:medpia_mobile/app/modules/cart/views/payment_success_view.dart';
+import 'package:medpia_mobile/app/modules/report/controllers/report_controller.dart';
 import 'package:medpia_mobile/app/repositories/transaction_repository.dart';
 
 class CartController extends GetxController {
   final transactionRespository = TransactionRepository();
+  final reportController = Get.put(ReportController());
   // isinya semua state yang ada di dalam ui nya
   Rx<CartModel> cart = CartModel(
           items: [],
@@ -86,6 +88,7 @@ class CartController extends GetxController {
           await transactionRespository.createTransaction(cart.value.toJson());
       if (isCreated) {
         Get.dialog(PaymentSuccessView(data: cart.value.toJson()));
+        reportController.getTransactions();
       } else {
         CustomSnackbar.showSnackbar(Get.context!,
             message: "Failed to created transaction",

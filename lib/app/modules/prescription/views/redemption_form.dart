@@ -10,7 +10,7 @@ import 'package:medpia_mobile/app/commons/ui/widgets/order_detail.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/redemption_payment_detail_widget.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/search_widget.dart';
 import 'package:medpia_mobile/app/modules/prescription/controllers/redemption_controller.dart';
-import 'package:medpia_mobile/app/modules/prescription/views/prescription_screen.dart';
+import 'package:medpia_mobile/app/modules/prescription/views/prescription_view.dart';
 
 String getPrescriptionStatus(bool status) {
   switch (status) {
@@ -22,6 +22,8 @@ String getPrescriptionStatus(bool status) {
 }
 
 class RedemptionForm extends GetView<RedemptionController> {
+  
+  
   const RedemptionForm({super.key});
 
   @override

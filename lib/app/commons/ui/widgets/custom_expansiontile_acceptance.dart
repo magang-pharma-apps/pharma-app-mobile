@@ -45,7 +45,8 @@ class _CustomExpansiontileAcceptanceState
   void initState() {
     super.initState();
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 300));
+      vsync: this,
+    );
   }
 
   @override
@@ -228,10 +229,8 @@ class _CustomExpansiontileAcceptanceState
                   _isExpanded = !_isExpanded;
                   if (_isExpanded) {
                     _expansionTileController.expand();
-                    ExpansionTileController.of(context).expand();
                   } else {
                     _expansionTileController.collapse();
-                    ExpansionTileController.of(context).collapse();
                   }
                 },
                 child: const CircleAvatar(

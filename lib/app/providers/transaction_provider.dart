@@ -12,4 +12,14 @@ class TransactionProvider extends ApiProvider {
   Future<http.Response> createTransaction(Map<String, dynamic> body) async {
     return await post('transactions', body);
   }
+
+  Future<http.Response> getTransactions() async {
+    final response = await get('transactions');
+    return response;
+  }
+
+  Future<http.Response> getTransactionById(String id) async {
+    final response = await get('transaction/$id');
+    return response;
+  }
 }

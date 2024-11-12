@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/modules/cart/views/payment_success_view.dart';
+import 'package:medpia_mobile/app/modules/report/views/report_view.dart';
 import 'package:medpia_mobile/app/modules/home/views/home_view.dart';
-import 'package:medpia_mobile/app/modules/prescription/views/prescription_screen.dart';
+import 'package:medpia_mobile/app/modules/master/views/master_view.dart';
+import 'package:medpia_mobile/app/modules/prescription/views/prescription_view.dart';
 import 'package:medpia_mobile/app/modules/profile/views/profile_view.dart';
 
 class CoreView extends StatefulWidget {
@@ -20,15 +22,11 @@ class _CoreViewState extends State<CoreView> {
     return Scaffold(
       body: IndexedStack(
         index: currentPage,
-        children: [
+        children: const [
           HomeView(),
-          PrescriptionScreen(),
-          Container(
-            color: Colors.green,
-          ),
-          Container(
-            
-          ),
+          ReportView(),
+          PrescriptionView(),
+          MasterView(),
           UserView(),
         ],
       ),
@@ -47,10 +45,10 @@ class _CoreViewState extends State<CoreView> {
             icon: Icon(HugeIcons.strokeRoundedHome09),
           ),
           BottomNavigationBarItem(
+              label: 'Report', icon: Icon(HugeIcons.strokeRoundedAnalyticsUp)),
+          BottomNavigationBarItem(
               label: 'Prescription',
               icon: Icon(HugeIcons.strokeRoundedInvoice01)),
-          BottomNavigationBarItem(
-              label: 'Order', icon: Icon(Icons.point_of_sale_outlined)),
           BottomNavigationBarItem(
               label: 'Master',
               icon: Icon(HugeIcons.strokeRoundedDashboardCircleSettings)),

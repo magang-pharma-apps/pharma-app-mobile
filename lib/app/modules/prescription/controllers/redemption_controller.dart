@@ -6,7 +6,7 @@ import 'package:medpia_mobile/app/commons/ui/widgets/custom_snackbar.dart';
 import 'package:medpia_mobile/app/models/cart_item_model.dart';
 import 'package:medpia_mobile/app/models/cart_model.dart';
 import 'package:medpia_mobile/app/models/prescription_model.dart';
-import 'package:medpia_mobile/app/modules/prescription/views/prescription_screen.dart';
+import 'package:medpia_mobile/app/modules/prescription/views/prescription_view.dart';
 import 'package:medpia_mobile/app/repositories/prescription_repository.dart';
 import 'package:medpia_mobile/app/repositories/transaction_repository.dart';
 
@@ -69,8 +69,10 @@ class RedemptionController extends GetxController {
     try {
       final isCreated = await prescriptionRepository
           .createRedemption(prescription.value.toJson());
+    
           
       if (isCreated) {
+
         CustomSnackbar.showSnackbar(Get.context!,
             message: "Prescription successfully redeemed",
             title: "Success!",

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class SearchWidget extends StatelessWidget {
-  const SearchWidget({
-    super.key,
-  });
+  Color? customColor;
+  String? hintText;
+  SearchWidget({super.key, this.customColor, this.hintText});
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +21,8 @@ class SearchWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide(color: Colors.transparent)),
           border: InputBorder.none,
-          fillColor: Colors.grey.shade200,
-          hintText: 'Search Medicine',
+          fillColor: customColor ?? Colors.grey.shade200,
+          hintText: hintText ?? 'Search Medicine',
           hintStyle: TextStyle(
               color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w300),
           prefixIcon: Icon(

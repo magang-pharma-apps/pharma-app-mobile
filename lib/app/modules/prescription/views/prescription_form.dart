@@ -2,11 +2,13 @@ import 'dart:math';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_snackbar.dart';
 import 'package:medpia_mobile/app/models/customer_model.dart';
 import 'package:medpia_mobile/app/models/doctor_model.dart';
+import 'package:medpia_mobile/app/models/prescription_model.dart';
 import 'package:medpia_mobile/app/modules/prescription/views/redemption_form.dart';
 import 'package:medpia_mobile/app/repositories/customer_repository.dart';
 import 'package:medpia_mobile/app/repositories/doctor_repository.dart';
@@ -182,9 +184,10 @@ class _PrescriptionFormState extends State<PrescriptionForm> {
                 trailing: Switch(
                   value: isRedeem,
                   onChanged: (value) {
-                    setState(() {
-                      isRedeem = value;
-                    });
+                    false;
+                    // setState(() {
+                    //   isRedeem = value;
+                    // });
                   },
                 ),
               )
@@ -245,12 +248,15 @@ class _PrescriptionFormState extends State<PrescriptionForm> {
 
       if (isRedeem) {
         // If isRedeem is true, navigate to RedemptionForm and pass the result
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RedemptionForm(),
-          ),
-        );
+        Get.to(() => RedemptionForm(),
+            arguments: PrescriptionModel(
+              prescriptionCode: prescriptionCode,
+              prescriptions: prescription,
+              prescriptionDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+              doctor: selectedDoctor,
+              customer: selectedCustomer,
+              isRedeem: isRedeem,
+            ));
       } else {
         // Otherwise, pop back and return true
         Navigator.pop(context, true);

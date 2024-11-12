@@ -2,20 +2,20 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:medpia_mobile/app/providers/api_provider.dart';
 
-class UnitProvider extends ApiProvider {
-  UnitProvider()
+class UserProvider extends ApiProvider {
+  UserProvider()
       : super(headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${GetStorage().read('accessToken')}'
         });
 
-  Future<http.Response> getUnits() async {
-    final response = await get('units');
+  Future<http.Response> getUsers() async {
+    final response = await get('users');
     return response;
   }
 
-  Future<http.Response> getUnitById(String id) async {
-    final response = await get('units/$id');
+  Future<http.Response> getUserById(String id) async {
+    final response = await get('users/$id');
     return response;
   }
 }

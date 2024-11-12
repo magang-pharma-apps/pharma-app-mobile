@@ -14,7 +14,7 @@ class CartItemModel {
           ? ProductModel.fromJson(json['product'])
           : null,
       quantity: json['quantity'],
-      note: json['note'],
+      note: json['note']?? '',
     );
   }
 
@@ -28,6 +28,8 @@ class CartItemModel {
   }
 
   String get productLabel => '$quantity x ${product!.name ?? ''}';
+
+  String get productPrice => FormatRupiah.format(product!.sellingPrice!);
 
   String get totalPrice => FormatRupiah.format(product!.sellingPrice! * quantity!);
 }
