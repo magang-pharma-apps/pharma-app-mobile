@@ -1,70 +1,26 @@
 import 'dart:math';
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/custom_snackbar.dart';
 import 'package:medpia_mobile/app/models/category_model.dart';
-import 'package:medpia_mobile/app/models/prescription_model.dart';
 import 'package:medpia_mobile/app/models/unit_model.dart';
-import 'package:medpia_mobile/app/modules/prescription/views/redemption_form.dart';
+import 'package:medpia_mobile/app/modules/master/controllers/master_product_controller.dart';
 import 'package:medpia_mobile/app/repositories/category_repository.dart';
-import 'package:medpia_mobile/app/repositories/prescription_repository.dart';
 import 'package:medpia_mobile/app/repositories/product_repository.dart';
 import 'package:medpia_mobile/app/repositories/unit_repository.dart';
 
-class MasterProductForm extends StatefulWidget {
-  VoidCallback? onPrescriptionAdded;
-  MasterProductForm({super.key, this.onPrescriptionAdded});
+class MasterProductForm extends GetView<MasterProductController> {
+  MasterProductForm({super.key});
 
   @override
-  State<MasterProductForm> createState() => _MasterProductFormState();
-}
+  get controller => Get.put(MasterProductController());
 
-class _MasterProductFormState extends State<MasterProductForm> {
   final productRepository = ProductRepository();
   final categoryRepository = CategoryRepository();
   final unitRepository = UnitRepository();
-  TextEditingController expiryDateController = TextEditingController();
-
-  bool isRedeem = false;
-
-  String? productCode = 'DRUG${Random().nextInt(max(1000, 9999)).toString()}';
-  String? name;
-  CategoryModel? selectedCategory;
-  UnitModel? selectedUnit;
-  String? selectedDrugClass;
-  String? prescription;
-  String? description;
-  int? purchasePrice;
-  int? sellingPrice;
-  String? expiryDate;
-  int? stockQuantity;
-  String? productImageUrl;
-
-  List<CategoryModel> categories = [];
-  List<UnitModel> units = [];
-
-  @override
-  void initState() {
-    super.initState();
-    getCategories();
-    getUnits();
-    if (expiryDateController.text.isNotEmpty) {
-      expiryDate = DateFormat('dd/MM/yyyy')
-          .parse(expiryDateController.text)
-          .toIso8601String();
-    }
-  }
-
-  @override
-  void dispose() {
-    expiryDateController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +28,7 @@ class _MasterProductFormState extends State<MasterProductForm> {
       persistentFooterButtons: [
         ElevatedButton(
           onPressed: () {
-            createProduct();
+            controller.createProduct();
           },
           child: Text(
             'Add Product',
@@ -116,7 +72,7 @@ class _MasterProductFormState extends State<MasterProductForm> {
               ),
               const SizedBox(height: 10),
               TextFormField(
-                initialValue: productCode,
+                initialValue: controller.productCode,
                 decoration: const InputDecoration(
                   labelText: 'Product Code',
                 ),
@@ -125,7 +81,7 @@ class _MasterProductFormState extends State<MasterProductForm> {
               const SizedBox(height: 10),
               TextFormField(
                 onChanged: (value) {
-                  name = value;
+                  controller.name = value;
                 },
                 decoration: const InputDecoration(
                   labelText: 'Product Name',
@@ -134,7 +90,7 @@ class _MasterProductFormState extends State<MasterProductForm> {
               const SizedBox(height: 10),
               TextFormField(
                 onChanged: (value) {
-                  purchasePrice = int.parse(value);
+                  controller.purchasePrice = int.parse(value);
                 },
                 keyboardType: TextInputType.number,
                 inputFormatters: [
@@ -148,7 +104,7 @@ class _MasterProductFormState extends State<MasterProductForm> {
               const SizedBox(height: 10),
               TextFormField(
                 onChanged: (value) {
-                  sellingPrice = int.parse(value);
+                  controller.sellingPrice = int.parse(value);
                 },
                 keyboardType: TextInputType.number,
                 inputFormatters: [
@@ -161,47 +117,33 @@ class _MasterProductFormState extends State<MasterProductForm> {
               ),
               const SizedBox(height: 10),
               TextFormField(
-                readOnly: true,
-                controller: expiryDateController,
-                decoration: const InputDecoration(
-                    labelText: 'Expiry Date',
-                    suffixIcon: Icon(
-                      HugeIcons.strokeRoundedCalendar01,
-                      color: Colors.black,
-                    )),
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime.now(),
-                    lastDate: DateTime(2101),
-                  );
-                  if (pickedDate != null) {
-                    setState(() {
-                      expiryDateController.text =
-                          DateFormat('dd/MM/yyyy').format(pickedDate);
-                      expiryDate = pickedDate.toIso8601String();
-                      print(expiryDate);
-                    });
-                  }
-                },
-              ),
+                  readOnly: true,
+                  controller: controller.expiryDateController,
+                  decoration: const InputDecoration(
+                      labelText: 'Expiry Date',
+                      suffixIcon: Icon(
+                        HugeIcons.strokeRoundedCalendar02,
+                        color: Colors.black,
+                      )),
+                  onTap: controller.pickExpireDate),
               const SizedBox(height: 10),
               DropdownButtonFormField<CategoryModel>(
                 decoration: const InputDecoration(
                   labelText: 'Select Category',
                 ),
-                value: selectedCategory,
+                value: controller.categories.isNotEmpty
+                    ? controller.categories.first
+                    : null,
                 style: const TextStyle(color: Colors.black),
-                items: categories.map((CategoryModel customer) {
+                items: controller.categories.map((CategoryModel category) {
                   // print('customer: $customer');
                   return DropdownMenuItem<CategoryModel>(
-                    value: customer,
-                    child: Text(customer.name!),
+                    value: category,
+                    child: Text(category.name!),
                   );
                 }).toList(),
                 onChanged: (CategoryModel? value) {
-                  selectedCategory = value;
+                  controller.selectedCategory = value;
                 },
               ),
               const SizedBox(height: 10),
@@ -209,16 +151,17 @@ class _MasterProductFormState extends State<MasterProductForm> {
                 decoration: const InputDecoration(
                   labelText: 'Select Unit',
                 ),
-                value: selectedUnit,
+                value:
+                    controller.units.isNotEmpty ? controller.units.first : null,
                 style: const TextStyle(color: Colors.black),
-                items: units.map((UnitModel doctor) {
+                items: controller.units.map((UnitModel unit) {
                   return DropdownMenuItem<UnitModel>(
-                    value: doctor,
-                    child: Text(doctor.name!),
+                    value: unit,
+                    child: Text(unit.name!),
                   );
                 }).toList(),
                 onChanged: (UnitModel? value) {
-                  selectedUnit = value;
+                  controller.selectedUnit = value;
                 },
               ),
               const SizedBox(
@@ -228,7 +171,7 @@ class _MasterProductFormState extends State<MasterProductForm> {
                   decoration: const InputDecoration(
                     labelText: 'Select Drug Class',
                   ),
-                  value: selectedDrugClass,
+                  value: controller.selectedDrugClass,
                   style: const TextStyle(color: Colors.black),
                   items: ['Obat Bebas', 'Obat Bebas Terbatas', 'Obat Keras']
                       .map((String drugClass) {
@@ -238,14 +181,15 @@ class _MasterProductFormState extends State<MasterProductForm> {
                     );
                   }).toList(),
                   onChanged: (String? value) {
-                    selectedDrugClass = value;
+                    controller.selectedDrugClass = value;
                   }),
               const SizedBox(
                 height: 10,
               ),
               TextFormField(
+                keyboardType: TextInputType.number,
                 onChanged: (value) {
-                  stockQuantity = int.parse(value);
+                  controller.stockQuantity = int.parse(value);
                 },
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -260,10 +204,12 @@ class _MasterProductFormState extends State<MasterProductForm> {
               ),
               TextFormField(
                 onChanged: (value) {
-                  productImageUrl = value;
+                  controller.productImageUrl = value;
                 },
-                decoration: const InputDecoration(
-                  labelText: 'Image Url',
+                decoration: InputDecoration(
+                  hintStyle: Theme.of(context).textTheme.bodySmall,
+                  labelText: 'Product Image Url',
+                  hintText: 'Paste product image url here...',
                 ),
               ),
               const SizedBox(
@@ -271,7 +217,7 @@ class _MasterProductFormState extends State<MasterProductForm> {
               ),
               TextFormField(
                 onChanged: (value) {
-                  description = value;
+                  controller.description = value;
                 },
                 maxLines: 5,
                 decoration: const InputDecoration(
@@ -291,56 +237,5 @@ class _MasterProductFormState extends State<MasterProductForm> {
             ],
           )),
     );
-  }
-
-  void getCategories() async {
-    final response = await categoryRepository.getCategories();
-    setState(() {
-      categories = response;
-    });
-  }
-
-  void getUnits() async {
-    final response = await unitRepository.getUnits();
-    setState(() {
-      units = response;
-    });
-  }
-
-  void createProduct() async {
-    try {
-      await productRepository.createProduct({
-        'productCode': productCode,
-        'name': name,
-        'description': description,
-        'prescriptions': prescription,
-        'purchasePrice': purchasePrice,
-        'sellingPrice': sellingPrice,
-        'expiryDate': expiryDate,
-        'stockQuantity': stockQuantity,
-        'categoryId': selectedCategory!.id,
-        'unitId': selectedUnit!.id,
-        'productImageUrl': productImageUrl,
-        'drugClass': selectedDrugClass,
-      });
-      Navigator.pop(context, true);
-
-      // Show success snackbar
-      CustomSnackbar.showSnackbar(
-        Get.context!,
-        title: 'Success!',
-        message: 'Product created successfully',
-        contentType: ContentType.success,
-      );
-    } catch (e) {
-      print('Error create product$e');
-      // Show failure snackbar if there's an error
-      CustomSnackbar.showSnackbar(
-        Get.context!,
-        title: 'Failed!',
-        message: 'Failed to create product',
-        contentType: ContentType.failure,
-      );
-    }
   }
 }

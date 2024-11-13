@@ -192,18 +192,6 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  /// Fetches a list of categories from the repository.
-  ///
-  /// This method attempts to retrieve categories by calling the
-  /// `getCategories` method of the `categoryRepository`. If an
-  /// error occurs during the fetch, it catches the exception,
-  /// logs the error, and throws a new exception indicating the
-  /// failure to load categories.
-  ///
-  /// Returns a `Future` that resolves to a `List` of `CategoryModel`.
-  ///
-  /// Throws an `Exception` if the categories cannot be loaded.
-
   Future<List<CategoryModel>> fetchCategory() async {
     try {
       return categoryRepository.getCategories();

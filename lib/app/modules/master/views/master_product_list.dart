@@ -8,7 +8,7 @@ import 'package:medpia_mobile/app/modules/master/views/master_product_edit.dart'
 import 'package:medpia_mobile/app/modules/master/views/master_product_form.dart';
 
 class MasterProductList extends GetView<MasterProductController> {
-  MasterProductList({super.key});
+  const MasterProductList({super.key});
 
   @override
   get controller => Get.put(MasterProductController());
@@ -47,7 +47,7 @@ class MasterProductList extends GetView<MasterProductController> {
             style: Theme.of(context).textTheme.labelLarge),
       ),
       body: Obx(() {
-        if (controller.isLoading.value) {
+        if (controller.isLoadingProducts.value) {
           return const Center(
             child: CircularProgressIndicator(),
           );
