@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
-import 'package:medpia_mobile/app/modules/master/controllers/master_product_controller.dart';
-import 'package:medpia_mobile/app/modules/master/views/master_product_edit.dart';
-import 'package:medpia_mobile/app/modules/master/views/master_product_form.dart';
+import 'package:medpia_mobile/app/modules/master/product/controllers/master_product_controller.dart';
+import 'package:medpia_mobile/app/modules/master/product/views/product_edit_view.dart';
+import 'package:medpia_mobile/app/modules/master/product/views/product_form_view.dart';
 
-class MasterProductList extends GetView<MasterProductController> {
-  const MasterProductList({super.key});
+class ProductListView extends GetView<MasterProductController> {
+  const ProductListView({super.key});
 
   @override
   get controller => Get.put(MasterProductController());
@@ -19,7 +19,7 @@ class MasterProductList extends GetView<MasterProductController> {
       persistentFooterButtons: [
         InkWell(
           onTap: () {
-            Get.to(() => MasterProductForm())?.then((result) {
+            Get.to(() => ProductFormView())?.then((result) {
               if (result == true) {
                 controller.getProducts();
               }
@@ -76,7 +76,7 @@ class MasterProductList extends GetView<MasterProductController> {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   onTap: () {
-                    Get.to(const MasterProductEdit());
+                    Get.to(const ProductEditView());
                   },
                   onLongPress: () {
                     showCupertinoModalPopup(
@@ -90,7 +90,7 @@ class MasterProductList extends GetView<MasterProductController> {
                             actions: [
                               CupertinoActionSheetAction(
                                 onPressed: () {
-                                  Get.to(const MasterProductEdit());
+                                  Get.to(const ProductEditView());
                                 },
                                 child: Text('Edit'),
                               ),

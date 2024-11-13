@@ -4,17 +4,17 @@ import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
 import 'package:medpia_mobile/app/models/category_model.dart';
-import 'package:medpia_mobile/app/modules/master/views/master_category_edit.dart';
+import 'package:medpia_mobile/app/modules/master/category/views/category_edit_view.dart';
 import 'package:medpia_mobile/app/repositories/category_repository.dart';
 
-class MasterCategoryList extends StatefulWidget {
-  const MasterCategoryList({super.key});
+class CategoryListView extends StatefulWidget {
+  const CategoryListView({super.key});
 
   @override
-  State<MasterCategoryList> createState() => _MasterCategoryListState();
+  State<CategoryListView> createState() => _CategoryListViewState();
 }
 
-class _MasterCategoryListState extends State<MasterCategoryList> {
+class _CategoryListViewState extends State<CategoryListView> {
   final categoryRepository = CategoryRepository();
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,7 @@ class _MasterCategoryListState extends State<MasterCategoryList> {
                         maxLines: 2,
                       ),
                       onTap: () {
-                        Get.to(MasterCategoryEdit());
+                        Get.to(CategoryEditView());
                       },
                       onLongPress: () {
                         showCupertinoModalPopup(
@@ -93,7 +93,7 @@ class _MasterCategoryListState extends State<MasterCategoryList> {
                                 actions: [
                                   CupertinoActionSheetAction(
                                     onPressed: () {
-                                      Get.to(MasterCategoryEdit());
+                                      Get.to(CategoryEditView());
                                     },
                                     child: Text('Edit'),
                                   ),

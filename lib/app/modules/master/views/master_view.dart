@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:medpia_mobile/app/modules/master/views/master_category_list.dart';
-import 'package:medpia_mobile/app/modules/master/views/master_customer_list.dart';
-import 'package:medpia_mobile/app/modules/master/views/master_doctor_list.dart';
-import 'package:medpia_mobile/app/modules/master/views/master_product_list.dart';
-import 'package:medpia_mobile/app/modules/master/views/master_unit_list.dart';
+import 'package:medpia_mobile/app/modules/master/category/views/category_list_view.dart';
+import 'package:medpia_mobile/app/modules/master/customer/views/customer_list_view.dart';
+import 'package:medpia_mobile/app/modules/master/doctor/views/master_doctor_list.dart';
+import 'package:medpia_mobile/app/modules/master/product/views/product_list_view.dart';
+import 'package:medpia_mobile/app/modules/master/unit/views/master_unit_list.dart';
 
 class MasterView extends StatelessWidget {
   const MasterView({super.key});
@@ -31,7 +31,7 @@ class MasterView extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               onTap: () {
-                Get.to(MasterProductList());
+                Get.to(ProductListView());
               },
               trailing: const Icon(
                 Icons.arrow_forward_ios,
@@ -67,7 +67,7 @@ class MasterView extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               onTap: () {
-                Get.to(MasterCategoryList());
+                Get.to(CategoryListView());
               },
               trailing: const Icon(
                 Icons.arrow_forward_ios,
@@ -103,7 +103,7 @@ class MasterView extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               onTap: () {
-                Get.to(MasterCustomerList());
+                Get.to(CustomerListView());
               },
               trailing: const Icon(
                 Icons.arrow_forward_ios,

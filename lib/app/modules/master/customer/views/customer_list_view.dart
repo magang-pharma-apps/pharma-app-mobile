@@ -2,22 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:medpia_mobile/app/models/unit_model.dart';
-import 'package:medpia_mobile/app/modules/master/views/master_unit_edit.dart';
-import 'package:medpia_mobile/app/repositories/unit_repository.dart';
+import 'package:medpia_mobile/app/models/customer_model.dart';
+import 'package:medpia_mobile/app/modules/master/customer/views/customer_edit_view.dart';
+import 'package:medpia_mobile/app/repositories/customer_repository.dart';
 
-class MasterUnitList extends StatefulWidget {
-  const MasterUnitList({super.key});
+class CustomerListView extends StatefulWidget {
+  const CustomerListView({super.key});
 
   @override
-  State<MasterUnitList> createState() => _MasterUnitListState();
+  State<CustomerListView> createState() => _CustomerListViewState();
 }
 
-class _MasterUnitListState extends State<MasterUnitList> {
-  final unitRepository = UnitRepository();
+class _CustomerListViewState extends State<CustomerListView> {
+  final customerRepository = CustomerRepository();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       persistentFooterButtons: [
         InkWell(
           onTap: () {},
@@ -25,27 +26,26 @@ class _MasterUnitListState extends State<MasterUnitList> {
             child: Column(
               children: [
                 Icon(
-                  HugeIcons.strokeRoundedAddSquare,
+                  HugeIcons.strokeRoundedUserAdd01,
                   color: Colors.grey.shade700,
                 ),
-                Text('Create Unit',
+                Text('Add Patient',
                     style: Theme.of(context).textTheme.bodySmall)
               ],
             ),
           ),
         )
       ],
-      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          'Master Unit',
+          'Master Customer',
           style: Theme.of(context).textTheme.labelLarge,
         ),
       ),
-      body: FutureBuilder<List<UnitModel>>(
-          future: fetchUnits(),
+      body: FutureBuilder<List<CustomerModel>>(
+          future: fetchCustomers(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -59,29 +59,36 @@ class _MasterUnitListState extends State<MasterUnitList> {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
-                  final unit = snapshot.data![index];
+                  final customer = snapshot.data![index];
                   return Container(
                     margin:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                     decoration: BoxDecoration(
-                      border: Border.symmetric(
-                        horizontal: BorderSide(
-                          color: Colors.grey.withOpacity(0.1),
-                        ),
-                      ),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                          color: Colors.blueGrey.shade100, width: 0.5),
                     ),
                     child: ListTile(
-                      visualDensity: VisualDensity(vertical: -4),
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.teal.shade50,
+                        foregroundColor: Colors.teal.shade700,
+                        child: Icon(
+                          HugeIcons.strokeRoundedMedicalMask,
+                        ),
+                      ),
+                      contentPadding:
+                          const EdgeInsets.only(left: 15, bottom: 5),
+                      visualDensity: VisualDensity.compact,
                       title: Text(
-                        '${unit.name!}',
+                        '${customer.name!} (${customer.age})',
                         style: Theme.of(context).textTheme.labelSmall,
                       ),
                       subtitle: Text(
-                        '${unit.description}',
+                        '${customer.address}',
                         maxLines: 1,
                       ),
                       onTap: () {
-                        Get.to(MasterUnitEdit());
+                        Get.to(CustomerEditView());
                       },
                       onLongPress: () {
                         showCupertinoModalPopup(
@@ -89,14 +96,14 @@ class _MasterUnitListState extends State<MasterUnitList> {
                             builder: (context) {
                               return CupertinoActionSheet(
                                 title: Text(
-                                  unit.name!,
+                                  customer.name!,
                                   style:
                                       Theme.of(context).textTheme.labelMedium,
                                 ),
                                 actions: [
                                   CupertinoActionSheetAction(
                                     onPressed: () {
-                                      Get.to(MasterUnitEdit());
+                                      Get.to(CustomerEditView());
                                     },
                                     child: Text('Edit'),
                                   ),
@@ -119,12 +126,12 @@ class _MasterUnitListState extends State<MasterUnitList> {
     );
   }
 
-  Future<List<UnitModel>> fetchUnits() async {
+  Future<List<CustomerModel>> fetchCustomers() async {
     try {
-      return unitRepository.getUnits();
+      return customerRepository.getCustomers();
     } catch (e) {
       // print('Error: $e');
-      throw Exception('Failed to load units $e');
+      throw Exception('Failed to load customers $e');
     }
   }
 }

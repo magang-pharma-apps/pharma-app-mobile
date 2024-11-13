@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class MasterCategoryEdit extends StatelessWidget {
-  const MasterCategoryEdit({super.key});
+class ProductEditView extends StatelessWidget {
+  const ProductEditView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,12 +10,12 @@ class MasterCategoryEdit extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text('Edit Category',
-            style: Theme.of(context).textTheme.labelLarge),
+        title:
+            Text('Edit Product', style: Theme.of(context).textTheme.labelLarge),
       ),
       body: Container(
         child: Center(
-          child: Text('Edit category page'),
+          child: Text('Edit product page'),
         ),
       ),
     );

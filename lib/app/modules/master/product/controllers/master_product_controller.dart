@@ -35,11 +35,18 @@ class MasterProductController extends GetxController {
   String? selectedDrugClass;
   String? prescription;
   String? description;
-  int? purchasePrice;
+  int? purchasePrice = 0.obs.value;
   int? sellingPrice;
   String? expiryDate;
   int? stockQuantity;
   String? productImageUrl;
+
+  String? formatToRupiah(int? amount) {
+    if (amount == null) return 'Rp 0';
+    final formatter = NumberFormat.currency(
+        locale: 'id_ID', symbol: 'Rp. ', decimalDigits: 0);
+    return formatter.format(amount);
+  }
 
   @override
   void onInit() {
@@ -61,26 +68,24 @@ class MasterProductController extends GetxController {
     }
   }
 
-  void getUnits() async{
-    try{
+  void getUnits() async {
+    try {
       isLoadingUnits.value = true;
       final response = await unitRepository.getUnits();
       units.value = response;
-
-    }catch(e){
+    } catch (e) {
       throw Exception('Failed to load units: $e');
     } finally {
       isLoadingUnits.value = false;
     }
   }
 
-  void getCategories() async{
-    try{
+  void getCategories() async {
+    try {
       isLoadingCategories.value = true;
       final response = await categoryRepository.getCategories();
       categories.value = response;
-
-    }catch(e){
+    } catch (e) {
       throw Exception('Failed to load categories: $e');
     } finally {
       isLoadingCategories.value = false;
@@ -105,7 +110,7 @@ class MasterProductController extends GetxController {
       });
       Get.back(result: true);
 
-      // Show success snackbar
+      // Show success snackbaraa
       CustomSnackbar.showSnackbar(
         Get.context!,
         title: 'Success!',
@@ -125,12 +130,34 @@ class MasterProductController extends GetxController {
   }
 
   void pickExpireDate() async {
-    DateTime? pickedDate = await showDatePicker(context: Get.context!, firstDate: DateTime.now(), 
-    lastDate: DateTime(2101), initialDate: DateTime.now());
+    DateTime? pickedDate = await showDatePicker(
+        context: Get.context!,
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2101),
+        initialDate: DateTime.now());
 
     if (pickedDate != null) {
       expiryDateController.text = DateFormat('dd-MM-yyyy').format(pickedDate);
       expiryDate = pickedDate.toIso8601String();
+    }
+  }
+
+  void onPurchasePriceChanged(String value) {
+    if (value.isEmpty) {
+      purchasePrice = 0;
+    } else {
+      value = value.replaceAll(RegExp(r'[^0-9]'), '');
+      purchasePrice = int.parse(value);
+      // print('purchasePice: $purchasePrice');
+    }
+  }
+
+  void onSellingPriceChanged(String value) {
+    if (value.isEmpty) {
+      sellingPrice = 0;
+    } else {
+      sellingPrice = int.parse(value);
+      // print('sellingPrice: $sellingPrice');
     }
   }
 }

@@ -5,15 +5,16 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
+import 'package:medpia_mobile/app/commons/utils/rupiah_input_formatter.dart';
 import 'package:medpia_mobile/app/models/category_model.dart';
 import 'package:medpia_mobile/app/models/unit_model.dart';
-import 'package:medpia_mobile/app/modules/master/controllers/master_product_controller.dart';
+import 'package:medpia_mobile/app/modules/master/product/controllers/master_product_controller.dart';
 import 'package:medpia_mobile/app/repositories/category_repository.dart';
 import 'package:medpia_mobile/app/repositories/product_repository.dart';
 import 'package:medpia_mobile/app/repositories/unit_repository.dart';
 
-class MasterProductForm extends GetView<MasterProductController> {
-  MasterProductForm({super.key});
+class ProductFormView extends GetView<MasterProductController> {
+  ProductFormView({super.key});
 
   @override
   get controller => Get.put(MasterProductController());
@@ -89,30 +90,32 @@ class MasterProductForm extends GetView<MasterProductController> {
               ),
               const SizedBox(height: 10),
               TextFormField(
-                onChanged: (value) {
-                  controller.purchasePrice = int.parse(value);
-                },
+                onChanged: controller.onPurchasePriceChanged,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  FilteringTextInputFormatter.deny(RegExp(r'^0')),
+                  RupiahInputFormatter(),
                 ],
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(color: Colors.grey),
                   labelText: 'Purchase Price',
+                  hintText: controller.formatToRupiah(controller.purchasePrice),
                 ),
               ),
               const SizedBox(height: 10),
               TextFormField(
-                onChanged: (value) {
-                  controller.sellingPrice = int.parse(value);
-                },
+                onChanged: controller.onSellingPriceChanged,
                 keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  FilteringTextInputFormatter.deny(RegExp(r'^0')),
-                ],
-                decoration: const InputDecoration(
+                inputFormatters: [RupiahInputFormatter()],
+                decoration: InputDecoration(
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(color: Colors.grey),
                   labelText: 'Selling Price',
+                  hintText: controller.formatToRupiah(controller.sellingPrice),
                 ),
               ),
               const SizedBox(height: 10),
@@ -190,6 +193,7 @@ class MasterProductForm extends GetView<MasterProductController> {
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
                   controller.stockQuantity = int.parse(value);
+                  // print('stockQuantity: ${controller.stockQuantity}');
                 },
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -205,9 +209,13 @@ class MasterProductForm extends GetView<MasterProductController> {
               TextFormField(
                 onChanged: (value) {
                   controller.productImageUrl = value;
+                  // print('productImageUrl: ${controller.productImageUrl}');
                 },
                 decoration: InputDecoration(
-                  hintStyle: Theme.of(context).textTheme.bodySmall,
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(color: Colors.grey),
                   labelText: 'Product Image Url',
                   hintText: 'Paste product image url here...',
                 ),
@@ -218,6 +226,7 @@ class MasterProductForm extends GetView<MasterProductController> {
               TextFormField(
                 onChanged: (value) {
                   controller.description = value;
+                  
                 },
                 maxLines: 5,
                 decoration: const InputDecoration(

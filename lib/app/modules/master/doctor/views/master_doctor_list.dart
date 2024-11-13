@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/models/doctor_model.dart';
-import 'package:medpia_mobile/app/modules/master/views/master_doctor_edit.dart';
+import 'package:medpia_mobile/app/modules/master/doctor/views/master_doctor_edit.dart';
 import 'package:medpia_mobile/app/repositories/doctor_repository.dart';
 
 class MasterDoctorList extends StatefulWidget {
