@@ -257,7 +257,7 @@ class RedemptionForm extends GetView<RedemptionController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ListTile(
-                            title: Text(
+                            title: const Text(
                               "Choose Payment Method",
                               style: TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.bold),
@@ -266,7 +266,7 @@ class RedemptionForm extends GetView<RedemptionController> {
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                     HugeIcons.strokeRoundedMultiplicationSign)),
                           ),
                           ListTile(

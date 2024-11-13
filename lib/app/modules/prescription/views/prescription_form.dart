@@ -210,29 +210,6 @@ class _PrescriptionFormState extends State<PrescriptionForm> {
     });
   }
 
-  // void createPrescription() async {
-  //   await prescriptionRepository.createPrescription({
-  //     'prescriptionCode': prescriptionCode,
-  //     'prescriptions': prescription,
-  //     'prescriptionDate': DateFormat('yyyy-MM-dd').format(DateTime.now()),
-  //     'doctorId': selectedDoctor!.id,
-  //     'customerId': selectedCustomer!.id,
-  //     'isRedeem': isRedeem,
-  //   }).then((value) {
-  //     setState(() {
-  //       Navigator.pop(context, true);
-  //     });
-  //     CustomSnackbar.showSnackbar(context,
-  //         title: 'Success!',
-  //         message: 'Prescription created successfully',
-  //         contentType: ContentType.success);
-  //   }).catchError((e) {
-  //     CustomSnackbar.showSnackbar(context,
-  //         title: 'Failed!',
-  //         message: 'Failed to create prescription',
-  //         contentType: ContentType.failure);
-  //   });
-  // }
 
   void createPrescription() async {
     try {

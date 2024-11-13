@@ -17,7 +17,7 @@ class TransactionTabView extends GetView<ReportController> {
   Widget build(BuildContext context) {
     return Obx(() {
       if (controller.isLoading.value) {
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
       } else {
@@ -29,7 +29,7 @@ class TransactionTabView extends GetView<ReportController> {
             );
           },
           itemCount: controller.transactionList.length,
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           shrinkWrap: true,
         );
       }

@@ -24,5 +24,21 @@ class ProductRepository {
     }
   }
 
-  getProduct() {}
+  Future<bool> createProduct(Map<String, dynamic> body) async {
+    try {
+      final response = await productProvider.createProduct(body);
+      print(response.body);
+      print('status ${response.statusCode}');
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        return true;
+      } else {
+        final errorResponse = json.decode(response.body);
+        throw Exception(
+            'Failed to create product: ${errorResponse['message']}');
+      }
+    } catch (e) {
+      throw Exception('Failed to create product: $e');
+    }
+  }
 }

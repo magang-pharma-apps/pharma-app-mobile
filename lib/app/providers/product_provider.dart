@@ -20,4 +20,9 @@ class ProductProvider extends ApiProvider {
     final response = await get('products/$id');
     return response;
   }
+
+  Future<http.Response> createProduct(Map<String, dynamic> body) async {
+    final response = await post('products', body);
+    return response;
+  }
 }
