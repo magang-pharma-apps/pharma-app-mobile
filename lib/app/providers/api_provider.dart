@@ -5,8 +5,8 @@ import 'package:medpia_mobile/app/providers/base_provider.dart';
 import 'package:http/http.dart' as http;
 
 class ApiProvider implements BaseProvider {
-  // String? baseUrl = 'http://localhost:3000'; // KOS
-  String? baseUrl = 'http://192.168.1.76:3000'; // Hifi Applimetis
+  String? baseUrl = 'http://localhost:3000';
+  // String? baseUrl = 'http://192.168.12.13:3000'; //HP
   // String? baseUrl = 'http://192.168.1.11:3000'; // KOS
 
   Map<String, String>? headers = {'Content-Type': 'application/json'};

@@ -24,5 +24,21 @@ class CategoryRepository {
     }
   }
 
-  getCategory() {}
+  Future<bool> createCategory(Map<String, dynamic> body) async {
+    try {
+      final response = await categoryProvider.createCategory(body);
+      // print(response.body);
+      // print('status ${response.statusCode}');
+
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        final errorResponse = json.decode(response.body);
+        throw Exception(
+            'Failed to create category: ${errorResponse['message']}');
+      }
+    } catch (e) {
+      throw Exception('Failed to create category: $e');
+    }
+  }
 }

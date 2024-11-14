@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/modules/master/category/views/category_list_view.dart';
 import 'package:medpia_mobile/app/modules/master/customer/views/customer_list_view.dart';
-import 'package:medpia_mobile/app/modules/master/doctor/views/master_doctor_list.dart';
+import 'package:medpia_mobile/app/modules/master/doctor/views/doctor_list_view.dart';
 import 'package:medpia_mobile/app/modules/master/product/views/product_list_view.dart';
-import 'package:medpia_mobile/app/modules/master/unit/views/master_unit_list.dart';
+import 'package:medpia_mobile/app/modules/master/unit/views/unit_list_view.dart';
 
 class MasterView extends StatelessWidget {
   const MasterView({super.key});
@@ -49,7 +49,7 @@ class MasterView extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               onTap: () {
-                Get.to(MasterUnitList());
+                Get.to(UnitListView());
               },
               trailing: const Icon(
                 Icons.arrow_forward_ios,
@@ -85,7 +85,7 @@ class MasterView extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               onTap: () {
-                Get.to(MasterDoctorList());
+                Get.to(const DoctorListView());
               },
               trailing: const Icon(
                 Icons.arrow_forward_ios,

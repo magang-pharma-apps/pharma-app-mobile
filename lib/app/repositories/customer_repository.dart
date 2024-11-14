@@ -23,5 +23,21 @@ class CustomerRepository {
     }
   }
 
-  getCustomer() {}
+  Future<bool> createCustomer(Map<String, dynamic> body) async {
+    try {
+      final response = await customerProvider.createCustomer(body);
+      // print(response.body);
+      // print('status ${response.statusCode}');
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        return true;
+      } else {
+        final errorResponse = json.decode(response.body);
+        throw Exception(
+            'Failed to create customer: ${errorResponse['message']}');
+      }
+    } catch (e) {
+      throw Exception('Failed to create customer: $e');
+    }
+  }
 }

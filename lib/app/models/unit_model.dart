@@ -8,8 +8,8 @@ class UnitModel {
   factory UnitModel.fromJson(Map<String, dynamic> json) {
     return UnitModel(
       id: json['id'],
-      name: json['name'],
-      description: json['description']
+      name: json['name'] ?? '',
+      description: json['description'] ?? '',
     );
   }
 }

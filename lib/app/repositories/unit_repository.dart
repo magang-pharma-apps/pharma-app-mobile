@@ -10,8 +10,8 @@ class UnitRepository {
 
   Future<List<UnitModel>> getUnits() async {
     final response = await unitProvider.getUnits();
-    print(response.body);
-    print(response.statusCode);
+    // print(response.body);
+    // print(response.statusCode);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonResponse = json.decode(response.body);
@@ -22,5 +22,20 @@ class UnitRepository {
     }
   }
 
-  getUnit() {}
+  Future<bool> createUnit(Map<String, dynamic> body) async {
+    try {
+      final response = await unitProvider.createUnit(body);
+      // print(response.body);
+      // print('status ${response.statusCode}');
+
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        final errorResponse = json.decode(response.body);
+        throw Exception('Failed to create unit: ${errorResponse['message']}');
+      }
+    } catch (e) {
+      throw Exception('Failed to create unit: $e');
+    }
+  }
 }

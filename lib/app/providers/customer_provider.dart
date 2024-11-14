@@ -19,4 +19,9 @@ class CustomerProvider extends ApiProvider {
     return response;
   }
 
+  Future<http.Response> createCustomer(Map<String, dynamic> body) async {
+    final response = await post('customers', body);
+    return response;
+  }
+
 }

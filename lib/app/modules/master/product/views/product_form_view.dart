@@ -32,7 +32,7 @@ class ProductFormView extends GetView<MasterProductController> {
             controller.createProduct();
           },
           child: Text(
-            'Add Product',
+            'Create Product',
             style: Theme.of(context)
                 .textTheme
                 .labelSmall!
@@ -226,7 +226,6 @@ class ProductFormView extends GetView<MasterProductController> {
               TextFormField(
                 onChanged: (value) {
                   controller.description = value;
-                  
                 },
                 maxLines: 5,
                 decoration: const InputDecoration(

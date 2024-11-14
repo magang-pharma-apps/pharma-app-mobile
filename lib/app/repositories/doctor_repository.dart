@@ -25,5 +25,19 @@ class DoctorRepository {
     }
   }
 
-  getDoctor() {}
+  Future<bool> createDoctor(Map<String, dynamic> body) async {
+    try {
+      final response = await doctorProvider.createDoctor(body);
+
+      if (response.statusCode == 201) {
+        return true;
+        
+      }else{
+        final errorReponse = json.decode(response.body);
+        throw Exception('Failed to create doctor: ${errorReponse['message']}');
+      }
+    } catch (e) {
+      throw Exception('Failed to create doctor $e');
+    }
+  }
 }

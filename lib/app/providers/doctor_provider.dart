@@ -18,4 +18,9 @@ class DoctorProvider extends ApiProvider {
     final response = await get('doctors/$id');
     return response;
   }
+
+  Future<http.Response> createDoctor(Map<String, dynamic> data) async {
+    final response = await post('doctors', data);
+    return response;
+  }
 }

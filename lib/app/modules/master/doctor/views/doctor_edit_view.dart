@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class MasterDoctorEdit extends StatelessWidget {
-  const MasterDoctorEdit({super.key});
+class DoctorEditView extends StatelessWidget {
+  const DoctorEditView({super.key});
 
   @override
   Widget build(BuildContext context) {

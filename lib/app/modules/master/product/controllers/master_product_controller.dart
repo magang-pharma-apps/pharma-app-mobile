@@ -118,7 +118,7 @@ class MasterProductController extends GetxController {
         contentType: ContentType.success,
       );
     } catch (e) {
-      print('Error create product$e');
+      // print('Error create product$e');
       // Show failure snackbar if there's an error
       CustomSnackbar.showSnackbar(
         Get.context!,

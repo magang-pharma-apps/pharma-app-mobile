@@ -18,4 +18,9 @@ class UnitProvider extends ApiProvider {
     final response = await get('units/$id');
     return response;
   }
+
+  Future<http.Response> createUnit(Map<String, dynamic> body) async {
+    final response = await post('units', body);
+    return response;
+  }
 }
