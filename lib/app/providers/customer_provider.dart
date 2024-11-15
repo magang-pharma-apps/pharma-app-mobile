@@ -24,4 +24,8 @@ class CustomerProvider extends ApiProvider {
     return response;
   }
 
+  Future<http.Response> deleteCustomer(int id) async {
+    final response = await delete('customers/$id');
+    return response;
+  }
 }

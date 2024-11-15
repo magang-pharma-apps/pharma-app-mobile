@@ -38,4 +38,19 @@ class UnitRepository {
       throw Exception('Failed to create unit: $e');
     }
   }
+
+  Future<bool> deleteUnit(int id) async {
+    try {
+      final response = await unitProvider.deleteUnit(id);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return true;
+      } else {
+        final errorResponse = json.decode(response.body);
+        throw Exception('Failed to delete unit: ${errorResponse['message']}');
+      }
+    } catch (e) {
+      throw Exception('Failed to delete unit: $e');
+    }
+  }
 }

@@ -9,11 +9,14 @@ import 'package:medpia_mobile/app/commons/ui/widgets/custom_snackbar.dart';
 import 'package:medpia_mobile/app/models/category_model.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
 import 'package:medpia_mobile/app/models/unit_model.dart';
+import 'package:medpia_mobile/app/modules/master/product/views/product_list_view.dart';
 import 'package:medpia_mobile/app/repositories/category_repository.dart';
 import 'package:medpia_mobile/app/repositories/product_repository.dart';
 import 'package:medpia_mobile/app/repositories/unit_repository.dart';
 
 class MasterProductController extends GetxController {
+
+
   final productRepository = ProductRepository();
   final unitRepository = UnitRepository();
   final categoryRepository = CategoryRepository();
@@ -22,9 +25,20 @@ class MasterProductController extends GetxController {
   RxList<UnitModel> units = <UnitModel>[].obs;
   RxList<CategoryModel> categories = <CategoryModel>[].obs;
 
+  RxBool isLoading = false.obs;
   RxBool isLoadingUnits = false.obs;
   RxBool isLoadingCategories = false.obs;
   RxBool isLoadingProducts = false.obs;
+  RxBool isEdit = false.obs;
+
+  ProductModel? productModel;
+
+  void toggleEdit(bool value, int productId) {
+    isEdit.value = value;
+    if (value == true) {
+      loadProduct(productId);
+    }
+  }
 
   var expiryDateController = TextEditingController();
   String? productCode =
@@ -54,6 +68,8 @@ class MasterProductController extends GetxController {
     getProducts();
     getUnits();
     getCategories();
+
+    // ignore: unrelated_type_equality_checks
   }
 
   void getProducts() async {
@@ -65,6 +81,15 @@ class MasterProductController extends GetxController {
       throw Exception('Failed to load products: $e');
     } finally {
       isLoadingProducts.value = false;
+    }
+  }
+
+  void getProductById(int id) async {
+    try {
+      final response = await productRepository.getProductById(id);
+      print(response);
+    } catch (e) {
+      throw Exception('Failed to load product: $e');
     }
   }
 
@@ -98,7 +123,6 @@ class MasterProductController extends GetxController {
         'productCode': productCode,
         'name': name,
         'description': description,
-        'prescriptions': prescription,
         'purchasePrice': purchasePrice,
         'sellingPrice': sellingPrice,
         'expiryDate': expiryDate,
@@ -129,16 +153,102 @@ class MasterProductController extends GetxController {
     }
   }
 
+  void deleteProduct(int id) async {
+    try {
+      await productRepository.deleteProductById(id);
+
+      // tambahin pop up dialog konfirmasi delete
+      int count = 0;
+      Get.until((route) {
+        count++;
+        return count == 2; // Stop after going back two pages
+      });
+      getProducts();
+
+      // Show success snackbar
+      CustomSnackbar.showSnackbar(
+        Get.context!,
+        title: 'Success!',
+        message: 'Product deleted successfully',
+        contentType: ContentType.success,
+      );
+    } catch (e) {
+      // print('Error delete product$e');
+      // Show failure snackbar if there's an error
+      CustomSnackbar.showSnackbar(
+        Get.context!,
+        title: 'Failed!',
+        message: 'Failed to delete product',
+        contentType: ContentType.failure,
+      );
+    }
+  }
+
+  void updateProduct(int id) async {
+    try {
+      await productRepository.updateProductById(id, {
+        'productCode': productModel!.productCode,
+        'name': productModel!.name,
+        'description': productModel!.description,
+        'purchasePrice': productModel!.purchasePrice,
+        'sellingPrice': productModel!.sellingPrice,
+        'expiryDate': productModel!.expiryDate,
+        'stockQuantity': productModel!.stockQuantity,
+        'categoryId': selectedCategory!.id,
+        'unitId': selectedUnit!.id,
+        'productImageUrl': productModel!.productImageUrl,
+        'drugClass': selectedDrugClass,
+      });
+      Get.back(result: true);
+
+      // Show success snackbar
+      CustomSnackbar.showSnackbar(
+        Get.context!,
+        title: 'Success!',
+        message: 'Product updated successfully',
+        contentType: ContentType.success,
+      );
+    } catch (e) {
+      // print('Error update product$e');
+      // Show failure snackbar if there's an error
+      CustomSnackbar.showSnackbar(
+        Get.context!,
+        title: 'Failed!',
+        message: 'Failed to update product',
+        contentType: ContentType.failure,
+      );
+    }
+  }
+
+  void loadProduct(int productId) async {
+    isLoading.value = true;
+
+    try {
+      final product = await productRepository.getProductById(productId);
+      productModel = product;
+    } catch (e) {
+      throw Exception('Failed to load product: $e');
+      // TODO
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   void pickExpireDate() async {
     DateTime? pickedDate = await showDatePicker(
+      onDatePickerModeChange: (value) {
+        print('onDatePickerModeChange: $value');
+      },
         context: Get.context!,
         firstDate: DateTime.now(),
         lastDate: DateTime(2101),
         initialDate: DateTime.now());
 
     if (pickedDate != null) {
-      expiryDateController.text = DateFormat('dd-MM-yyyy').format(pickedDate);
+      productModel!.expiryDate = DateFormat('dd-MM-yyyy').format(pickedDate);
       expiryDate = pickedDate.toIso8601String();
+      productModel!.expiryDate = expiryDate;
+      print('expiryDate: $expiryDate');
     }
   }
 
@@ -148,7 +258,7 @@ class MasterProductController extends GetxController {
     } else {
       value = value.replaceAll(RegExp(r'[^0-9]'), '');
       purchasePrice = int.parse(value);
-      // print('purchasePice: $purchasePrice');
+      // print('purchasePrice: $purchasePrice');
     }
   }
 

@@ -102,7 +102,7 @@ class _ReportTransactionWidgetState extends State<ReportTransactionWidget>
                             border: Border.all(
                                 color: Colors.grey.shade300, width: 0.5),
                             borderRadius: BorderRadius.circular(5)),
-                        child: Image.network(widget.cartModel!.productImage),
+                        child: Image.network(widget.cartModel!.productImage ),
                       ),
                       title: Text(
                         widget.cartModel!.transactionCode!,
@@ -117,12 +117,14 @@ class _ReportTransactionWidgetState extends State<ReportTransactionWidget>
                         children: [
                           SummaryText(
                             padding: EdgeInsets.zero,
-                            leftText: widget.cartModel!.productLabel,
+                            leftText:
+                                widget.cartModel!.productLabel, // '(${widget.cartModel!.productCode}) ${widget.cartModel!.name}',
                             leftStyle: Theme.of(context)
                                 .textTheme
                                 .labelSmall!
                                 .copyWith(overflow: TextOverflow.ellipsis),
-                            rightText: widget.cartModel!.productQty, // '1x',
+                            rightText: widget.cartModel!.productQty
+                            , // '1x',
                             rightStyle: Theme.of(context).textTheme.bodySmall,
                           ),
                           Text(

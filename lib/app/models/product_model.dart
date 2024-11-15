@@ -37,14 +37,14 @@ class ProductModel {
         name: json['name'],
         description: json['description'],
         purchasePrice: json['purchasePrice'],
-        sellingPrice: json['sellingPrice'],
+        sellingPrice: json['sellingPrice'] ?? 0,
         expiryDate: json['expiryDate'],
         stockQuantity: json['stockQuantity'],
         category: json['category'] != null
             ? CategoryModel.fromJson(json['category'])
             : null,
         unit: json['unit'] != null ? UnitModel.fromJson(json['unit']) : null,
-        productImageUrl: json['productImageUrl'],
+        productImageUrl: json['productImageUrl'] ?? '',
         drugClass: json['drugClass']);
   }
 }

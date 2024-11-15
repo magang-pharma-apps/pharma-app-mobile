@@ -23,4 +23,9 @@ class DoctorProvider extends ApiProvider {
     final response = await post('doctors', data);
     return response;
   }
+
+  Future<http.Response> deleteDoctor(int id) async {
+    final response = await delete('doctors/$id');
+    return response;
+  }
 }

@@ -90,7 +90,11 @@ class ProductFormView extends GetView<MasterProductController> {
               ),
               const SizedBox(height: 10),
               TextFormField(
-                onChanged: controller.onPurchasePriceChanged,
+                onChanged: (value) {
+                  // Remove non-numeric characters before parsing to an integer
+                  final numericValue = value.replaceAll(RegExp(r'[^0-9]'), '');
+                  controller.purchasePrice = int.tryParse(numericValue) ?? 0;
+                },
                 keyboardType: TextInputType.number,
                 inputFormatters: [
                   RupiahInputFormatter(),
@@ -101,12 +105,16 @@ class ProductFormView extends GetView<MasterProductController> {
                       .bodyMedium!
                       .copyWith(color: Colors.grey),
                   labelText: 'Purchase Price',
-                  hintText: controller.formatToRupiah(controller.purchasePrice),
+                  hintText: 'Rp. 0',
                 ),
               ),
               const SizedBox(height: 10),
               TextFormField(
-                onChanged: controller.onSellingPriceChanged,
+                onChanged: (value) {
+                  // Remove non-numeric characters before parsing to an integer
+                  final numericValue = value.replaceAll(RegExp(r'[^0-9]'), '');
+                  controller.sellingPrice = int.tryParse(numericValue) ?? 0;
+                },
                 keyboardType: TextInputType.number,
                 inputFormatters: [RupiahInputFormatter()],
                 decoration: InputDecoration(

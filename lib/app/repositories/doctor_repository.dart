@@ -40,4 +40,19 @@ class DoctorRepository {
       throw Exception('Failed to create doctor $e');
     }
   }
+
+  Future<bool> deleteDoctor(int id) async {
+    try {
+      final response = await doctorProvider.deleteDoctor(id);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        final errorReponse = json.decode(response.body);
+        throw Exception('Failed to delete doctor: ${errorReponse['message']}');
+      }
+    } catch (e) {
+      throw Exception('Failed to delete doctor $e');
+    }
+  }  
 }

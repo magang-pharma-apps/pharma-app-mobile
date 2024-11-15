@@ -5,7 +5,6 @@ import 'package:medpia_mobile/app/modules/report/views/report_view.dart';
 import 'package:medpia_mobile/app/modules/home/views/home_view.dart';
 import 'package:medpia_mobile/app/modules/master/views/master_view.dart';
 import 'package:medpia_mobile/app/modules/prescription/views/prescription_view.dart';
-import 'package:medpia_mobile/app/modules/profile/views/profile_view.dart';
 
 class CoreView extends StatefulWidget {
   const CoreView({super.key});
@@ -27,7 +26,6 @@ class _CoreViewState extends State<CoreView> {
           ReportView(),
           PrescriptionView(),
           MasterView(),
-          UserView(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -52,8 +50,7 @@ class _CoreViewState extends State<CoreView> {
           BottomNavigationBarItem(
               label: 'Master',
               icon: Icon(HugeIcons.strokeRoundedDashboardCircleSettings)),
-          BottomNavigationBarItem(
-              label: 'Profile', icon: Icon(HugeIcons.strokeRoundedUser)),
+         
         ],
       ),
     );

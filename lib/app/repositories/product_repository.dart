@@ -24,6 +24,20 @@ class ProductRepository {
     }
   }
 
+  Future<ProductModel> getProductById(int id) async {
+    final response = await productProvider.getProductById(id);
+    print(response.body);
+    print(response.statusCode);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final jsonResponse = json.decode(response.body);
+      final data = jsonResponse['data'];
+      return ProductModel.fromJson(data);
+    } else {
+      throw Exception('Failed to load product ${response.statusCode}');
+    }
+  }
+
   Future<bool> createProduct(Map<String, dynamic> body) async {
     try {
       final response = await productProvider.createProduct(body);
@@ -39,6 +53,42 @@ class ProductRepository {
       }
     } catch (e) {
       throw Exception('Failed to create product: $e');
+    }
+  }
+
+  Future<bool> deleteProductById(int id) async {
+    try {
+      final response = await productProvider.deleteProductById(id);
+      // print(response.body);
+      // print('status ${response.statusCode}');
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        return true;
+      } else {
+        final errorResponse = json.decode(response.body);
+        throw Exception(
+            'Failed to delete product: ${errorResponse['message']}');
+      }
+    } catch (e) {
+      throw Exception('Failed to delete product: $e');
+    }
+  }
+
+  Future<bool> updateProductById(int id, Map<String, dynamic> body) async {
+    try {
+      final response = await productProvider.updateProductById(id, body);
+      // print(response.body);
+      // print('status ${response.statusCode}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return true;
+      } else {
+        final errorResponse = json.decode(response.body);
+        throw Exception(
+            'Failed to update product: ${errorResponse['message']}');
+      }
+    } catch (e) {
+      throw Exception('Failed to update product: $e');
     }
   }
 }

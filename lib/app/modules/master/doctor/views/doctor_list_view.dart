@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:medpia_mobile/app/commons/ui/widgets/custom_confirm_modal.dart';
 import 'package:medpia_mobile/app/modules/master/doctor/controllers/doctor_list_controller.dart';
 import 'package:medpia_mobile/app/modules/master/doctor/views/doctor_edit_view.dart';
 import 'package:medpia_mobile/app/modules/master/doctor/views/doctor_form_view.dart';
@@ -86,7 +87,7 @@ class DoctorListView extends GetView<DoctorListController> {
                     ],
                   ),
                   onTap: () {
-                    Get.to(DoctorEditView());
+                    Get.to(const DoctorEditView());
                   },
                   onLongPress: () {
                     showCupertinoModalPopup(
@@ -102,11 +103,34 @@ class DoctorListView extends GetView<DoctorListController> {
                                 onPressed: () {
                                   Get.to(DoctorEditView());
                                 },
-                                child: Text('Edit'),
+                                child: const Text('Edit'),
                               ),
                               CupertinoActionSheetAction(
-                                onPressed: () {},
-                                child: Text('Delete'),
+                                onPressed: () {
+                                  int count = 0;
+                                  Get.until((route) {
+                                    count++;
+                                    return count ==
+                                        2; // Stop after going back two pages
+                                  });
+                                  showModalBottomSheet(
+                                      constraints: const BoxConstraints(
+                                          minHeight: 270, maxHeight: 270),
+                                      context: context,
+                                      builder: (context) {
+                                        return CustomConfirmModal(
+                                          customTitle:
+                                              "Delete ${doctor.name} permanent from doctor?",
+                                          buttonText: "Delete",
+                                          imageAssetName:
+                                              "assets/images/delete-confirm.jpg",
+                                          onPressed: () {
+                                            controller.deleteDoctor(doctor.id!);
+                                          },
+                                        );
+                                      });
+                                },
+                                child: const Text('Delete'),
                               ),
                             ],
                           );

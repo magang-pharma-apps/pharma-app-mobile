@@ -23,4 +23,9 @@ class CategoryProvider extends ApiProvider {
     final response = await post('categories', body);
     return response;
   }
+
+  Future<http.Response> deleteCategory(int id) async {
+    final response = await delete('categories/$id');
+    return response;
+  }
 }

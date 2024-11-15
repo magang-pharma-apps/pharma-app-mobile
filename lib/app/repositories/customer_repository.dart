@@ -40,4 +40,20 @@ class CustomerRepository {
       throw Exception('Failed to create customer: $e');
     }
   }
+  
+
+  Future<bool> deleteCustomer(int id) async {
+     try {
+      final response = await customerProvider.deleteCustomer(id);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        final errorReponse = json.decode(response.body);
+        throw Exception('Failed to delete customer: ${errorReponse['message']}');
+      }
+    } catch (e) {
+      throw Exception('Failed to delete customer $e');
+    }
+  }
 }

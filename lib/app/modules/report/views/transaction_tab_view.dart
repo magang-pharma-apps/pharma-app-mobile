@@ -8,7 +8,7 @@ import 'package:medpia_mobile/app/modules/report/views/report_transaction_widget
 import 'package:medpia_mobile/app/repositories/transaction_repository.dart';
 
 class TransactionTabView extends GetView<ReportController> {
-  TransactionTabView({super.key});
+  const TransactionTabView({super.key});
 
   @override
   get controller => Get.put(ReportController());

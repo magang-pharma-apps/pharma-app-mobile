@@ -42,9 +42,9 @@ class CartModel {
         subtotal: json['subTotal'] != null ? json['subTotal'].toDouble() : 0.0,
         grandtotal:
             json['grandTotal'] != null ? json['grandTotal'].toDouble() : 0.0,
-        tax: json['tax'],
-        paymentMethod: json['paymentMethod'],
-        note: json['note'],
+        tax: json['tax'] ?? 0,
+        paymentMethod: json['paymentMethod'] ?? '',
+        note: json['note'] ?? '',
         transactionDate: json['transactionDate'] ?? '',
         userId: json['userId'],
         transactionCode: json['transactionCode'] ?? '',
@@ -74,7 +74,7 @@ class CartModel {
   }
 
   String get createdPayment =>
-      paymentMethod! + ' | Cashier by ' + user!.username!;
+      '${paymentMethod!} | Cashier by ${user!.username!}';
 
   String get subtotalFormatted => FormatRupiah.format(subtotal!.toInt());
 
@@ -82,12 +82,38 @@ class CartModel {
 
   String get grandtotalFormatted => FormatRupiah.format(grandtotal!.toInt());
 
-  String get productLabel =>
-      '(${items![0].product!.productCode!}) ' + items![0].product!.name!;
+  String get productLabel {
+    if (items!.isNotEmpty) {
+      final product = items![0].product;
+      return '(${product?.productCode ?? ''}) ${product?.name ?? ''}';
+    }
+    return '';
+  }
 
-  String get productImage => items![0].product!.productImageUrl!;
+  // String get productImage => items![0].product!.productImageUrl!;
+  String get productImage {
+    if (items!.isNotEmpty) {
+      final product = items![0].product;
+      return '${product?.productImageUrl}';
+    }
+    return '';
+  }
 
-  String get productQty => '${items![0].productPrice}   x${items![0].quantity}';
 
-  String get itemNote => items![0].note!;
+  String get productQty {
+    if (items != null && items!.isNotEmpty) {
+      // final itemPrice = items![0].productPrice;
+      final itemQty = items![0].quantity;
+      return '${items![0].productPrice}   x$itemQty';
+    }
+    return '';
+  }
+
+  // String get itemNote => items![0].note!;
+  String get itemNote {
+    if (items!.isNotEmpty) {
+      return items![0].note!;
+    }
+    return '';
+  }
 }

@@ -41,4 +41,19 @@ class CategoryRepository {
       throw Exception('Failed to create category: $e');
     }
   }
+
+  Future<bool> deleteCategories(int id) async {
+    try {
+      final response = await categoryProvider.deleteCategory(id);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        return true;
+      } else {
+        final errorResponse = json.decode(response.body);
+        throw Exception(
+            'Failed to delete category: ${errorResponse['message']}');
+      }
+    } catch (e) {
+      throw Exception('Failed to delete category: $e');
+    }
+  }
 }

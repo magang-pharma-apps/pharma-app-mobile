@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
+import 'package:medpia_mobile/app/commons/ui/widgets/custom_confirm_modal.dart';
 import 'package:medpia_mobile/app/models/category_model.dart';
 import 'package:medpia_mobile/app/modules/master/category/controllers/category_list_controller.dart';
 import 'package:medpia_mobile/app/modules/master/category/views/category_edit_view.dart';
@@ -10,7 +11,7 @@ import 'package:medpia_mobile/app/modules/master/category/views/category_form_vi
 import 'package:medpia_mobile/app/repositories/category_repository.dart';
 
 class CategoryListView extends GetView<CategoryListController> {
-  CategoryListView({super.key});
+  const CategoryListView({super.key});
 
   @override
   get controller => Get.put(CategoryListController());
@@ -95,7 +96,31 @@ class CategoryListView extends GetView<CategoryListController> {
                                 child: Text('Edit'),
                               ),
                               CupertinoActionSheetAction(
-                                onPressed: () {},
+                                onPressed: () {
+                                  int count = 0;
+                                  Get.until((route) {
+                                    count++;
+                                    return count ==
+                                        2; // Stop after going back two pages
+                                  });
+                                  showModalBottomSheet(
+                                      constraints: const BoxConstraints(
+                                          minHeight: 270, maxHeight: 270),
+                                      context: context,
+                                      builder: (context) {
+                                        return CustomConfirmModal(
+                                          customTitle:
+                                              "Delete ${category.name} permanent from category?",
+                                          buttonText: "Delete",
+                                          imageAssetName:
+                                              "assets/images/delete-confirm.jpg",
+                                          onPressed: () {
+                                            controller
+                                                .deleteCategory(category.id!);
+                                          },
+                                        );
+                                      });
+                                },
                                 child: Text('Delete'),
                               ),
                             ],

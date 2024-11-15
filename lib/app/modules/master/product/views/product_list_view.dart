@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
+import 'package:medpia_mobile/app/commons/ui/widgets/custom_confirm_modal.dart';
 import 'package:medpia_mobile/app/modules/master/product/controllers/master_product_controller.dart';
 import 'package:medpia_mobile/app/modules/master/product/views/product_edit_view.dart';
 import 'package:medpia_mobile/app/modules/master/product/views/product_form_view.dart';
 
 class ProductListView extends GetView<MasterProductController> {
-  const ProductListView({super.key});
+  ProductListView({
+    super.key,
+  });
 
   @override
   get controller => Get.put(MasterProductController());
@@ -76,9 +79,16 @@ class ProductListView extends GetView<MasterProductController> {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   onTap: () {
-                    Get.to(const ProductEditView());
+                    controller.toggleEdit(true, product.id!);
+                    print('Product ID: ${product.id}');
+                    Get.to(ProductEditView(productId: product.id!));
                   },
                   onLongPress: () {
+                    int count = 0;
+                    Get.until((route) {
+                      count++;
+                      return count == 2; // Stop after going back two pages
+                    });
                     showCupertinoModalPopup(
                         context: context,
                         builder: (context) {
@@ -90,13 +100,11 @@ class ProductListView extends GetView<MasterProductController> {
                             actions: [
                               CupertinoActionSheetAction(
                                 onPressed: () {
-                                  Get.to(const ProductEditView());
+                                  controller.toggleEdit(true, product.id!);
+                                  Get.to(
+                                      ProductEditView(productId: product.id!));
                                 },
                                 child: Text('Edit'),
-                              ),
-                              CupertinoActionSheetAction(
-                                onPressed: () {},
-                                child: Text('Delete'),
                               ),
                             ],
                           );

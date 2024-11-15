@@ -23,4 +23,9 @@ class UnitProvider extends ApiProvider {
     final response = await post('units', body);
     return response;
   }
+
+  Future<http.Response> deleteUnit(int id) async {
+    final response = await delete('units/$id');
+    return response;
+  }
 }

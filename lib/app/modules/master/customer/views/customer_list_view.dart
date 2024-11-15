@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:medpia_mobile/app/commons/ui/widgets/custom_confirm_modal.dart';
 import 'package:medpia_mobile/app/models/customer_model.dart';
 import 'package:medpia_mobile/app/modules/master/customer/controllers/customer_list_controller.dart';
 import 'package:medpia_mobile/app/modules/master/customer/views/customer_edit_view.dart';
@@ -101,11 +102,34 @@ class CustomerListView extends GetView<CustomerListController> {
                                 onPressed: () {
                                   Get.to(CustomerEditView());
                                 },
-                                child: Text('Edit'),
+                                child: const Text('Edit'),
                               ),
                               CupertinoActionSheetAction(
-                                onPressed: () {},
-                                child: Text('Delete'),
+                                onPressed: () {
+                                  int count = 0;
+                                  Get.until((route) {
+                                    count++;
+                                    return count ==
+                                        2; // Stop after going back two pages
+                                  });
+                                  showModalBottomSheet(
+                                      constraints: const BoxConstraints(
+                                          minHeight: 270, maxHeight: 270),
+                                      context: context,
+                                      builder: (context) {
+                                        return CustomConfirmModal(
+                                          customTitle:
+                                              "Delete ${customer.name} permanent from customer?",
+                                          buttonText: "Delete",
+                                          imageAssetName:
+                                              "assets/images/delete-confirm.jpg",
+                                          onPressed: () {
+                                            controller.deleteCustomer(customer.id!);
+                                          },
+                                        );
+                                      });
+                                },
+                                child: const Text('Delete'),
                               ),
                             ],
                           );

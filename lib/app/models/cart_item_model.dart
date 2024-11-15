@@ -13,8 +13,8 @@ class CartItemModel {
       product: json['product'] != null
           ? ProductModel.fromJson(json['product'])
           : null,
-      quantity: json['quantity'],
-      note: json['note']?? '',
+      quantity: json['quantity'] ?? 0,
+      note: json['note'] ?? '',
     );
   }
 
@@ -23,13 +23,14 @@ class CartItemModel {
       'productId': product!.id,
       'quantity': quantity,
       'note': note,
-      // 'total_price': product!.sellingPrice! * quantity!,
     };
   }
 
   String get productLabel => '$quantity x ${product!.name ?? ''}';
 
-  String get productPrice => FormatRupiah.format(product!.sellingPrice!);
+  String get productPrice => FormatRupiah.format(product?.sellingPrice! ?? 0) ;
 
-  String get totalPrice => FormatRupiah.format(product!.sellingPrice! * quantity!);
+
+  String get totalPrice =>
+      FormatRupiah.format(product!.sellingPrice! * quantity!);
 }
