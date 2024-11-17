@@ -15,4 +15,14 @@ class DoctorModel {
         phoneNumber: json['phoneNumber'],
         email: json['email']);
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'specialization': specialization,
+      'phoneNumber': phoneNumber,
+      'email': email
+    };
+  }
 }

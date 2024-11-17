@@ -86,7 +86,8 @@ class CustomerListView extends GetView<CustomerListController> {
                     maxLines: 1,
                   ),
                   onTap: () {
-                    Get.to(CustomerEditView());
+                    controller.getCustomerById(customer.id!);
+                    Get.to(CustomerEditView(customerId: customer.id!));
                   },
                   onLongPress: () {
                     showCupertinoModalPopup(
@@ -100,7 +101,10 @@ class CustomerListView extends GetView<CustomerListController> {
                             actions: [
                               CupertinoActionSheetAction(
                                 onPressed: () {
-                                  Get.to(CustomerEditView());
+                                  controller.toggleEdit(true, customer.id!);
+                                  Get.to(CustomerEditView(
+                                    customerId: customer.id!,
+                                  ));
                                 },
                                 child: const Text('Edit'),
                               ),
@@ -124,7 +128,8 @@ class CustomerListView extends GetView<CustomerListController> {
                                           imageAssetName:
                                               "assets/images/delete-confirm.jpg",
                                           onPressed: () {
-                                            controller.deleteCustomer(customer.id!);
+                                            controller
+                                                .deleteCustomer(customer.id!);
                                           },
                                         );
                                       });

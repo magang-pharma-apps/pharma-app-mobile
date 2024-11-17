@@ -1,9 +1,12 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:medpia_mobile/app/modules/product/views/product_view.dart';
 
 class CustomBanner extends StatelessWidget {
-  const CustomBanner({
-    super.key,
+  final VoidCallback? onPressed;
+   CustomBanner({ 
+    super.key, this.onPressed
   });
 
   @override
@@ -40,10 +43,8 @@ class CustomBanner extends StatelessWidget {
                 SizedBox(height: 10),
                 ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProductView()));
+                      onPressed!();
+                      
                     },
                     child: Text(
                       "Order Now",

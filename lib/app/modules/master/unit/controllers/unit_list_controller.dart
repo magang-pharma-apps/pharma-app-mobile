@@ -89,11 +89,11 @@ class UnitListController extends GetxController {
   void updateUnit(int id) async {
     isLoading.value = true;
     try {
-      print('unitModel!.value.toJson(): ${unitModel!.value.toJson()}');
+      // print('unitModel!.value.toJson(): ${unitModel!.value.toJson()}');
       await unitRepository.updateUnit(id, unitModel!.value.toJson());
-      isLoading.value = false;
       Get.back(result: true);
       getUnits();
+
       CustomSnackbar.showSnackbar(
         Get.context!,
         title: 'Success!',
@@ -101,7 +101,6 @@ class UnitListController extends GetxController {
         contentType: ContentType.success,
       );
     } catch (e) {
-      isLoading.value = false;
       CustomSnackbar.showSnackbar(
         Get.context!,
         title: 'Failed!',
@@ -111,6 +110,8 @@ class UnitListController extends GetxController {
       print('Error update product$e');
 
       throw Exception('Failed to update unit: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 }

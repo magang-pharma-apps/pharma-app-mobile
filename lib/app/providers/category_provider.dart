@@ -14,7 +14,7 @@ class CategoryProvider extends ApiProvider {
     return response;
   }
 
-  Future<http.Response> getCategoryById(String id) async {
+  Future<http.Response> getCategoryById(int id) async {
     final response = await get('categories/$id');
     return response;
   }
@@ -26,6 +26,11 @@ class CategoryProvider extends ApiProvider {
 
   Future<http.Response> deleteCategory(int id) async {
     final response = await delete('categories/$id');
+    return response;
+  }
+
+  Future<http.Response> updateCategory(int id, Map<String, dynamic> body) async {
+    final response = await patch('categories/$id', body);
     return response;
   }
 }

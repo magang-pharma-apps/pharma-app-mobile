@@ -24,6 +24,20 @@ class CategoryRepository {
     }
   }
 
+  Future<CategoryModel> getCategoryById(int id) async {
+    final response = await categoryProvider.getCategoryById(id);
+    print(response.body);
+    print(response.statusCode);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final jsonResponse = json.decode(response.body);
+      final data = jsonResponse['data'];
+      return CategoryModel.fromJson(data);
+    } else {
+      throw Exception('Failed to load category ${response.statusCode}');
+    }
+  }
+
   Future<bool> createCategory(Map<String, dynamic> body) async {
     try {
       final response = await categoryProvider.createCategory(body);
@@ -54,6 +68,21 @@ class CategoryRepository {
       }
     } catch (e) {
       throw Exception('Failed to delete category: $e');
+    }
+  }
+
+  Future<bool> updateCategory(int id, Map<String, dynamic> body) async {
+    try {
+      final response = await categoryProvider.updateCategory(id, body);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        return true;
+      } else {
+        final errorResponse = json.decode(response.body);
+        throw Exception(
+            'Failed to update category: ${errorResponse['message']}');
+      }
+    } catch (e) {
+      throw Exception('Failed to update category: $e');
     }
   }
 }

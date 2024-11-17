@@ -14,7 +14,7 @@ class CustomerProvider extends ApiProvider {
     return response;
   }
 
-  Future<http.Response> getCustomerById(String id) async {
+  Future<http.Response> getCustomerById(int id) async {
     final response = await get('customers/$id');
     return response;
   }
@@ -26,6 +26,11 @@ class CustomerProvider extends ApiProvider {
 
   Future<http.Response> deleteCustomer(int id) async {
     final response = await delete('customers/$id');
+    return response;
+  }
+
+  Future<http.Response> updateCustomer(int id, Map<String, dynamic> body) async {
+    final response = await patch('customers/$id', body);
     return response;
   }
 }

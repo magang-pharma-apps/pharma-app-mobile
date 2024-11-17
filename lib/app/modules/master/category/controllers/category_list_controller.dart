@@ -9,13 +9,23 @@ class CategoryListController extends GetxController {
   final categoryRepository = CategoryRepository();
 
   RxList<CategoryModel> categories = <CategoryModel>[].obs;
+  Rx<CategoryModel>? categoryModel = CategoryModel().obs;
 
   RxBool isLoading = false.obs;
+
+  RxBool isEdit = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     getCategories();
+  }
+
+  void toggleEdit(bool value, int categoryId) {
+    isEdit.value = value;
+    if (value == true) {
+      loadCategory(categoryId);
+    }
   }
 
   void getCategories() async {
@@ -25,6 +35,18 @@ class CategoryListController extends GetxController {
       categories.value = response;
     } catch (e) {
       throw Exception('Failed to load categories: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void getCategoryById(int id) async {
+    isLoading.value = true;
+    try {
+      final response = await categoryRepository.getCategoryById(id);
+      categoryModel!.value = response;
+    } catch (e) {
+      throw Exception('Failed to load category: $e');
     } finally {
       isLoading.value = false;
     }
@@ -48,6 +70,39 @@ class CategoryListController extends GetxController {
         Get.context!,
         title: 'Failed!',
         message: 'Failed to delete category',
+        contentType: ContentType.failure,
+      );
+    }
+  }
+
+  void loadCategory(int categoryId) async {
+    try {
+      isLoading.value = true;
+      final category = await categoryRepository.getCategoryById(categoryId);
+      categoryModel!.value = category;
+    } catch (e) {
+      throw Exception('Failed to load category: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void updateCategory(int id) async {
+    try {
+      await categoryRepository.updateCategory(
+          id, categoryModel!.value.toJson());
+      isLoading.value = false;
+      Get.back(result: true);
+      getCategories();
+      CustomSnackbar.showSnackbar(Get.context!,
+          title: 'Success!',
+          message: 'Category updated successfully',
+          contentType: ContentType.success);
+    } catch (e) {
+      CustomSnackbar.showSnackbar(
+        Get.context!,
+        title: 'Failed!',
+        message: 'Failed to update category',
         contentType: ContentType.failure,
       );
     }

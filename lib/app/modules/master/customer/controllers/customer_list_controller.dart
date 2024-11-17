@@ -9,7 +9,9 @@ class CustomerListController extends GetxController {
   final customerRepository = CustomerRepository();
 
   RxList<CustomerModel> customers = <CustomerModel>[].obs;
+  Rx<CustomerModel>? customerModel = CustomerModel().obs;
 
+  RxBool isEditing = false.obs; 
   RxBool isLoading = false.obs;
 
   @override
@@ -17,6 +19,14 @@ class CustomerListController extends GetxController {
     super.onInit();
     getCustomers();
   }
+
+  void toggleEdit(bool value, int customerId) {
+    isEditing.value = value;
+    if (value == true) {
+      getCustomerById(customerId);
+    }
+  }
+  
 
   void getCustomers() async {
     try {
@@ -30,6 +40,21 @@ class CustomerListController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  void getCustomerById(int id) async {
+    try {
+      isLoading.value = true;
+      final response = await customerRepository.getCustomerById(id);
+      customerModel!.value = response;
+
+      // print(response);
+    } catch (e) {
+      throw Exception('Failed to load customer: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
 
   void deleteCustomer(int id) async {
     try {
@@ -59,4 +84,32 @@ class CustomerListController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  void updateCustomer(int id) async {
+    try {
+      isLoading.value = true;
+      await customerRepository.updateCustomer(id, customerModel!.value.toJson());
+      Get.back(result: true);
+      getCustomers();
+
+      CustomSnackbar.showSnackbar(
+        Get.context!,
+        title: 'Success!',
+        message: 'Customer updated successfully',
+        contentType: ContentType.success,
+      );
+    } catch (e) {
+      CustomSnackbar.showSnackbar(
+        Get.context!,
+        title: 'Failed!',
+        message: 'Failed to update Customer',
+        contentType: ContentType.failure,
+      );
+      throw Exception('Failed to update Customer: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  
 }

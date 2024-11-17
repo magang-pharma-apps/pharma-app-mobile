@@ -23,6 +23,18 @@ class CustomerRepository {
     }
   }
 
+  Future<CustomerModel> getCustomerById(int id) async {
+    final response = await customerProvider.getCustomerById(id);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final jsonResponse = json.decode(response.body);
+      final data = jsonResponse['data'];
+      return CustomerModel.fromJson(data);
+    } else {
+      throw Exception('Failed to load customer ${response.statusCode}');
+    }
+  }
+
   Future<bool> createCustomer(Map<String, dynamic> body) async {
     try {
       final response = await customerProvider.createCustomer(body);
@@ -54,6 +66,21 @@ class CustomerRepository {
       }
     } catch (e) {
       throw Exception('Failed to delete customer $e');
+    }
+  }
+
+  Future<bool> updateCustomer(int id, Map<String, dynamic> body) async {
+    try {
+      final response = await customerProvider.updateCustomer(id, body);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        final errorResponse = json.decode(response.body);
+        throw Exception('Failed to update customer: ${errorResponse['message']}');
+      }
+    } catch (e) {
+      throw Exception('Failed to update customer: $e');
     }
   }
 }

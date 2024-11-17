@@ -23,4 +23,13 @@ class CategoryModel {
       categoryImageUrl: json['categoryImageUrl'] ?? '',
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'categoryImageUrl': categoryImageUrl,
+    };
+  }
 }

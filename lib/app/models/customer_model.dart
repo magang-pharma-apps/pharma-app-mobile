@@ -13,4 +13,13 @@ class CustomerModel {
         age: json['age'],
         address: json['address']);
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'age': age,
+      'address': address,
+    };
+  }
 }

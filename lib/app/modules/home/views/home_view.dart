@@ -79,10 +79,21 @@ class _HomeViewState extends State<HomeView> {
                   // margin: EdgeInsets.symmetric(vertical: 10),
                   height: 150,
                   child: CarouselView(
+                    onTap: (value) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductView()));
+                    },
+                    shrinkExtent: 0.7,
                     padding: EdgeInsets.symmetric(horizontal: 5),
                     elevation: 0,
                     children: [
-                      CustomBanner(),
+                      CustomBanner(
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProductView()))),
                       CustomBanner(),
                     ],
                     itemExtent: MediaQuery.of(context).size.width,

@@ -44,54 +44,62 @@ class UnitEditView extends GetView<UnitListController> {
         centerTitle: true,
         title: Text('Unit Form', style: Theme.of(context).textTheme.labelLarge),
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-        ),
-        child: ListView(
-          children: [
-            ListTile(
-              contentPadding: const EdgeInsets.all(0),
-              visualDensity: VisualDensity.compact,
-              title: Text(
-                "Fill Unit Detail",
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-              subtitle:
-                  const Text("Fill in required fields to edit a new unit"),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: const BoxDecoration(
+              color: Colors.white,
             ),
-            const SizedBox(height: 10),
-            TextFormField(
-              initialValue: controller.unitModel!.value.name,
-              onChanged: (value) {
-                controller.unitModel!.value.name = value;
-              },
-              decoration: const InputDecoration(
-                labelText: 'Unit Name',
-              ),
+            child: ListView(
+              children: [
+                ListTile(
+                  contentPadding: const EdgeInsets.all(0),
+                  visualDensity: VisualDensity.compact,
+                  title: Text(
+                    "Fill Unit Detail",
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                  subtitle:
+                      const Text("Fill in required fields to edit a new unit"),
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  initialValue: controller.unitModel!.value.name,
+                  onChanged: (value) {
+                    controller.unitModel!.value.name = value;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Unit Name',
+                  ),
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  initialValue: controller.unitModel!.value.description,
+                  onChanged: (value) {
+                    controller.unitModel!.value.description = value;
+                  },
+                  maxLines: 5,
+                  decoration: const InputDecoration(
+                      labelText: 'Description',
+                      hintFadeDuration: Duration(seconds: 1),
+                      alignLabelWithHint: true,
+                      hintText: 'Write description here...',
+                      hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w300),
+                      constraints: BoxConstraints(maxHeight: 150)),
+                ),
+              ],
             ),
-            const SizedBox(height: 10),
-            TextFormField(
-              initialValue: controller.unitModel!.value.description,
-              onChanged: (value) {
-                controller.unitModel!.value.description = value;
-              },
-              maxLines: 5,
-              decoration: const InputDecoration(
-                  labelText: 'Description',
-                  hintFadeDuration: Duration(seconds: 1),
-                  alignLabelWithHint: true,
-                  hintText: 'Write description here...',
-                  hintStyle: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w300),
-                  constraints: BoxConstraints(maxHeight: 150)),
-            ),
-          ],
-        ),
-      ),
+          );
+        }
+      }),
     );
   }
 }

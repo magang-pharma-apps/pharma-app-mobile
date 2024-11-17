@@ -87,7 +87,10 @@ class DoctorListView extends GetView<DoctorListController> {
                     ],
                   ),
                   onTap: () {
-                    Get.to(const DoctorEditView());
+                    controller.toggleEdit(true, doctor.id!);
+                    Get.to(DoctorEditView(
+                      doctorId: doctor.id,
+                    ));
                   },
                   onLongPress: () {
                     showCupertinoModalPopup(
@@ -101,7 +104,10 @@ class DoctorListView extends GetView<DoctorListController> {
                             actions: [
                               CupertinoActionSheetAction(
                                 onPressed: () {
-                                  Get.to(DoctorEditView());
+                                  controller.toggleEdit(true, doctor.id!);
+                                  Get.to(DoctorEditView(
+                                    doctorId: doctor.id,
+                                  ));
                                 },
                                 child: const Text('Edit'),
                               ),

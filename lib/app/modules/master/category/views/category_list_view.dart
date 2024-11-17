@@ -77,7 +77,11 @@ class CategoryListView extends GetView<CategoryListController> {
                     maxLines: 2,
                   ),
                   onTap: () {
-                    Get.to(CategoryEditView());
+                    controller.toggleEdit(true, category.id!);
+
+                    Get.to(CategoryEditView(
+                      categoryId: category.id!,
+                    ));
                   },
                   onLongPress: () {
                     showCupertinoModalPopup(
@@ -91,7 +95,10 @@ class CategoryListView extends GetView<CategoryListController> {
                             actions: [
                               CupertinoActionSheetAction(
                                 onPressed: () {
-                                  Get.to(CategoryEditView());
+                                  controller.toggleEdit(true, category.id!);
+                                  Get.to(CategoryEditView(
+                                    categoryId: category.id,
+                                  ));
                                 },
                                 child: Text('Edit'),
                               ),

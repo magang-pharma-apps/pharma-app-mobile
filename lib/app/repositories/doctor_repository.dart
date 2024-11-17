@@ -25,14 +25,32 @@ class DoctorRepository {
     }
   }
 
+  Future<DoctorModel> getDoctorById(int id) async {
+    try {
+  final response = await doctorProvider.getDoctorById(id);
+  print(response.body);
+  print(response.statusCode);
+  
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    final jsonResponse = json.decode(response.body);
+    final data = jsonResponse['data'];
+    return DoctorModel.fromJson(data);
+  } else {
+    throw Exception('Failed to load doctor ${response.statusCode}');
+  }
+}  catch (e) {
+  throw Exception('Failed to load doctor $e');
+  // TODO
+}
+  }
+
   Future<bool> createDoctor(Map<String, dynamic> body) async {
     try {
       final response = await doctorProvider.createDoctor(body);
 
       if (response.statusCode == 201) {
         return true;
-        
-      }else{
+      } else {
         final errorReponse = json.decode(response.body);
         throw Exception('Failed to create doctor: ${errorReponse['message']}');
       }
@@ -54,5 +72,20 @@ class DoctorRepository {
     } catch (e) {
       throw Exception('Failed to delete doctor $e');
     }
-  }  
+  }
+
+  Future<bool> updateDoctor(int id, Map<String, dynamic> body) async {
+    try {
+      final response = await doctorProvider.updateDoctor(id, body);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        final errorReponse = json.decode(response.body);
+        throw Exception('Failed to update doctor: ${errorReponse['message']}');
+      }
+    } catch (e) {
+      throw Exception('Failed to update doctor $e');
+    }
+  }
 }
