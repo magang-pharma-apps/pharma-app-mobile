@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:medpia_mobile/app/models/category_model.dart';
 import 'package:medpia_mobile/app/models/unit_model.dart';
 
@@ -46,5 +47,25 @@ class ProductModel {
         unit: json['unit'] != null ? UnitModel.fromJson(json['unit']) : null,
         productImageUrl: json['productImageUrl'] ?? '',
         drugClass: json['drugClass']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'productCode': productCode,
+      'name': name,
+      'description': description,
+      'purchasePrice': purchasePrice,
+      'sellingPrice': sellingPrice,
+      'expiryDate': expiryDate != null
+      ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSSZ').format(
+          DateFormat('dd-MM-yyyy').parse(expiryDate!),
+        )
+      : null,
+      'stockQuantity': stockQuantity,
+      'categoryId': category?.id,
+      'unitId': unit?.id,
+      'productImageUrl': productImageUrl,
+      'drugClass': drugClass
+    };
   }
 }

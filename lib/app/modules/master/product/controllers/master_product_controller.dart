@@ -15,8 +15,6 @@ import 'package:medpia_mobile/app/repositories/product_repository.dart';
 import 'package:medpia_mobile/app/repositories/unit_repository.dart';
 
 class MasterProductController extends GetxController {
-
-
   final productRepository = ProductRepository();
   final unitRepository = UnitRepository();
   final categoryRepository = CategoryRepository();
@@ -31,7 +29,7 @@ class MasterProductController extends GetxController {
   RxBool isLoadingProducts = false.obs;
   RxBool isEdit = false.obs;
 
-  ProductModel? productModel;
+  Rx<ProductModel>? productModel = ProductModel().obs;
 
   void toggleEdit(bool value, int productId) {
     isEdit.value = value;
@@ -51,7 +49,7 @@ class MasterProductController extends GetxController {
   String? description;
   int? purchasePrice = 0.obs.value;
   int? sellingPrice;
-  String? expiryDate;
+  String? expiryDate = ''.obs.value;
   int? stockQuantity;
   String? productImageUrl;
 
@@ -186,19 +184,8 @@ class MasterProductController extends GetxController {
 
   void updateProduct(int id) async {
     try {
-      await productRepository.updateProductById(id, {
-        'productCode': productModel!.productCode,
-        'name': productModel!.name,
-        'description': productModel!.description,
-        'purchasePrice': productModel!.purchasePrice,
-        'sellingPrice': productModel!.sellingPrice,
-        'expiryDate': productModel!.expiryDate,
-        'stockQuantity': productModel!.stockQuantity,
-        'categoryId': selectedCategory!.id,
-        'unitId': selectedUnit!.id,
-        'productImageUrl': productModel!.productImageUrl,
-        'drugClass': selectedDrugClass,
-      });
+      print('productModel!.value.toJson(): ${productModel!.value.toJson()}');
+      await productRepository.updateProductById(id, productModel!.value.toJson());
       Get.back(result: true);
 
       // Show success snackbar
@@ -209,7 +196,7 @@ class MasterProductController extends GetxController {
         contentType: ContentType.success,
       );
     } catch (e) {
-      // print('Error update product$e');
+      print('Error update product$e');
       // Show failure snackbar if there's an error
       CustomSnackbar.showSnackbar(
         Get.context!,
@@ -225,7 +212,11 @@ class MasterProductController extends GetxController {
 
     try {
       final product = await productRepository.getProductById(productId);
-      productModel = product;
+      productModel!.value = product;
+      productModel!.value.expiryDate = DateFormat('dd-MM-yyyy')
+          .format(DateTime.parse(productModel!.value.expiryDate!));
+      productModel!.value.category = null;
+      productModel!.value.unit = null;
     } catch (e) {
       throw Exception('Failed to load product: $e');
       // TODO
@@ -236,19 +227,22 @@ class MasterProductController extends GetxController {
 
   void pickExpireDate() async {
     DateTime? pickedDate = await showDatePicker(
-      onDatePickerModeChange: (value) {
-        print('onDatePickerModeChange: $value');
-      },
+        onDatePickerModeChange: (value) {
+          print('onDatePickerModeChange: $value');
+        },
         context: Get.context!,
         firstDate: DateTime.now(),
         lastDate: DateTime(2101),
         initialDate: DateTime.now());
 
     if (pickedDate != null) {
-      productModel!.expiryDate = DateFormat('dd-MM-yyyy').format(pickedDate);
-      expiryDate = pickedDate.toIso8601String();
-      productModel!.expiryDate = expiryDate;
-      print('expiryDate: $expiryDate');
+      productModel!.value.expiryDate =
+          DateFormat('dd-MM-yyyy').format(pickedDate);
+      // expiryDate = pickedDate.toIso8601String();
+      // productModel!.value.expiryDate = expiryDate;
+      productModel!.refresh();
+
+      print('expiryDate: ${productModel!.value.expiryDate}');
     }
   }
 

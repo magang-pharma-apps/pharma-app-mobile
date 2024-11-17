@@ -30,7 +30,7 @@ class ProductProvider extends ApiProvider {
   }
 
   Future<http.Response> updateProductById(int id, Map<String, dynamic> body) async {
-    final response = await put('products/$id', body);
+    final response = await patch('products/$id', body);
     return response;
   }
 }

@@ -77,8 +77,8 @@ class ProductRepository {
   Future<bool> updateProductById(int id, Map<String, dynamic> body) async {
     try {
       final response = await productProvider.updateProductById(id, body);
-      // print(response.body);
-      // print('status ${response.statusCode}');
+      print(response.body);
+      print('status ${response.statusCode}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
@@ -88,6 +88,7 @@ class ProductRepository {
             'Failed to update product: ${errorResponse['message']}');
       }
     } catch (e) {
+      print('error update product $e');
       throw Exception('Failed to update product: $e');
     }
   }
