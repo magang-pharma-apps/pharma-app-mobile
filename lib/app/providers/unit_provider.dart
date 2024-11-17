@@ -14,7 +14,7 @@ class UnitProvider extends ApiProvider {
     return response;
   }
 
-  Future<http.Response> getUnitById(String id) async {
+  Future<http.Response> getUnitById(int id) async {
     final response = await get('units/$id');
     return response;
   }
@@ -26,6 +26,11 @@ class UnitProvider extends ApiProvider {
 
   Future<http.Response> deleteUnit(int id) async {
     final response = await delete('units/$id');
+    return response;
+  }
+
+  Future<http.Response> updateUnit(int id, Map<String, dynamic> body) async {
+    final response = await patch('units/$id', body);
     return response;
   }
 }

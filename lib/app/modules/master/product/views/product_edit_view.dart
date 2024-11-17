@@ -235,7 +235,8 @@ class ProductEditView extends GetView<MasterProductController> {
                         controller.productModel!.value.stockQuantity.toString(),
                     keyboardType: TextInputType.number,
                     onChanged: (value) {
-                      controller.productModel!.value.stockQuantity = int.parse(value);
+                      controller.productModel!.value.stockQuantity =
+                          int.parse(value);
                       // print('stockQuantity: ${controller.stockQuantity}');
                     },
                     inputFormatters: [

@@ -8,7 +8,9 @@ import 'package:medpia_mobile/app/modules/master/unit/views/unit_edit_view.dart'
 import 'package:medpia_mobile/app/modules/master/unit/views/unit_form_view.dart';
 
 class UnitListView extends GetView<UnitListController> {
-  UnitListView({super.key});
+  UnitListView({
+    super.key,
+  });
 
   @override
   get controller => Get.put(UnitListController());
@@ -16,6 +18,7 @@ class UnitListView extends GetView<UnitListController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       persistentFooterButtons: [
         InkWell(
           onTap: () {
@@ -40,6 +43,7 @@ class UnitListView extends GetView<UnitListController> {
         )
       ],
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text('Master Unit List'),
       ),
       body: Obx(
@@ -59,7 +63,10 @@ class UnitListView extends GetView<UnitListController> {
                   title: Text(unit.name!),
                   subtitle: Text(unit.description!),
                   onTap: () {
-                    Get.to(() => const UnitEditView());
+                    controller.toggleEdit(true, unit.id!);
+                    Get.to(() => UnitEditView(
+                          unitId: unit.id!,
+                        ));
                   },
                   onLongPress: () {
                     showCupertinoModalPopup(
@@ -73,7 +80,8 @@ class UnitListView extends GetView<UnitListController> {
                             actions: [
                               CupertinoActionSheetAction(
                                 onPressed: () {
-                                  Get.to(const UnitEditView());
+                                  controller.toggleEdit(true, unit.id!);
+                                  Get.to(UnitEditView(unitId: unit.id!));
                                 },
                                 child: Text('Edit'),
                               ),

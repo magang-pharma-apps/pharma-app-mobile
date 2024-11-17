@@ -9,7 +9,7 @@ import 'package:medpia_mobile/app/modules/master/product/views/product_edit_view
 import 'package:medpia_mobile/app/modules/master/product/views/product_form_view.dart';
 
 class ProductListView extends GetView<MasterProductController> {
-  ProductListView({
+  const ProductListView({
     super.key,
   });
 
@@ -72,23 +72,26 @@ class ProductListView extends GetView<MasterProductController> {
                   visualDensity: VisualDensity(vertical: -4),
                   title: Text(product.name!,
                       style: Theme.of(context).textTheme.labelSmall),
-                  subtitle: Text(
-                      'Expired on ${DateFormat('yyyy-MM-dd').format(DateTime.parse(product.expiryDate!))}'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product.category!.name!,
+                      ),
+                      Text(
+                          'Expired on ${DateFormat('yyyy-MM-dd').format(DateTime.parse(product.expiryDate!))}'),
+                    ],
+                  ),
                   trailing: Text(
                     '${product.stockQuantity} ${product.unit!.name}',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   onTap: () {
                     controller.toggleEdit(true, product.id!);
-                    print('Product ID: ${product.id}');
+                    // print('Product ID: ${product.id}');
                     Get.to(ProductEditView(productId: product.id!));
                   },
                   onLongPress: () {
-                    int count = 0;
-                    Get.until((route) {
-                      count++;
-                      return count == 2; // Stop after going back two pages
-                    });
                     showCupertinoModalPopup(
                         context: context,
                         builder: (context) {

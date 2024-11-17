@@ -22,6 +22,20 @@ class UnitRepository {
     }
   }
 
+  Future<UnitModel> getUnitById(int id) async {
+    final response = await unitProvider.getUnitById(id);
+    print(response.body);
+    print(response.statusCode);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final jsonResponse = json.decode(response.body);
+      final data = jsonResponse['data'];
+      return UnitModel.fromJson(data);
+    } else {
+      throw Exception('Failed to load unit ${response.statusCode}');
+    }
+  }
+
   Future<bool> createUnit(Map<String, dynamic> body) async {
     try {
       final response = await unitProvider.createUnit(body);
@@ -51,6 +65,21 @@ class UnitRepository {
       }
     } catch (e) {
       throw Exception('Failed to delete unit: $e');
+    }
+  }
+
+  Future<bool> updateUnit(int id, Map<String, dynamic> body) async {
+    try {
+      final response = await unitProvider.updateUnit(id, body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return true;
+      } else {
+        final errorResponse = json.decode(response.body);
+        throw Exception('Failed to update unit: ${errorResponse['message']}');
+      }
+    } catch (e) {
+      throw Exception('Failed to update unit: $e');
     }
   }
 }

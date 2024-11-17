@@ -123,7 +123,11 @@ class MasterProductController extends GetxController {
         'description': description,
         'purchasePrice': purchasePrice,
         'sellingPrice': sellingPrice,
-        'expiryDate': expiryDate,
+        'expiryDate': expiryDate != null
+            ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSSZ').format(
+                DateFormat('dd-MM-yyyy').parse(expiryDate!),
+              )
+            : null,
         'stockQuantity': stockQuantity,
         'categoryId': selectedCategory!.id,
         'unitId': selectedUnit!.id,
@@ -185,8 +189,10 @@ class MasterProductController extends GetxController {
   void updateProduct(int id) async {
     try {
       print('productModel!.value.toJson(): ${productModel!.value.toJson()}');
-      await productRepository.updateProductById(id, productModel!.value.toJson());
+      await productRepository.updateProductById(
+          id, productModel!.value.toJson());
       Get.back(result: true);
+      getProducts();
 
       // Show success snackbar
       CustomSnackbar.showSnackbar(
@@ -238,11 +244,14 @@ class MasterProductController extends GetxController {
     if (pickedDate != null) {
       productModel!.value.expiryDate =
           DateFormat('dd-MM-yyyy').format(pickedDate);
+      expiryDate = DateFormat('dd-MM-yyyy').format(pickedDate);
       // expiryDate = pickedDate.toIso8601String();
       // productModel!.value.expiryDate = expiryDate;
+      expiryDateController.text = expiryDate!;
       productModel!.refresh();
 
-      print('expiryDate: ${productModel!.value.expiryDate}');
+      print('expiryDate from productModel: ${productModel!.value.expiryDate}');
+      print('expiryDate: $expiryDate');
     }
   }
 

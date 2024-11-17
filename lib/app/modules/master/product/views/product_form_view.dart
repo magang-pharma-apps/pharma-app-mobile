@@ -128,15 +128,19 @@ class ProductFormView extends GetView<MasterProductController> {
               ),
               const SizedBox(height: 10),
               TextFormField(
-                  readOnly: true,
-                  controller: controller.expiryDateController,
-                  decoration: const InputDecoration(
-                      labelText: 'Expiry Date',
-                      suffixIcon: Icon(
-                        HugeIcons.strokeRoundedCalendar02,
-                        color: Colors.black,
-                      )),
-                  onTap: controller.pickExpireDate),
+                readOnly: true,
+                controller: controller.expiryDateController,
+                decoration: const InputDecoration(
+                    labelText: 'Expiry Date',
+                    suffixIcon: Icon(
+                      HugeIcons.strokeRoundedCalendar02,
+                      color: Colors.black,
+                    )),
+                onTap: controller.pickExpireDate,
+                onChanged: (value) {
+                  controller.expiryDate = value;
+                },
+              ),
               const SizedBox(height: 10),
               DropdownButtonFormField<CategoryModel>(
                 decoration: const InputDecoration(

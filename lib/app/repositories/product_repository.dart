@@ -26,8 +26,8 @@ class ProductRepository {
 
   Future<ProductModel> getProductById(int id) async {
     final response = await productProvider.getProductById(id);
-    print(response.body);
-    print(response.statusCode);
+    // print(response.body);
+    // print(response.statusCode);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonResponse = json.decode(response.body);
@@ -41,8 +41,8 @@ class ProductRepository {
   Future<bool> createProduct(Map<String, dynamic> body) async {
     try {
       final response = await productProvider.createProduct(body);
-      print(response.body);
-      print('status ${response.statusCode}');
+      // print(response.body);
+      // print('status ${response.statusCode}');
 
       if (response.statusCode == 201 || response.statusCode == 200) {
         return true;
@@ -76,9 +76,9 @@ class ProductRepository {
 
   Future<bool> updateProductById(int id, Map<String, dynamic> body) async {
     try {
-      final response = await productProvider.updateProductById(id, body);
-      print(response.body);
-      print('status ${response.statusCode}');
+      final response = await productProvider.updateProduct(id, body);
+      // print(response.body);
+      // print('status ${response.statusCode}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
