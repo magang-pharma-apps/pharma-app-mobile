@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/search_widget.dart';
+import 'package:medpia_mobile/app/modules/report/views/inventory_tab_view.dart';
 import 'package:medpia_mobile/app/modules/report/views/transaction_tab_view.dart';
 
 class ReportView extends StatefulWidget {
@@ -25,6 +26,7 @@ class _ReportViewState extends State<ReportView>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: null,
         title: Text(
           'Report',
@@ -63,10 +65,13 @@ class _ReportViewState extends State<ReportView>
               )
             ]),
       ),
-      body: TabBarView(controller: tabBarController, children: [
-        TransactionTabView(),
-        Text('ReportView is working'),
-      ]),
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.8,
+        child: TabBarView(controller: tabBarController, children: [
+          Text('tes'),
+          InventoryTabView(),
+        ]),
+      ),
     );
   }
 }

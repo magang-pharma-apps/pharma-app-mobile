@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/models/prescription_model.dart';
 import 'package:medpia_mobile/app/modules/prescription/views/acceptance_tab_view.dart';
 import 'package:medpia_mobile/app/modules/prescription/views/prescription_form.dart';
@@ -29,23 +30,22 @@ class _PrescriptionViewState extends State<PrescriptionView>
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        floatingActionButton: InkWell(
-          onTap: () {
+        floatingActionButton: FloatingActionButton(
+          mini: true,
+          onPressed: () {
             navigateToCreatePage();
           },
-          child: CircleAvatar(
-            backgroundColor: Colors.teal.shade900,
-            child: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-            radius: 20,
+          backgroundColor: Colors.teal.shade900,
+          child: const Icon(
+            HugeIcons.strokeRoundedPlusSign,
+            size: 20,
+            color: Colors.white,
           ),
         ),
         appBar: AppBar(
           centerTitle: true,
           titleTextStyle: TextStyle(fontSize: 16, color: Colors.black),
-          title: Text(
+          title: const Text(
             "Prescriptions",
           ),
           bottom: TabBar(

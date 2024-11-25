@@ -65,8 +65,8 @@ class MasterView extends GetView<ProfileController> {
                   backgroundImage: AssetImage("assets/images/user.png"),
                 ),
                 title: Text(
-                  "${GetStorage().read('username').toString().split(' ').map((word) => word[0].toUpperCase() + word.substring(1)).join(' ')}",
-                  style: Theme.of(context).textTheme.labelSmall,
+                  controller.profile.value.username ?? 'John Doe',
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 subtitle: Obx(() {
                   if (controller.isLoading.value) {
@@ -78,14 +78,14 @@ class MasterView extends GetView<ProfileController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          controller.profile.value.email!,
+                          controller.profile.value.email ?? 'johndoe@mail.com',
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!
                               .copyWith(color: Colors.grey.shade700),
                         ),
                         Text(
-                          "Role as ${controller.profile.value.role!}",
+                          "Role as ${controller.profile.value.role ?? 'role'}",
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!

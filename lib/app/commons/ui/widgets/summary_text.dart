@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SummaryText extends StatelessWidget {
+  final int? maxLines;
   EdgeInsets? padding;
   String? leftText;
   String? rightText;
@@ -9,6 +10,7 @@ class SummaryText extends StatelessWidget {
 
   SummaryText({
     super.key,
+    this.maxLines,
     this.padding,
     this.leftText,
     this.rightText,
@@ -20,14 +22,19 @@ class SummaryText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: padding ?? EdgeInsets.symmetric(horizontal: 15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(leftText ?? "",
-              style: leftStyle ?? Theme.of(context).textTheme.labelMedium),
-          Text(rightText ?? "",
-              style: rightStyle ?? Theme.of(context).textTheme.labelMedium),
-        ],
+      child: Expanded(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              
+                maxLines: maxLines ?? 1,
+                leftText ?? "",
+                style: leftStyle ?? Theme.of(context).textTheme.labelMedium),
+            Text(rightText ?? "",
+                style: rightStyle ?? Theme.of(context).textTheme.labelMedium),
+          ],
+        ),
       ),
     );
   }

@@ -7,9 +7,9 @@ class ProfileModel {
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) {
     return ProfileModel(
-      username: json['username'],
-      email: json['email'],
-      role: json['role'],
+      username: json['username'] ?? 'John Doe',
+      email: json['email'] ?? 'johndoe@gmail.com',
+      role: json['role'] ?? "",
     );
   }
 }

@@ -22,6 +22,7 @@ class TransactionTabView extends GetView<ReportController> {
         );
       } else {
         return ListView.builder(
+          
           itemBuilder: (context, index) {
             final transaction = controller.transactionList[index];
             return ReportTransactionWidget(
