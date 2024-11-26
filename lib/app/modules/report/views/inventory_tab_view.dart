@@ -41,8 +41,9 @@ class InventoryTabView extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
             return const StockWidget();
+            // return Text('StockWidget');
           },
-          itemCount: 7,
+          itemCount: 1,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           shrinkWrap: true,
         )

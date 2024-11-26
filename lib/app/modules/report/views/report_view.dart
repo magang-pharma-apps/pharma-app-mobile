@@ -68,7 +68,7 @@ class _ReportViewState extends State<ReportView>
       body: SizedBox(
         height: MediaQuery.of(context).size.height * 0.8,
         child: TabBarView(controller: tabBarController, children: [
-          Text('tes'),
+          TransactionTabView(),
           InventoryTabView(),
         ]),
       ),

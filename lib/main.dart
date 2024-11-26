@@ -7,5 +7,6 @@ void main() async {
   await GetStorage.init();
   
   GetStorage().writeIfNull('isLogin', false);
+  
   runApp(MainApp());
 }

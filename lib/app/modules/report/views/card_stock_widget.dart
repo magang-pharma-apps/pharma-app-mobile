@@ -55,10 +55,11 @@ class CardStockWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ChartCardStockWidget(title: '20', subTitle: 'In Stock'),
                 ChartCardStockWidget(
-                  title: '100',
-                  subTitle: 'Out Stock',
+                    title: '20 Item', subTitle: 'Available Stock'),
+                ChartCardStockWidget(
+                  title: '100 Item',
+                  subTitle: 'Out of Stock',
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     gradient: LinearGradient(

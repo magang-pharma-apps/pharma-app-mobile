@@ -25,6 +25,7 @@ class ListMedicineItemsController extends GetxController {
     final items = redemptionController.prescription.value.cart!.items;
     final index = items!.indexWhere(
         (element) => element.product!.id == medicineItem.product!.id);
+    print("index : $index");
     if (index >= 0) {
       items[index].quantity = items[index].quantity! + 1;
     } else {

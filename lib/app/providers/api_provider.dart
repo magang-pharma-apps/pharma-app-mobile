@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class ApiProvider implements BaseProvider {
   // String? baseUrl = 'http://192.168.1.2:3000';
-  String? baseUrl = 'http://192.168.100.48:3000'; //HP
+  String? baseUrl = 'http://192.168.51.234:3000'; //HP
   // String? baseUrl = 'http://192.168.1.11:3000'; //
 
   Map<String, String>? headers = {'Content-Type': 'application/json'};

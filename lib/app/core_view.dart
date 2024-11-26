@@ -18,6 +18,7 @@ class CoreView extends GetView<CoreController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
+        physics: NeverScrollableScrollPhysics(),
         controller: controller.pageController,
         children: [
           HomeView(),

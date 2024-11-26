@@ -47,7 +47,7 @@ class _PrescriptionFormState extends State<PrescriptionForm> {
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
-    String formattedDate = DateFormat('MM/dd/yyyy hh:mm:ss a').format(now);
+    String formattedDate = DateFormat('dd/MM/yyyy hh:m a').format(now);
 
     return Scaffold(
       persistentFooterButtons: [
@@ -209,7 +209,6 @@ class _PrescriptionFormState extends State<PrescriptionForm> {
       doctors = response;
     });
   }
-
 
   void createPrescription() async {
     try {
