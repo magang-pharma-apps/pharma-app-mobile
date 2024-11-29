@@ -12,21 +12,16 @@ class InventoryItemModel {
       product: json['product'] != null
           ? ProductModel.fromJson(json['product'])
           : null,
-      quantity: json['quantity'] ?? 0,
-      note: json['note'] ?? '',
+      note: json['noteItem'] ?? '',
+      quantity: json['qtyItem'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'productId': product!.id,
-      'quantity': quantity,
-      'note': note,
+      'qtyItem': quantity,
+      'noteItem': note,
     };
   }
-
-  String get productLabel => '$quantity x ${product!.name ?? ''}';
-
-
-
 }

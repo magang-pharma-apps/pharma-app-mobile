@@ -11,6 +11,7 @@ import 'package:medpia_mobile/app/modules/cart/views/cart_screen.dart';
 import 'package:medpia_mobile/app/modules/product/views/product_detail_view.dart';
 import 'package:medpia_mobile/app/repositories/product_repository.dart';
 
+
 class ProductView extends StatefulWidget {
   ProductModel? productModel = ProductModel();
   ProductView({super.key, this.productModel});

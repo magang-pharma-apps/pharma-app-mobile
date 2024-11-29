@@ -5,6 +5,8 @@ import 'package:medpia_mobile/app/repositories/transaction_repository.dart';
 class ReportController extends GetxController {
   final transactionRepository = TransactionRepository();
   RxList<CartModel> transactionList = <CartModel>[].obs;
+  RxBool isLoading = false.obs;
+
 
   @override
   void onInit() {
@@ -26,6 +28,5 @@ class ReportController extends GetxController {
     }
   }
 
-  RxBool isLoading = false.obs;
   
 }

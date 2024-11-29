@@ -10,6 +10,7 @@ class InventoryRepository {
   Future<List<InventoryModel>> getInventories() async {
     final response = await inventoryProvider.getInventories();
     // print(response.body);
+    print(response.statusCode);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonResponse = json.decode(response.body);
@@ -25,13 +26,16 @@ class InventoryRepository {
   Future<bool> createInventory(Map<String, dynamic> body) async {
     try {
       final response = await inventoryProvider.createInventory(body);
-      print(response.body);
-      print('status ${response.statusCode}');
+
+      print('createInventory body :${response.body}');
+      print('createInventory : ${response.statusCode}');
 
       if (response.statusCode == 201) {
         return true;
       } else {
-        return false;
+        final errorResponse = json.decode(response.body);
+        throw Exception(
+            'Failed to create inventory: ${errorResponse['message']}');
       }
     } catch (e) {
       throw Exception('Failed to create inventory: $e');

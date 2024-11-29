@@ -49,6 +49,7 @@ class ListMedicineItemsWidget extends GetView<ListMedicineItemsController> {
                           onPressed: () {
                             controller.addMedicine(CartItemModel(
                                 product: product, quantity: 1, note: ""));
+                            Get.back();
                           },
                           child: Text(
                             "Add",

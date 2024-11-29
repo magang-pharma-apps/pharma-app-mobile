@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_card_label_widget.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/summary_text.dart';
+import 'package:medpia_mobile/app/models/inventory_model.dart';
 
 class StockWidget extends StatelessWidget {
-  const StockWidget({
-    super.key,
-  });
+  InventoryModel? inventoryModel;
+  StockWidget({super.key, this.inventoryModel});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,10 @@ class StockWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomCardLabelWidget(
-            textLabel: 'STOCK IN',
+            textLabel: inventoryModel!.inventoryType == 'In'
+                ? 'STOCK IN'
+                : 'STOCK OUT',
+            trailingText: inventoryModel!.dateFormat,
           ),
           SizedBox(
             height: 40,
@@ -49,20 +52,21 @@ class StockWidget extends StatelessWidget {
             height: 0,
             thickness: 0.4,
           ),
-          SummaryText(
-            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-            leftText: 'Paracetamol ',
-            leftStyle: Theme.of(context).textTheme.bodyMedium,
-            rightText: '+10',
-            rightStyle: Theme.of(context).textTheme.labelSmall!,
-          ),
-          SummaryText(
-            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-            leftText: 'Amoxilin ',
-            leftStyle: Theme.of(context).textTheme.bodyMedium,
-            rightText: '+10',
-            rightStyle: Theme.of(context).textTheme.labelSmall!,
-          ),
+          ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: inventoryModel!.items!.length,
+              itemBuilder: (context, index) {
+                final item = inventoryModel!.items![index];
+                return SummaryText(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                  leftText: '${item.product?.name}',
+                  leftStyle: Theme.of(context).textTheme.bodyMedium,
+                  rightText: '+ ${item.quantity}',
+                  rightStyle: Theme.of(context).textTheme.labelSmall!,
+                );
+              }),
         ],
       ),
     );

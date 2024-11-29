@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/modules/stock/controllers/stock_controller.dart';
+import 'package:medpia_mobile/app/modules/stock/controllers/stock_list_controller.dart';
 import 'package:medpia_mobile/app/modules/stock/views/stock_in_form.dart';
 
-class ModalInventoryWidget extends StatelessWidget {
+class ModalInventoryWidget extends GetView<StockController> {
   const ModalInventoryWidget({
     super.key,
   });
 
+  @override
+  get controller => Get.put(StockController());
+  // TODO: implement controller
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +76,13 @@ class ModalInventoryWidget extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10))),
               onPressed: () {
-                Navigator.pop(context);
-                Get.to(() => StockInForm());
+                Get.back();
+                // Navigator.pop(context);
+                Get.to(() => const StockInForm())?.then((result) {
+                  if (result == true) {
+                    controller.getInventories();
+                  }
+                });
               },
               child: Text('Stock In')),
           SizedBox(height: 7),

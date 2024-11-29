@@ -26,7 +26,7 @@ class MasterView extends GetView<ProfileController> {
           title: Text('Manage Master',
               style: Theme.of(context)
                   .textTheme
-                  .bodyLarge!
+                  .labelMedium!
                   .copyWith(fontSize: 16)),
           actions: [
             IconButton(

@@ -79,7 +79,7 @@ class ProductListView extends GetView<MasterProductController> {
                         product.category!.name!,
                       ),
                       Text(
-                          'Expired on ${DateFormat('yyyy-MM-dd').format(DateTime.parse(product.expiryDate!))}'),
+                          'Expired on ${DateFormat('dd/MM/yy').format(DateTime.parse(product.expiryDate!))}'),
                     ],
                   ),
                   trailing: Text(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -8,6 +9,7 @@ import 'package:medpia_mobile/app/commons/ui/widgets/note_item_widget.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/note_prescription.dart';
 import 'package:medpia_mobile/app/models/cart_item_model.dart';
 import 'package:medpia_mobile/app/models/cart_model.dart';
+import 'package:medpia_mobile/app/models/inventory_item_model.dart';
 import 'package:medpia_mobile/app/modules/prescription/controllers/redemption_controller.dart';
 import 'package:medpia_mobile/app/modules/stock/controllers/stock_controller.dart';
 import 'package:medpia_mobile/app/modules/stock/views/stock_medicines_list.dart';
@@ -20,13 +22,18 @@ class StockInForm extends GetView<StockController> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('dd/MM/yyyy hh:mm a').format(now);
+
     return Scaffold(
         persistentFooterButtons: [
           ElevatedButton(
               style: ElevatedButton.styleFrom(
                   fixedSize: Size(Get.width, 50),
                   padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10)),
-              onPressed: () {},
+              onPressed: () {
+                controller.createStockIn();
+              },
               child: Text('Save')),
         ],
         backgroundColor: Colors.white,
@@ -71,9 +78,9 @@ class StockInForm extends GetView<StockController> {
                         size: 20,
                         color: Colors.black,
                       )),
-                  // onChanged: (value) {
-                  //   controller.supplierName = value;
-                  // },
+                  onChanged: (value) {
+                    controller.inventory.value.note = value;
+                  },
                 ),
               ),
               Obx(() {
@@ -163,11 +170,10 @@ class StockInForm extends GetView<StockController> {
                                         ),
                                       ),
                                       Row(
-                                        mainAxisSize: MainAxisSize.min,
                                         children: [
                                           IconButton(
                                             visualDensity: VisualDensity(
-                                                horizontal: -4, vertical: -4),
+                                                horizontal: 0, vertical: -4),
                                             onPressed: () {
                                               controller.reduceQuantity(item);
                                             },
@@ -177,12 +183,44 @@ class StockInForm extends GetView<StockController> {
                                                 color: Colors.teal.shade700,
                                                 size: 25),
                                           ),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            item.quantity.toString(),
-                                            style: Get.textTheme.labelSmall,
+                                          SizedBox(
+                                            width: 20,
+                                            child: TextFormField(
+                                              controller: TextEditingController(
+                                                  text: item.quantity
+                                                      ?.toString()), // Mengisi nilai awal
+                                              style: Get.textTheme
+                                                  .labelSmall, // Menyesuaikan gaya teks
+                                              decoration: InputDecoration(
+                                                enabledBorder: InputBorder.none,
+
+                                                border: InputBorder
+                                                    .none, // Menghapus border di sekitar TextFormField
+                                                isDense:
+                                                    true, // Mengurangi padding default
+                                                contentPadding: EdgeInsets
+                                                    .zero, // Menghilangkan padding tambahan
+                                              ),
+                                              keyboardType: TextInputType
+                                                  .number, // Keyboard angka untuk input kuantitas
+                                              onChanged: (value) {
+                                                // Tambahkan logika untuk memperbarui nilai jika diperlukan
+                                                final int? newQuantity =
+                                                    int.tryParse(value);
+                                                if (newQuantity != null) {
+                                                  item.quantity =
+                                                      newQuantity; // Perbarui data
+                                                }
+                                              },
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .digitsOnly,
+                                                FilteringTextInputFormatter
+                                                    .deny(RegExp(r'(^0$|^$)')),
+                                                DenyZeroInputFormatter()
+                                              ],
+                                            ),
                                           ),
-                                          SizedBox(width: 5),
                                           IconButton(
                                             visualDensity: VisualDensity(
                                                 horizontal: -4, vertical: -4),
@@ -250,5 +288,23 @@ class StockInForm extends GetView<StockController> {
             ],
           ),
         ));
+  }
+}
+
+class DenyZeroInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    // Jika input kosong atau tidak dimulai dengan '0', terima input baru
+    if (newValue.text != "0" || newValue.text.isNotEmpty) {
+      return newValue;
+    }
+    // Jika input kosong, kembalikan nilai sebelumnya (tidak ada perubahan)
+    if (newValue.text.isEmpty || newValue.text == '0') {
+      return oldValue;
+    }
+
+    // Jika input adalah '0', kembalikan nilai sebelumnya (tidak ada perubahan)
+    return oldValue;
   }
 }

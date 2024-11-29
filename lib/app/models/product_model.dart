@@ -57,10 +57,10 @@ class ProductModel {
       'purchasePrice': purchasePrice,
       'sellingPrice': sellingPrice,
       'expiryDate': expiryDate != null
-      ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSSZ').format(
-          DateFormat('dd-MM-yyyy').parse(expiryDate!),
-        )
-      : null,
+          ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSSZ').format(
+              DateFormat('dd-MM-yyyy').parse(expiryDate!),
+            )
+          : null,
       'stockQuantity': stockQuantity,
       'categoryId': category?.id,
       'unitId': unit?.id,

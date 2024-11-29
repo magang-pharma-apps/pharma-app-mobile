@@ -90,6 +90,14 @@ class CartModel {
     return '';
   }
 
+  String get productName {
+    if (items!.isNotEmpty) {
+      final product = items![0].product;
+      return '${product?.name}';
+    }
+    return '';
+  }
+
   // String get productImage => items![0].product!.productImageUrl!;
   String get productImage {
     if (items!.isNotEmpty) {
@@ -98,7 +106,6 @@ class CartModel {
     }
     return '';
   }
-
 
   String get productQty {
     if (items != null && items!.isNotEmpty) {

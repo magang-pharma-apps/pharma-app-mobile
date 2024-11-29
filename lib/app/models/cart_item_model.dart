@@ -28,8 +28,7 @@ class CartItemModel {
 
   String get productLabel => '$quantity x ${product!.name ?? ''}';
 
-  String get productPrice => FormatRupiah.format(product?.sellingPrice! ?? 0) ;
-
+  String get productPrice => FormatRupiah.format(product?.sellingPrice! ?? 0);
 
   String get totalPrice =>
       FormatRupiah.format(product!.sellingPrice! * quantity!);

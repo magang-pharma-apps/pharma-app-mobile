@@ -55,7 +55,7 @@ class _CustomExpansiontileAcceptanceState
     DateTime parsedDate =
         DateTime.parse(widget.prescriptionModel!.prescriptionDate!);
     String formattedPrescriptionDate =
-        DateFormat('MM/dd/yyyy hh:mm:ss a').format(parsedDate);
+        DateFormat('dd/MM/yyyy hh:mm:ss a').format(parsedDate);
 
     return Stack(
         alignment: Alignment.center,

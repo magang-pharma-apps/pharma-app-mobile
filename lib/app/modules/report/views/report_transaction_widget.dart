@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_line_widget.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/summary_text.dart';
@@ -120,13 +121,19 @@ class _ReportTransactionWidgetState extends State<ReportTransactionWidget>
                                 VisualDensity(vertical: -4, horizontal: -4),
                             dense: true,
                             contentPadding: EdgeInsets.zero,
-                            title: Text(widget.cartModel!.productLabel,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelSmall!
-                                    .copyWith(
-                                      overflow: TextOverflow.ellipsis,
-                                    )),
+                            titleTextStyle: Get.textTheme.labelSmall!
+                                .copyWith(overflow: TextOverflow.clip),
+                            title: Text(
+                              widget.cartModel!.productName,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall!
+                                  .copyWith(
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                             trailing: Text(widget.cartModel!.productQty,
                                 style: Theme.of(context)
                                     .textTheme
