@@ -27,7 +27,7 @@ class InventoryTabView extends GetView<StockController> {
             tileColor: Colors.white,
             dense: true,
             contentPadding: EdgeInsets.symmetric(horizontal: 15),
-            title: Text('Stock Flow Report',
+            title: Text('Stock Activity',
                 style: Theme.of(context).textTheme.labelSmall),
             trailing: IconButton(
                 onPressed: () {},

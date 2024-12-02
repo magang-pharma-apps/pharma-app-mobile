@@ -23,6 +23,7 @@ class TransactionTabView extends GetView<ReportController> {
       } else {
         return ListView.builder(
           itemBuilder: (context, index) {
+            // print('count : ${controller.transactionList.length}');
             final transaction = controller.transactionList[index];
             return ReportTransactionWidget(
               cartModel: transaction,

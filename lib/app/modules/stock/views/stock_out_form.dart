@@ -14,8 +14,8 @@ import 'package:medpia_mobile/app/modules/prescription/controllers/redemption_co
 import 'package:medpia_mobile/app/modules/stock/controllers/stock_controller.dart';
 import 'package:medpia_mobile/app/modules/stock/views/stock_medicines_list.dart';
 
-class StockInForm extends GetView<StockController> {
-  const StockInForm({super.key});
+class StockOutForm extends GetView<StockController> {
+  const StockOutForm({super.key});
 
   @override
   get controller => Get.put(StockController());
@@ -29,7 +29,7 @@ class StockInForm extends GetView<StockController> {
                   fixedSize: Size(Get.width, 50),
                   padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10)),
               onPressed: () {
-                controller.createStockIn();
+                controller.createStockOut();
               },
               child: Text('Save')),
         ],
@@ -37,7 +37,7 @@ class StockInForm extends GetView<StockController> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Text(
-            'Stock In Form',
+            'Stock Out Form',
             style: Theme.of(context).textTheme.labelMedium,
           ),
           centerTitle: true,

@@ -16,6 +16,7 @@ import 'package:medpia_mobile/app/models/category_model.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
 import 'package:medpia_mobile/app/modules/cart/controllers/cart_controller.dart';
 import 'package:medpia_mobile/app/modules/category/views/category_view.dart';
+import 'package:medpia_mobile/app/modules/product/views/cek.dart';
 import 'package:medpia_mobile/app/modules/product/views/product_detail_view.dart';
 import 'package:medpia_mobile/app/modules/product/views/product_view.dart';
 import 'package:http/http.dart' as http;
@@ -183,6 +184,7 @@ class _HomeViewState extends State<HomeView> {
                                       builder: (context) => ProductDetailView(
                                             productModel: product,
                                           )));
+                              // builder: (context) => MyApp()));
                             },
                             child: CardProduct(
                                 productModel: product,

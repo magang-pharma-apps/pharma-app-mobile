@@ -62,7 +62,10 @@ class StockView extends GetView<StockController> {
           );
         } else if (controller.inventoryList.isEmpty) {
           return Center(
-            child: Image.asset('assets/images/20946001.jpg', semanticLabel: 'Stock still blank',),
+            child: Image.asset(
+              'assets/images/20946001.jpg',
+              semanticLabel: 'Stock still blank',
+            ),
           );
         } else {
           return ListView.builder(
@@ -70,6 +73,7 @@ class StockView extends GetView<StockController> {
               itemCount: controller.inventoryList.length,
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
               itemBuilder: (context, index) {
+                // print('iventoryList: ${controller.inventoryList.length}');
                 final inventory = controller.inventoryList[index];
                 return StockWidget(inventoryModel: inventory);
               });

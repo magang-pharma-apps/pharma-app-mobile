@@ -4,6 +4,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_app_bar.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_line_widget.dart';
+import 'package:medpia_mobile/app/commons/utils/format_rupiah.dart';
 import 'package:medpia_mobile/app/models/cart_item_model.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
 import 'package:medpia_mobile/app/modules/cart/controllers/cart_controller.dart';
@@ -116,7 +117,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                         ),
                         Text(widget.productModel!.name!,
                             style: Theme.of(context).textTheme.labelMedium),
-                        Text('Rp. ${widget.productModel!.sellingPrice!}',
+                        Text(FormatRupiah.format(widget.productModel!.sellingPrice!),
                             style: Theme.of(context)
                                 .textTheme
                                 .titleSmall!

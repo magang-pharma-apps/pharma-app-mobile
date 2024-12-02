@@ -1,4 +1,6 @@
+import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_snackbar.dart';
@@ -11,7 +13,8 @@ import 'package:medpia_mobile/app/repositories/transaction_repository.dart';
 class CartController extends GetxController {
   final transactionRespository = TransactionRepository();
   final reportController = Get.put(ReportController());
-  // isinya semua state yang ada di dalam ui nya
+  GlobalKey <CartIconKey> cartKey = GlobalKey<CartIconKey>();
+  // isinya semua state yang ada di dalam ui nya  
   Rx<CartModel> cart = CartModel(
           items: [],
           subtotal: 0,

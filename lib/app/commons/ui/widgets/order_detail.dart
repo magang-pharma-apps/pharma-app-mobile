@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:medpia_mobile/app/commons/utils/format_rupiah.dart';
 import 'package:medpia_mobile/app/modules/cart/controllers/cart_controller.dart';
 
 class OrderDetail extends GetView<CartController> {
@@ -37,7 +38,9 @@ class OrderDetail extends GetView<CartController> {
                       applyHeightToLastDescent: true,
                       applyHeightToFirstAscent: true),
                 ),
-                Text('Rp ${controller.cart.value.subtotal!.toInt()}',
+                Text(
+                    FormatRupiah.format(
+                        controller.cart.value.subtotal!.toInt()),
                     style: Theme.of(context).textTheme.bodyMedium),
               ],
             );
@@ -56,7 +59,7 @@ class OrderDetail extends GetView<CartController> {
                       applyHeightToLastDescent: true,
                       applyHeightToFirstAscent: true),
                 ),
-                Text("Rp ${controller.cart.value.tax}",
+                Text(FormatRupiah.format(controller.cart.value.tax!.toInt()),
                     style: Theme.of(context).textTheme.bodyMedium),
               ],
             );
@@ -79,7 +82,8 @@ class OrderDetail extends GetView<CartController> {
                       applyHeightToFirstAscent: true),
                 ),
                 Text(
-                  "Rp ${controller.cart.value.grandtotal!.toInt()}",
+                  FormatRupiah.format(
+                      controller.cart.value.grandtotal!.toInt()),
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium!

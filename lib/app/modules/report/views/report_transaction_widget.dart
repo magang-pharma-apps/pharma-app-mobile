@@ -161,6 +161,11 @@ class _ReportTransactionWidgetState extends State<ReportTransactionWidget>
                       shrinkWrap: true,
                       itemCount: widget.cartModel!.items!.length - 1,
                       itemBuilder: (context, index) {
+                        if (widget.cartModel == null ||
+                            widget.cartModel!.items == null ||
+                            widget.cartModel!.items!.isEmpty) {
+                          return Center(child: Text('No items found'));
+                        }
                         final item = widget.cartModel!.items![index + 1];
                         return ListTile(
                           contentPadding:
@@ -179,16 +184,17 @@ class _ReportTransactionWidgetState extends State<ReportTransactionWidget>
                             children: [
                               SummaryText(
                                 padding: EdgeInsets.zero,
-                                leftText:
-                                    '(${item.product!.productCode!}) ${item.product!.name!}',
+                                leftText: ' ${item.product!.name!}',
                                 leftStyle: Theme.of(context)
                                     .textTheme
                                     .labelSmall!
                                     .copyWith(overflow: TextOverflow.ellipsis),
                                 rightText:
                                     '${item.productPrice}   x${item.quantity.toString()}', // '1x',
-                                rightStyle:
-                                    Theme.of(context).textTheme.bodySmall,
+                                rightStyle: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(overflow: TextOverflow.ellipsis),
                               ),
                               Text(
                                 item.note!.isEmpty

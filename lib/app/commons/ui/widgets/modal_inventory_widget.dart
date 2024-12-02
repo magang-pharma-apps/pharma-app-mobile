@@ -4,6 +4,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/modules/stock/controllers/stock_controller.dart';
 import 'package:medpia_mobile/app/modules/stock/controllers/stock_list_controller.dart';
 import 'package:medpia_mobile/app/modules/stock/views/stock_in_form.dart';
+import 'package:medpia_mobile/app/modules/stock/views/stock_out_form.dart';
 
 class ModalInventoryWidget extends GetView<StockController> {
   const ModalInventoryWidget({
@@ -77,6 +78,8 @@ class ModalInventoryWidget extends GetView<StockController> {
                       borderRadius: BorderRadius.circular(10))),
               onPressed: () {
                 Get.back();
+                controller.clearForm();
+
                 // Navigator.pop(context);
                 Get.to(() => const StockInForm())?.then((result) {
                   if (result == true) {
@@ -93,7 +96,17 @@ class ModalInventoryWidget extends GetView<StockController> {
                   backgroundColor: Color(0xff740938),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10))),
-              onPressed: () {},
+              onPressed: () {
+                Get.back();
+                controller.clearForm();
+
+                // Navigator.pop(context);
+                Get.to(() => const StockOutForm())?.then((result) {
+                  if (result == true) {
+                    controller.getInventories();
+                  }
+                });
+              },
               child: Text('Stock Out')),
         ],
       ),

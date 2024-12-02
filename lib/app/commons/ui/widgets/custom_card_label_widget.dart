@@ -22,7 +22,7 @@ class CustomCardLabelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
           color: backgroundColor ?? const Color(0xFF43766C),
           borderRadius: BorderRadius.only(

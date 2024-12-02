@@ -7,6 +7,7 @@ import 'package:medpia_mobile/app/commons/ui/widgets/note_order_widget.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_app_bar.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/cart_item.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/order_detail.dart';
+import 'package:medpia_mobile/app/commons/utils/format_rupiah.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
 import 'package:medpia_mobile/app/modules/cart/controllers/cart_controller.dart';
 import 'package:medpia_mobile/app/repositories/product_repository.dart';
@@ -70,7 +71,7 @@ class CartScreen extends GetView<CartController> {
                         controller.createTransaction();
                       },
                       child: Text(
-                        "Purchase Rp. ${controller.cart.value.grandtotal!.toInt()}",
+                        "Purchase ${FormatRupiah.format(controller.cart.value.grandtotal!.toInt())}",
                         style: Theme.of(context)
                             .textTheme
                             .labelSmall!

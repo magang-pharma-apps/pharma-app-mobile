@@ -1,4 +1,5 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_snackbar.dart';
@@ -13,8 +14,10 @@ class StockController extends GetxController {
   InventoryRepository inventoryRepository = InventoryRepository();
   Rx<InventoryModel> inventory = InventoryModel().obs;
 
-  String formattedDate =
-      DateFormat('dd/MM/yyyy hh:mm:ss a').format(DateTime.now());
+  var selectedDateTime = DateTime.now().obs;
+
+  String get formattedDateTime =>
+      DateFormat('dd/MM/yyyy hh:mm:ss a').format(selectedDateTime.value);
 
   final productRepository = ProductRepository();
   RxList<ProductModel> products = <ProductModel>[].obs;
@@ -30,10 +33,47 @@ class StockController extends GetxController {
     getInventories();
 
     inventory.value.id = 0;
-    inventory.value.inventoryDate = formattedDate;
+    inventory.value.inventoryDate = formattedDateTime;
     inventory.value.inventoryType = '';
     inventory.value.note = '';
     inventory.value.items = <InventoryItemModel>[];
+  }
+
+  // Fungsi untuk memilih tanggal
+  Future<void> pickDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDateTime.value,
+      firstDate: DateTime(2000), // Tanggal awal
+      lastDate: DateTime.now(), // Tanggal sekarang
+    );
+
+    if (pickedDate != null) {
+      selectedDateTime.value = DateTime(
+        pickedDate.year,
+        pickedDate.month,
+        pickedDate.day,
+        selectedDateTime.value.hour,
+        selectedDateTime.value.minute,
+      );
+    }
+  }
+
+  Future<void> pickTime(BuildContext context) async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(selectedDateTime.value),
+    );
+
+    if (pickedTime != null) {
+      selectedDateTime.value = DateTime(
+        selectedDateTime.value.year,
+        selectedDateTime.value.month,
+        selectedDateTime.value.day,
+        pickedTime.hour,
+        pickedTime.minute,
+      );
+    }
   }
 
   void getInventories() async {
@@ -125,5 +165,35 @@ class StockController extends GetxController {
     } catch (e) {
       print("Error Create StockIn");
     }
+  }
+
+  void createStockOut() async {
+    try {
+      print("Create StockOut");
+      final isCreated = await inventoryRepository
+          .createInventory(inventory.value.stockoutToJson());
+      print("isCreated: $isCreated");
+
+      if (isCreated) {
+        Get.back(result: true);
+        CustomSnackbar.showSnackbar(Get.context!,
+            message: "Stock Out successfully created",
+            title: 'Success!',
+            contentType: ContentType.success);
+      } else {
+        CustomSnackbar.showSnackbar(Get.context!,
+            message: "Failed to created stock out",
+            title: "Failed!",
+            contentType: ContentType.failure);
+      }
+    } catch (e) {
+      print("Error Create StockIn");
+    }
+  }
+
+  void clearForm() async {
+    inventory.value = InventoryModel(
+        items: [], inventoryDate: '', inventoryType: 'In', note: '');
+    inventory.refresh();
   }
 }

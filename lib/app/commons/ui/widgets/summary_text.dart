@@ -26,10 +26,13 @@ class SummaryText extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
+              overflow: TextOverflow.ellipsis,
               maxLines: maxLines ?? 1,
               leftText ?? "",
               style: leftStyle ?? Theme.of(context).textTheme.labelMedium),
-          Text(rightText ?? "",
+          Text(
+              overflow: TextOverflow.ellipsis,
+              rightText ?? "",
               style: rightStyle ?? Theme.of(context).textTheme.labelMedium),
         ],
       ),

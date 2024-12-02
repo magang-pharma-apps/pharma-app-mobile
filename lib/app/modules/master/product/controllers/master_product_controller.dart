@@ -40,7 +40,7 @@ class MasterProductController extends GetxController {
 
   var expiryDateController = TextEditingController();
   String? productCode =
-      'DRUG-${Random().nextInt(max(1000000, 9999999)).toString()}';
+      '${Random().nextInt(max(1000, 9999)).toString()}';
   String? name;
   CategoryModel? selectedCategory;
   UnitModel? selectedUnit;
@@ -124,7 +124,7 @@ class MasterProductController extends GetxController {
         'purchasePrice': purchasePrice,
         'sellingPrice': sellingPrice,
         'expiryDate': expiryDate != null
-            ? DateFormat('yyyy-MM-ddTHH:mm:ss.SSSZ').format(
+            ? DateFormat('yyyy-MM-nddTHH:mm:ss.SSSZ').format(
                 DateFormat('dd-MM-yyyy').parse(expiryDate!),
               )
             : null,

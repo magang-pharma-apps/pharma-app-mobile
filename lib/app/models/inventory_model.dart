@@ -12,6 +12,7 @@ class InventoryModel {
       {this.id, this.inventoryDate, this.inventoryType, this.note, this.items});
 
   Map<String, dynamic> stockinToJson() {
+    
     return {
       'items': items!.map((item) => item.toJson()).toList(),
       'inventoryDate': DateTime.now()
@@ -19,6 +20,18 @@ class InventoryModel {
           .add(const Duration(hours: 7))
           .toIso8601String(),
       'inventoryType': inventoryType = 'In',
+      'note': note,
+    };
+  }
+  Map<String, dynamic> stockoutToJson() {
+    
+    return {
+      'items': items!.map((item) => item.toJson()).toList(),
+      'inventoryDate': DateTime.now()
+          .toUtc()
+          .add(const Duration(hours: 7))
+          .toIso8601String(),
+      'inventoryType': inventoryType = 'Out',
       'note': note,
     };
   }

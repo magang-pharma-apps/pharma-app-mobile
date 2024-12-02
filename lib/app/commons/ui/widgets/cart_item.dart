@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/note_prescription.dart';
+import 'package:medpia_mobile/app/commons/utils/format_rupiah.dart';
 import 'package:medpia_mobile/app/models/cart_item_model.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
 import 'package:medpia_mobile/app/modules/cart/controllers/cart_controller.dart';
@@ -93,7 +94,8 @@ class _CartItemState extends State<CartItem> {
                 Text(
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    "Rp ${widget.cartItemModel!.product!.sellingPrice!}",
+                    FormatRupiah.format(
+                        widget.cartItemModel!.product!.sellingPrice!),
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: Colors.teal, fontWeight: FontWeight.bold)),
                 SizedBox(height: 5),

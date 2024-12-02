@@ -83,7 +83,7 @@ class ProductEditView extends GetView<MasterProductController> {
                   TextFormField(
                     initialValue: controller.productModel!.value.productCode,
                     decoration: const InputDecoration(
-                      labelText: 'Product Code',
+                      labelText: 'SKU (Product Code)',
                     ),
                     readOnly: true,
                   ),
