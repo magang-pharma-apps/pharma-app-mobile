@@ -69,13 +69,29 @@ class StockOutForm extends GetView<StockController> {
                   );
                 }),
               ),
+              DropdownButtonFormField<String>(
+                  isExpanded: true,
+                  padding: EdgeInsets.all(8),
+                  dropdownColor: Colors.white,
+                  decoration: const InputDecoration(
+                    labelText: 'Reason',
+                  ),
+                  value: controller.inventory.value.reasonType,
+                  style: const TextStyle(color: Colors.black),
+                  items: ['Expired', 'Damage', 'Lost'].map((String drugClass) {
+                    return DropdownMenuItem<String>(
+                      value: drugClass,
+                      child: Text(drugClass),
+                    );
+                  }).toList(),
+                  onChanged: (String? value) {
+                    controller.inventory.value.reasonType = value;
+                  }),
               Padding(
                 padding: EdgeInsets.all(8),
                 child: TextFormField(
                   decoration: InputDecoration(
-                      labelStyle:
-                          TextStyle(color: Colors.grey.shade600, fontSize: 12),
-                      labelText: 'Note',
+                      labelText: 'Description (optional)',
                       hintText: 'Write a note',
                       suffixIcon: Icon(
                         HugeIcons.strokeRoundedStickyNote02,
@@ -126,13 +142,37 @@ class StockOutForm extends GetView<StockController> {
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 8),
-                        child: Text(
-                          "Product :",
-                          style: Get.textTheme.labelSmall!
-                              .copyWith(color: Colors.teal.shade700),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Product :",
+                              style: Get.textTheme.labelSmall!
+                                  .copyWith(color: Colors.teal.shade700),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.red.shade50,
+                                ),
+                                child: ListTile(
+                                  leading: Icon(
+                                    HugeIcons.strokeRoundedAlert01,
+                                    color: Colors.red.shade700,
+                                    size: 20,
+                                  ),
+                                  title: Text(
+                                      'Kuantitas yang diinputkan dibawah akan MENGURANGI jumlah ketersediaan stok produk',
+                                      style: Get.textTheme.bodySmall!.copyWith(
+                                          color: Colors.grey.shade800)),
+                                ))
+                          ],
                         ),
                       ),
                       ListView.builder(
+                          padding: EdgeInsets.zero,
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: controller.inventory.value.items!.length,
@@ -140,7 +180,8 @@ class StockOutForm extends GetView<StockController> {
                             final item =
                                 controller.inventory.value.items![index];
                             return Padding(
-                                padding: EdgeInsets.all(8.0),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 5),
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 15),
@@ -161,6 +202,14 @@ class StockOutForm extends GetView<StockController> {
                                           children: [
                                             Text(item.product!.name!,
                                                 style: Get.textTheme.labelSmall!
+                                                    .copyWith(
+                                                        color: Colors
+                                                            .grey.shade800),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1),
+                                            Text(
+                                                'Current Stock: ${item.product!.stockQuantity!.toString()}',
+                                                style: Get.textTheme.bodySmall!
                                                     .copyWith(
                                                         color: Colors
                                                             .grey.shade800),
@@ -221,7 +270,9 @@ class StockOutForm extends GetView<StockController> {
                                                     .digitsOnly,
                                                 FilteringTextInputFormatter
                                                     .deny(RegExp(r'(^0$|^$)')),
-                                                DenyZeroInputFormatter()
+                                                DenyZeroInputFormatter(),
+                                                FilterMaximumQtyFormatter(item
+                                                    .product!.stockQuantity!)
                                               ],
                                             ),
                                           ),
@@ -229,7 +280,11 @@ class StockOutForm extends GetView<StockController> {
                                             visualDensity: VisualDensity(
                                                 horizontal: -4, vertical: -4),
                                             onPressed: () {
-                                              controller.addMedicine(item);
+                                              if (item.quantity! <
+                                                  item.product!
+                                                      .stockQuantity!) {
+                                                controller.addMedicine(item);
+                                              }
                                             },
                                             icon: Icon(
                                                 HugeIcons
@@ -309,6 +364,22 @@ class DenyZeroInputFormatter extends TextInputFormatter {
     }
 
     // Jika input adalah '0', kembalikan nilai sebelumnya (tidak ada perubahan)
+    return oldValue;
+  }
+}
+
+class FilterMaximumQtyFormatter extends TextInputFormatter {
+  final int maxQuantity;
+
+  FilterMaximumQtyFormatter(this.maxQuantity);
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    final int? newQuantity = int.tryParse(newValue.text);
+    if (newQuantity != null && newQuantity <= maxQuantity) {
+      return newValue;
+    }
     return oldValue;
   }
 }

@@ -13,8 +13,13 @@ import 'package:medpia_mobile/app/repositories/transaction_repository.dart';
 class CartController extends GetxController {
   final transactionRespository = TransactionRepository();
   final reportController = Get.put(ReportController());
-  GlobalKey <CartIconKey> cartKey = GlobalKey<CartIconKey>();
-  // isinya semua state yang ada di dalam ui nya  
+  RxInt cartQuantityItem = 0.obs;
+  
+  GlobalKey<CartIconKey> cartKey = GlobalKey<CartIconKey>();
+  GlobalKey<CartIconKey> cartKeyHome = GlobalKey<CartIconKey>();
+  GlobalKey<CartIconKey> cartKeyDetail = GlobalKey<CartIconKey>();
+
+  // isinya semua state yang ada di dalam ui nya
   Rx<CartModel> cart = CartModel(
           items: [],
           subtotal: 0,
@@ -31,6 +36,7 @@ class CartController extends GetxController {
     // logic untuk menambahkan item ke cart
     final index = cart.value.items!
         .indexWhere((element) => element.product!.id == item.product!.id);
+
     if (index >= 0) {
       // jika item sudah ada di cart, maka tambahkan quantity nya
       cart.value.items![index].quantity =
@@ -42,6 +48,7 @@ class CartController extends GetxController {
     calculateSubtotal();
     calculateTax();
     calculateGrandtotal();
+    calculateTotalQuantity();
 
     cart.refresh();
   }
@@ -79,6 +86,7 @@ class CartController extends GetxController {
     calculateSubtotal();
     calculateTax();
     calculateGrandtotal();
+    calculateTotalQuantity();
     if (cart.value.items!.length == 0) {
       cart.value.items = [];
     }
@@ -102,5 +110,13 @@ class CartController extends GetxController {
       // TODO
       print("Error transaction $e");
     }
+  }
+
+  void calculateTotalQuantity() {
+    int totalQuantity = 0;
+    for (var item in cart.value.items!) {
+      totalQuantity += item.quantity!;
+    }
+    cartQuantityItem.value = totalQuantity;
   }
 }

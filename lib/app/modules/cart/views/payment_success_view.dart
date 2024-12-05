@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
+import 'package:medpia_mobile/app/commons/utils/format_rupiah.dart';
 import 'package:medpia_mobile/app/core_view.dart';
 import 'package:medpia_mobile/app/modules/cart/controllers/cart_controller.dart';
 import 'package:medpia_mobile/app/modules/home/views/home_view.dart';
@@ -43,7 +44,7 @@ class PaymentSuccessView extends StatelessWidget {
                   style: Theme.of(context).textTheme.displayMedium,
                 ),
                 Text(
-                  "Successfully paid Rp.${data['grandTotal'].toInt()}",
+                  "Successfully paid ${FormatRupiah.format(data['grandTotal'].toInt())}",
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium!
@@ -88,17 +89,18 @@ class PaymentSuccessView extends StatelessWidget {
                 ListTile(
                   dense: true,
                   title: Text("Sub Total"),
-                  trailing: Text("Rp.${data['subTotal'].toInt()}"),
+                  trailing: Text(FormatRupiah.format(data['subTotal'].toInt())),
                 ),
                 ListTile(
                   dense: true,
                   title: Text("Tax (PPN 10%)"),
-                  trailing: Text("Rp.${data['tax'].toInt()}"),
+                  trailing: Text(FormatRupiah.format(data['tax'].toInt())),
                 ),
                 ListTile(
                   dense: true,
                   title: Text("Nominal Total"),
-                  trailing: Text("Rp.${data['grandTotal'].toInt()}"),
+                  trailing:
+                      Text(FormatRupiah.format(data['grandTotal'].toInt())),
                 ),
                 ListTile(
                   dense: true,

@@ -44,6 +44,7 @@ class ProductListView extends GetView<MasterProductController> {
       ],
       backgroundColor: Colors.white,
       appBar: AppBar(
+        forceMaterialTransparency: true,
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text('Medicine List',

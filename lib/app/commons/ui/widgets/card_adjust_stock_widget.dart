@@ -1,22 +1,24 @@
-
 import 'package:flutter/material.dart';
 
 class CardAdjustStockWidget extends StatelessWidget {
+  String title;
+  String subtitle;
   BoxDecoration? decoration;
   Text? text;
 
-  
-   CardAdjustStockWidget({
+  CardAdjustStockWidget({
     super.key,
     this.decoration,
     this.text,
+    required this.title,
+    required this.subtitle,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(10),
-      margin: EdgeInsets.only(top: 5, right: 10),
+      margin: EdgeInsets.only(top: 5, right: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         gradient: LinearGradient(
@@ -30,15 +32,15 @@ class CardAdjustStockWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text( 
-            "50",
+          Text(
+            title,
             style: Theme.of(context)
                 .textTheme
                 .labelSmall!
                 .copyWith(color: Colors.white),
           ),
           Text(
-            "Adjustment",
+            subtitle,
             style: Theme.of(context)
                 .textTheme
                 .bodySmall!

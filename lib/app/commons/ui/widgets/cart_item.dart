@@ -36,6 +36,7 @@ class _CartItemState extends State<CartItem> {
     setState(() {
       if (widget.cartItemModel!.quantity != null) {
         widget.cartItemModel!.quantity = widget.cartItemModel!.quantity! + 1;
+        cartController.calculateTotalQuantity();
       }
     });
   }
@@ -48,6 +49,7 @@ class _CartItemState extends State<CartItem> {
       } else if (widget.cartItemModel!.quantity! <= 1) {
         widget.cartItemModel!.quantity = 1;
       }
+      cartController.calculateTotalQuantity();
     });
   }
 

@@ -6,15 +6,15 @@ class InventoryProvider extends ApiProvider {
   InventoryProvider()
       : super(headers: {
           'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ${GetStorage().read('accessToken')}'
-      });
+          'Authorization': 'Bearer ${GetStorage().read('accessToken')}'
+        });
 
-  Future<http.Response> getInventories() async {
-    final response = await get('inventories');
+  Future<http.Response> getInventories({Map<String, dynamic>? query}) async {
+    final response = await get('inventories', query: query);
     return response;
   }
 
-  Future<http.Response> getInventoryById(String id) async {
+  Future<http.Response> getInventoryById(int id) async {
     final response = await get('inventories/$id');
     return response;
   }
@@ -24,4 +24,8 @@ class InventoryProvider extends ApiProvider {
     return response;
   }
 
+  Future<http.Response> getInventoryByType(String type) async {
+    final response = await get('inventories?inventoryType=$type');
+    return response;
+  }
 }

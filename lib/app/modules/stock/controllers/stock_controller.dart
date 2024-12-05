@@ -23,6 +23,11 @@ class StockController extends GetxController {
   RxList<ProductModel> products = <ProductModel>[].obs;
 
   RxList<InventoryModel> inventoryList = <InventoryModel>[].obs;
+
+  RxList<InventoryModel> stockOutList = <InventoryModel>[].obs;
+
+  RxList<InventoryModel> stockInList = <InventoryModel>[].obs;
+
   RxBool isLoading = false.obs;
 
   @override
@@ -35,6 +40,7 @@ class StockController extends GetxController {
     inventory.value.id = 0;
     inventory.value.inventoryDate = formattedDateTime;
     inventory.value.inventoryType = '';
+    inventory.value.reasonType = '';
     inventory.value.note = '';
     inventory.value.items = <InventoryItemModel>[];
   }
@@ -76,11 +82,19 @@ class StockController extends GetxController {
     }
   }
 
-  void getInventories() async {
+  void getInventories({Map<String, dynamic>? query}) async {
     try {
       isLoading.value = true;
       final response = await inventoryRepository.getInventories();
+      final responseFilteredOut = await inventoryRepository.getInventories(
+          query: {'inventoryType': 'Out'});
+      final responseFilteredIn = await inventoryRepository.getInventories(
+          query: {'inventoryType': 'In'});  
+
       inventoryList.value = response;
+      stockOutList.value = responseFilteredOut;
+      stockInList.value = responseFilteredIn;
+
     } catch (e) {
       // TODO
       print('Failed to load inventory$e');
@@ -187,7 +201,7 @@ class StockController extends GetxController {
             contentType: ContentType.failure);
       }
     } catch (e) {
-      print("Error Create StockIn");
+      print("Error Create StockOut");
     }
   }
 

@@ -33,6 +33,7 @@ class StockView extends GetView<StockController> {
       ),
       backgroundColor: Colors.white,
       appBar: AppBar(
+        forceMaterialTransparency: true,
         backgroundColor: Colors.white,
         actions: [
           IconButton(

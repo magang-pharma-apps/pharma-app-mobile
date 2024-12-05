@@ -47,7 +47,7 @@ class StockWidget extends StatelessWidget {
                 contentPadding: EdgeInsets.only(top: 0, right: 15, left: 15),
                 dense: true,
                 title: Text(
-                  'Items ',
+                  'Item ',
                   style: Theme.of(context)
                       .textTheme
                       .labelSmall!
@@ -127,6 +127,40 @@ class StockWidget extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 leftText: inventoryModel!.note,
+                leftStyle: Theme.of(context).textTheme.bodyMedium!),
+          ),
+          Visibility(
+            visible: inventoryModel!.reasonType != null &&
+                inventoryModel!.reasonType!.isNotEmpty,
+            child: SummaryText(
+              padding: const EdgeInsets.symmetric(
+                vertical: 5,
+                horizontal: 15,
+              ),
+              leftText: 'Reason ',
+              leftStyle: Theme.of(context)
+                  .textTheme
+                  .labelSmall!
+                  .copyWith(color: Colors.grey.shade600),
+              // rightText: 'Rp ${item.price}',
+              rightStyle: Theme.of(context).textTheme.labelSmall!,
+            ),
+          ),
+          Visibility(
+            visible: inventoryModel!.reasonType != null &&
+                inventoryModel!.reasonType!.isNotEmpty,
+            child: Divider(
+              height: 0,
+              thickness: 0.4,
+            ),
+          ),
+          Visibility(
+            visible: inventoryModel!.reasonType != null &&
+                inventoryModel!.reasonType!.isNotEmpty,
+            child: SummaryText(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                leftText: inventoryModel!.reasonType,
                 leftStyle: Theme.of(context).textTheme.bodyMedium!),
           ),
         ],

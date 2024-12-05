@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class BarcodeButtonWidget extends StatelessWidget {
-  const BarcodeButtonWidget({
-    super.key,
+  VoidCallback? onPressed;
+  BarcodeButtonWidget({
+    super.key, this.onPressed
   });
 
   @override
@@ -16,7 +17,10 @@ class BarcodeButtonWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            onPressed!();
+
+          },
           icon: Icon(
             HugeIcons.strokeRoundedBarCode01,
             color: Colors.white,

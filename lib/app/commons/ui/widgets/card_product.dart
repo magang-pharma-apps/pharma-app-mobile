@@ -25,9 +25,9 @@ class CardProduct extends StatefulWidget {
   VoidCallback? onAddToCart;
   CardProduct(
       {super.key,
+      this.widgetKey,
       this.productModel,
       this.onAddToCart,
-      this.widgetKey,
       this.index,
       this.onClick});
 

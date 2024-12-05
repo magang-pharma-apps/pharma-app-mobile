@@ -1,9 +1,10 @@
+import 'dart:math';
+
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/card_product.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/custom_app_bar.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/search_widget.dart';
 import 'package:medpia_mobile/app/models/cart_item_model.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
@@ -23,10 +24,8 @@ class ProductView extends StatefulWidget {
 class _ProductViewState extends State<ProductView> {
   GlobalKey<CartIconKey> cartKey = GlobalKey<CartIconKey>();
   late Function(GlobalKey) runAddToCartAnimation;
-  GlobalKey widgetKey = GlobalKey();
 
   final cartController = Get.put(CartController());
-  var cartQuantityItems = 0;
 
   ProductRepository productRepository = ProductRepository();
 
@@ -38,37 +37,66 @@ class _ProductViewState extends State<ProductView> {
       width: 15,
       opacity: 0.85,
       dragAnimation: const DragToCartAnimationOptions(
+        duration: Duration(milliseconds: 100),
+        curve: Curves.ease,
         rotation: false,
       ),
-      jumpAnimation: const JumpAnimationOptions(),
+      jumpAnimation: const JumpAnimationOptions(
+        duration: Duration(milliseconds: 200),
+      ),
       createAddToCartAnimation: (runAddToCartAnimation) {
         // You can run the animation by addToCartAnimationMethod, just pass trough the the global key of  the image as parameter
         this.runAddToCartAnimation = runAddToCartAnimation;
       },
       child: Scaffold(
         appBar: AppBar(
+          forceMaterialTransparency: false,
           elevation: 0,
-          shadowColor: Colors.white,
           surfaceTintColor: Colors.white,
           backgroundColor: Colors.white,
           title: Text('All Products',
               style: Theme.of(context).textTheme.labelLarge),
           actions: [
-            IconButton(
-              padding: EdgeInsets.only(right: 10),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CartScreen()));
-              },
-              icon: AddToCartIcon(
-                key: cartController.cartKey,
-                icon: const Icon(HugeIcons.strokeRoundedShoppingCart01),
-                badgeOptions: const BadgeOptions(
-                  active: true,
-                  backgroundColor: Colors.orange,
+            Obx(() {
+              return IconButton(
+                padding: EdgeInsets.only(right: 8),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => CartScreen()));
+                },
+                icon: Stack(
+                  children: [
+                    AddToCartIcon(
+                      key: cartController.cartKey,
+                      icon: const Icon(HugeIcons.strokeRoundedShoppingCart01),
+                      badgeOptions: const BadgeOptions(
+                        active: false,
+                      ),
+                    ),
+                    if (cartController.cartQuantityItem.value >= 0)
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: Colors.orange,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            '${cartController.cartQuantityItem.value}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
-              ),
-            )
+              );
+            }),
           ],
         ),
         body: Container(
@@ -109,8 +137,8 @@ class _ProductViewState extends State<ProductView> {
                                   );
                                 },
                                 child: CardProduct(
-                                  onClick: itemClick,
                                   widgetKey: GlobalKey(),
+                                  onClick: itemClick,
                                   productModel: product,
                                   onAddToCart: () {
                                     cartController.addItemToCart(CartItemModel(

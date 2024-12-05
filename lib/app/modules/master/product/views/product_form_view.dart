@@ -26,6 +26,7 @@ class ProductFormView extends GetView<MasterProductController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       persistentFooterButtons: [
         ElevatedButton(
           onPressed: () {
@@ -41,6 +42,8 @@ class ProductFormView extends GetView<MasterProductController> {
         ),
       ],
       appBar: AppBar(
+        forceMaterialTransparency: true,
+        backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);

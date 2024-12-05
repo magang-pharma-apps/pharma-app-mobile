@@ -69,13 +69,30 @@ class StockInForm extends GetView<StockController> {
                   );
                 }),
               ),
+              DropdownButtonFormField<String>(
+                  isExpanded: true,
+                  padding: EdgeInsets.all(8),
+                  dropdownColor: Colors.white,
+                  decoration: const InputDecoration(
+                    labelText: 'Reason',
+                  ),
+                  value: controller.inventory.value.reasonType,
+                  style: const TextStyle(color: Colors.black),
+                  items: ['Purchase', 'Replacement', 'Bonus']
+                      .map((String drugClass) {
+                    return DropdownMenuItem<String>(
+                      value: drugClass,
+                      child: Text(drugClass),
+                    );
+                  }).toList(),
+                  onChanged: (String? value) {
+                    controller.inventory.value.reasonType = value;
+                  }),
               Padding(
                 padding: EdgeInsets.all(8),
                 child: TextFormField(
                   decoration: InputDecoration(
-                      labelStyle:
-                          TextStyle(color: Colors.grey.shade600, fontSize: 12),
-                      labelText: 'Note',
+                      labelText: 'Description (optional)',
                       hintText: 'Write a note',
                       suffixIcon: Icon(
                         HugeIcons.strokeRoundedStickyNote02,
@@ -126,10 +143,33 @@ class StockInForm extends GetView<StockController> {
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 8),
-                        child: Text(
-                          "Product :",
-                          style: Get.textTheme.labelSmall!
-                              .copyWith(color: Colors.teal.shade700),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Product :",
+                              style: Get.textTheme.labelSmall!
+                                  .copyWith(color: Colors.teal.shade700),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.red.shade50,
+                                ),
+                                child: ListTile(
+                                  leading: Icon(
+                                    HugeIcons.strokeRoundedAlert01,
+                                    color: Colors.red.shade700,
+                                    size: 20,
+                                  ),
+                                  title: Text(
+                                      'Kuantitas yang diinputkan dibawah akan MENAMBAH jumlah ketersediaan stok produk',
+                                      style: Get.textTheme.bodySmall!.copyWith(
+                                          color: Colors.grey.shade800)),
+                                ))
+                          ],
                         ),
                       ),
                       ListView.builder(
@@ -161,6 +201,14 @@ class StockInForm extends GetView<StockController> {
                                           children: [
                                             Text(item.product!.name!,
                                                 style: Get.textTheme.labelSmall!
+                                                    .copyWith(
+                                                        color: Colors
+                                                            .grey.shade800),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1),
+                                            Text(
+                                                'Current Stock: ${item.product!.stockQuantity!.toString()}',
+                                                style: Get.textTheme.bodySmall!
                                                     .copyWith(
                                                         color: Colors
                                                             .grey.shade800),

@@ -5,14 +5,19 @@ class InventoryModel {
   int? id;
   String? inventoryDate;
   String? inventoryType;
+  String? reasonType;
   String? note;
   List<InventoryItemModel>? items = [];
 
   InventoryModel(
-      {this.id, this.inventoryDate, this.inventoryType, this.note, this.items});
+      {this.id,
+      this.inventoryDate,
+      this.reasonType,
+      this.inventoryType,
+      this.note,
+      this.items});
 
   Map<String, dynamic> stockinToJson() {
-    
     return {
       'items': items!.map((item) => item.toJson()).toList(),
       'inventoryDate': DateTime.now()
@@ -20,11 +25,12 @@ class InventoryModel {
           .add(const Duration(hours: 7))
           .toIso8601String(),
       'inventoryType': inventoryType = 'In',
+      'reasonType': reasonType,
       'note': note,
     };
   }
+
   Map<String, dynamic> stockoutToJson() {
-    
     return {
       'items': items!.map((item) => item.toJson()).toList(),
       'inventoryDate': DateTime.now()
@@ -32,6 +38,7 @@ class InventoryModel {
           .add(const Duration(hours: 7))
           .toIso8601String(),
       'inventoryType': inventoryType = 'Out',
+      'reasonType': reasonType,
       'note': note,
     };
   }
@@ -41,6 +48,7 @@ class InventoryModel {
     return InventoryModel(
       inventoryDate: json['inventoryDate'] ?? '',
       inventoryType: json['inventoryType'] ?? 'In',
+      reasonType: json['reasonType'] ?? '',
       note: json['note'] ?? '',
       items: json['items'] is List
           ? List<InventoryItemModel>.from(

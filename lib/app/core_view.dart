@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:medpia_mobile/app/modules/cart/views/payment_success_view.dart';
 import 'package:medpia_mobile/app/modules/report/views/report_view.dart';
 import 'package:medpia_mobile/app/modules/home/views/home_view.dart';
 import 'package:medpia_mobile/app/modules/master/views/master_view.dart';
 import 'package:medpia_mobile/app/modules/prescription/views/prescription_view.dart';
+import 'package:medpia_mobile/app/modules/stock/views/stock_menu.dart';
 import 'package:medpia_mobile/app/modules/stock/views/stock_view.dart';
 
 class CoreView extends GetView<CoreController> {
@@ -24,7 +24,8 @@ class CoreView extends GetView<CoreController> {
           HomeView(),
           ReportView(),
           PrescriptionView(),
-          StockView(),
+          // StockView(),
+          StockMenu(),
           MasterView(),
         ],
       ),
