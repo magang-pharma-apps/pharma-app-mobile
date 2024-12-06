@@ -122,4 +122,7 @@ class ProductListView extends GetView<MasterProductController> {
       }),
     );
   }
+
+    
 }
+

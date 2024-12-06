@@ -30,8 +30,8 @@ class PrescriptionRepository {
   Future<void> createPrescription(Map<String, dynamic> body) async {
     try {
       final response = await prescriptionProvider.createPrescriptions((body));
-      print(response.body);
-      print('status ${response.statusCode}');
+      // print(response.body);
+      // print('status ${response.statusCode}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
       } else {
@@ -64,8 +64,8 @@ class PrescriptionRepository {
   Future<bool> createRedemption(Map<String, dynamic> body) async {
     try {
       final response = await prescriptionProvider.createRedemption(body);
-      print(response.body);
-      print('status ${response.statusCode}');
+      // print(response.body);
+      // print('status ${response.statusCode}');
 
       if (response.statusCode == 201) {
         return true;

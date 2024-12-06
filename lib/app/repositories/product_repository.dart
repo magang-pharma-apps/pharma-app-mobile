@@ -8,8 +8,8 @@ class ProductRepository {
 
   List<ProductModel> products = [];
 
-  Future<List<ProductModel>> getProducts() async {
-    final response = await productProvider.getProducts();
+  Future<List<ProductModel>> getProducts({Map<String, dynamic>? query}) async {
+    final response = await productProvider.getProducts(query: query);
     // print(response.body);
     // print(response.statusCode);
 

@@ -24,8 +24,8 @@ class UnitRepository {
 
   Future<UnitModel> getUnitById(int id) async {
     final response = await unitProvider.getUnitById(id);
-    print(response.body);
-    print(response.statusCode);
+    // print(response.body);
+    // print(response.statusCode);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonResponse = json.decode(response.body);

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/card_adjust_stock_widget.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/cart_card_stock_widget.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/summary_text.dart';
 import 'package:medpia_mobile/app/modules/report/views/card_stock_widget.dart';
 import 'package:medpia_mobile/app/modules/stock/controllers/stock_controller.dart';
 import 'package:medpia_mobile/app/modules/stock/views/stock_widget.dart';

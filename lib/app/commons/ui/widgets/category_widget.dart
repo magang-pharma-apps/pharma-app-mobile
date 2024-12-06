@@ -1,10 +1,13 @@
+
 import 'package:flutter/material.dart';
 import 'package:medpia_mobile/app/models/category_model.dart';
 import 'package:medpia_mobile/app/repositories/category_repository.dart';
 
 class CategoryWidget extends StatefulWidget {
+  String? productCount;
   CategoryModel? categoryModel;
-  CategoryWidget({super.key, this.categoryModel});
+  VoidCallback? onTap;
+  CategoryWidget({super.key, this.categoryModel, this.productCount, this.onTap});
 
   @override
   State<CategoryWidget> createState() => _CategoryWidgetState();
@@ -33,7 +36,10 @@ class _CategoryWidgetState extends State<CategoryWidget> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 5),
       child: ListTile(
-        onTap: () {},
+        onTap: () {
+          widget.onTap!();
+          
+        },
         shape: Border.all(color: Colors.grey.shade300, width: 1),
         leading: Image.network(
           widget.categoryModel!.categoryImageUrl!,
@@ -46,7 +52,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
               width: 5,
             ),
             Text(
-              "(10)",
+              widget.productCount!,
               style: TextStyle(color: Colors.grey.shade500),
             )
           ],

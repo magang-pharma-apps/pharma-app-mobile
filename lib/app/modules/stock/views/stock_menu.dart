@@ -4,6 +4,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/modules/master/product/views/product_list_view.dart';
 import 'package:medpia_mobile/app/modules/report/views/inventory_tab_view.dart';
 import 'package:medpia_mobile/app/modules/report/views/report_view.dart';
+import 'package:medpia_mobile/app/modules/stock/views/stock_opname_view.dart';
 import 'package:medpia_mobile/app/modules/stock/views/stock_view.dart';
 
 class StockMenu extends StatelessWidget {
@@ -24,6 +25,9 @@ class StockMenu extends StatelessWidget {
         body: ListView(
           children: [
             ListTile(
+              onTap: () {
+                Get.to(const StockOpnameView());
+              },
               leading: CircleAvatar(
                 backgroundColor: Colors.green.shade100,
                 child: Icon(

@@ -9,8 +9,8 @@ class CategoryProvider extends ApiProvider {
           'Authorization': 'Bearer ${GetStorage().read('accessToken')}',
         });
 
-  Future<http.Response> getCategories() async {
-    final response = await get('categories');
+  Future<http.Response> getCategories({Map<String, dynamic>? query}) async {
+    final response = await get('categories', query: query);
     return response;
   }
 

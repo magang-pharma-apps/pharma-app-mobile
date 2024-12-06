@@ -15,9 +15,8 @@ class ApiProvider implements BaseProvider {
   ApiProvider({this.headers});
 
   @override
-  Future<http.Response> get(
-    String endpoint, {Map<String, dynamic>? query}
-  ) async {
+  Future<http.Response> get(String endpoint,
+      {Map<String, dynamic>? query}) async {
     try {
       final url = getUrl(endpoint, query);
 

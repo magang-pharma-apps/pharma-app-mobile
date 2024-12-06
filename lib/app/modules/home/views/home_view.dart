@@ -210,7 +210,6 @@ class _HomeViewState extends State<HomeView> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => ProductView()))),
-                          // CustomBanner(),
                         ],
                         itemExtent: MediaQuery.of(context).size.width,
                       ),

@@ -9,7 +9,7 @@ class ProductProvider extends ApiProvider {
           'Authorization': 'Bearer ${GetStorage().read('accessToken')}',
         });
 
-  Future<http.Response> getProducts() async {
+  Future<http.Response> getProducts({Map<String, dynamic>? query}) async {
     final response = await get('products');
     return response;
   }

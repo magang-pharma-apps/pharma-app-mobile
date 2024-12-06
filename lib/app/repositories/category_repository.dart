@@ -8,8 +8,8 @@ class CategoryRepository {
 
   List<CategoryModel> categories = [];
 
-  Future<List<CategoryModel>> getCategories() async {
-    final response = await categoryProvider.getCategories();
+  Future<List<CategoryModel>> getCategories({Map<String, dynamic>? query}) async {
+    final response = await categoryProvider.getCategories(query: query);
     // print(response.body);
     // print(response.statusCode);
 
@@ -26,8 +26,8 @@ class CategoryRepository {
 
   Future<CategoryModel> getCategoryById(int id) async {
     final response = await categoryProvider.getCategoryById(id);
-    print(response.body);
-    print(response.statusCode);
+    // print(response.body);
+    // print(response.statusCode);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonResponse = json.decode(response.body);

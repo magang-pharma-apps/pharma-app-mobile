@@ -10,7 +10,7 @@ class InventoryRepository {
   Future<List<InventoryModel>> getInventories({Map<String, dynamic>? query}) async {
     final response = await inventoryProvider.getInventories(query: query);
     // print(response.body);
-    print(response.statusCode);
+    // print(response.statusCode);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonResponse = json.decode(response.body);
@@ -25,8 +25,8 @@ class InventoryRepository {
 
   Future<InventoryModel> getInventoryById(int id) async {
     final response = await inventoryProvider.getInventoryById(id);
-    print(response.body);
-    print(response.statusCode);
+    // print(response.body);
+    // print(response.statusCode);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonResponse = json.decode(response.body);
@@ -41,8 +41,8 @@ class InventoryRepository {
     try {
       final response = await inventoryProvider.createInventory(body);
 
-      print('createInventory body :${response.body}');
-      print('createInventory : ${response.statusCode}');
+      // print('createInventory body :${response.body}');
+      // print('createInventory : ${response.statusCode}');
 
       if (response.statusCode == 201) {
         return true;

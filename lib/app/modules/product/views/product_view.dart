@@ -10,22 +10,20 @@ import 'package:medpia_mobile/app/models/cart_item_model.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
 import 'package:medpia_mobile/app/modules/cart/controllers/cart_controller.dart';
 import 'package:medpia_mobile/app/modules/cart/views/cart_screen.dart';
+import 'package:medpia_mobile/app/modules/product/controllers/product_controller.dart';
 import 'package:medpia_mobile/app/modules/product/views/product_detail_view.dart';
 import 'package:medpia_mobile/app/repositories/product_repository.dart';
 
-class ProductView extends StatefulWidget {
-  ProductModel? productModel = ProductModel();
-  ProductView({super.key, this.productModel});
+class ProductView extends GetView<ProductController> {
+  ProductView({super.key});
 
-  @override
-  State<ProductView> createState() => _ProductViewState();
-}
-
-class _ProductViewState extends State<ProductView> {
   GlobalKey<CartIconKey> cartKey = GlobalKey<CartIconKey>();
+
   late Function(GlobalKey) runAddToCartAnimation;
 
   final cartController = Get.put(CartController());
+  @override
+  get controller => Get.put(ProductController());
 
   ProductRepository productRepository = ProductRepository();
 
@@ -105,56 +103,44 @@ class _ProductViewState extends State<ProductView> {
           child: Column(
             children: [
               SearchWidget(),
-              Expanded(
-                child: FutureBuilder<List<ProductModel>>(
-                  future: fetchProduct(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text(snapshot.error.toString()),
-                      );
-                    } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                      return GridView.builder(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          itemCount: snapshot.data!.length,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisExtent:
-                                      MediaQuery.of(context).size.height / 3),
-                          itemBuilder: (context, index) {
-                            final product = snapshot.data![index];
-                            return InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ProductDetailView(
-                                              productModel: product,
-                                            )),
-                                  );
-                                },
-                                child: CardProduct(
-                                  widgetKey: GlobalKey(),
-                                  onClick: itemClick,
-                                  productModel: product,
-                                  onAddToCart: () {
-                                    cartController.addItemToCart(CartItemModel(
-                                      product: product,
-                                      quantity: 1,
-                                      note: '',
-                                    ));
-                                  },
+              Expanded(child: Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  return GridView.builder(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      itemCount: controller.productList.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisExtent:
+                              MediaQuery.of(context).size.height / 3),
+                      itemBuilder: (context, index) {
+                        final product = controller.productList[index];
+                        return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProductDetailView(
+                                          productModel: product,
+                                        )),
+                              );
+                            },
+                            child: CardProduct(
+                              widgetKey: GlobalKey(),
+                              onClick: itemClick,
+                              productModel: product,
+                              onAddToCart: () {
+                                cartController.addItemToCart(CartItemModel(
+                                  product: product,
+                                  quantity: 1,
+                                  note: '',
                                 ));
-                          });
-                    } else {
-                      return const Center(child: Text('No data found!'));
-                    }
-                  },
-                ),
-              )
+                              },
+                            ));
+                      });
+                }
+              }))
             ],
           ),
         ),

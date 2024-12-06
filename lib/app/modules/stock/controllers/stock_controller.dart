@@ -22,6 +22,8 @@ class StockController extends GetxController {
   final productRepository = ProductRepository();
   RxList<ProductModel> products = <ProductModel>[].obs;
 
+
+
   RxList<InventoryModel> inventoryList = <InventoryModel>[].obs;
 
   RxList<InventoryModel> stockOutList = <InventoryModel>[].obs;
@@ -44,6 +46,7 @@ class StockController extends GetxController {
     inventory.value.note = '';
     inventory.value.items = <InventoryItemModel>[];
   }
+
 
   // Fungsi untuk memilih tanggal
   Future<void> pickDate(BuildContext context) async {
@@ -70,6 +73,8 @@ class StockController extends GetxController {
       context: context,
       initialTime: TimeOfDay.fromDateTime(selectedDateTime.value),
     );
+
+
 
     if (pickedTime != null) {
       selectedDateTime.value = DateTime(
@@ -210,4 +215,5 @@ class StockController extends GetxController {
         items: [], inventoryDate: '', inventoryType: 'In', note: '');
     inventory.refresh();
   }
+
 }
