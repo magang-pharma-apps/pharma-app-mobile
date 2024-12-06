@@ -45,7 +45,8 @@ class CategoryView extends GetView<CategoryController> {
                     // print(category);
                     return CategoryWidget(
                       onTap: () {
-                        Get.to(ProductView());
+                        
+                        Get.to(ProductView(), arguments: category.id);
                       },
                       categoryModel: category,
                       productCount:

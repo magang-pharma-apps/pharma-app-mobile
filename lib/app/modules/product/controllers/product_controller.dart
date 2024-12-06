@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
+import 'package:medpia_mobile/app/models/category_model.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
 import 'package:medpia_mobile/app/repositories/product_repository.dart';
 
 class ProductController extends GetxController {
   RxBool isLoading = false.obs;
   RxList<ProductModel> productList = <ProductModel>[].obs;
+  Rx<CategoryModel> category = CategoryModel().obs;
 
   ProductRepository productRepository = ProductRepository();
 
@@ -14,11 +16,13 @@ class ProductController extends GetxController {
     getProducts();
   }
 
-  void getProducts({Map<String, dynamic>? query}) async {
+  void getProducts() async {
+    print('Coba liat argumentnya ${Get.arguments.toString()}');
     // logic untuk mendapatkan data product
     try {
       isLoading.value = true;
-      final data = await productRepository.getProducts();
+      final data = await productRepository
+          .getProducts(query: {'categoryId': Get.arguments??''});
       productList.value = data;
     } catch (e) {
       print('Failed to load product $e');

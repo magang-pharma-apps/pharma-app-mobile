@@ -51,4 +51,6 @@ class CategoryController extends GetxController {
         .getProducts(query: {'categoryId': category.value.id});
     productList.value = data;
   }
+
+  
 }
