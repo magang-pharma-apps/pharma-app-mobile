@@ -26,7 +26,7 @@ class StockOutForm extends GetView<StockController> {
         persistentFooterButtons: [
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  fixedSize: Size(Get.width, 50),
+                  fixedSize: Size(Get.width, 20),
                   padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10)),
               onPressed: () {
                 controller.createStockOut();

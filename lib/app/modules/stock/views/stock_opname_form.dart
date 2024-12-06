@@ -14,8 +14,8 @@ import 'package:medpia_mobile/app/modules/prescription/controllers/redemption_co
 import 'package:medpia_mobile/app/modules/stock/controllers/stock_controller.dart';
 import 'package:medpia_mobile/app/modules/stock/views/stock_medicines_list.dart';
 
-class StockInForm extends GetView<StockController> {
-  const StockInForm({super.key});
+class StockOpnameForm extends GetView<StockController> {
+  const StockOpnameForm({super.key});
 
   @override
   get controller => Get.put(StockController());
@@ -26,10 +26,10 @@ class StockInForm extends GetView<StockController> {
         persistentFooterButtons: [
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  fixedSize: Size(Get.width, 20),
+                  fixedSize: Size(Get.width, 50),
                   padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10)),
               onPressed: () {
-                controller.createStockIn();
+                // controller.createStockIn();
               },
               child: Text('Save')),
         ],
@@ -37,7 +37,7 @@ class StockInForm extends GetView<StockController> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Text(
-            'Stock In Form',
+            'Stock Opname Form',
             style: Theme.of(context).textTheme.labelMedium,
           ),
           centerTitle: true,
@@ -52,12 +52,11 @@ class StockInForm extends GetView<StockController> {
                 child: Obx(() {
                   return TextFormField(
                     controller: TextEditingController()
-                      ..text = controller.formattedDateTime,
+                      ..text = controller.formattedDate,
                     readOnly: true,
                     onTap: () async {
                       await controller.pickDate(context);
-                      await controller
-                          .pickTime(context); // Memilih waktu setelah tanggal
+                      ; // Memilih waktu setelah tanggal
                     },
                     decoration: InputDecoration(
                         hintText: 'Select Date & Time',
@@ -69,30 +68,11 @@ class StockInForm extends GetView<StockController> {
                   );
                 }),
               ),
-              DropdownButtonFormField<String>(
-                  isExpanded: true,
-                  padding: EdgeInsets.all(8),
-                  dropdownColor: Colors.white,
-                  decoration: const InputDecoration(
-                    labelText: 'Reason',
-                  ),
-                  value: controller.inventory.value.reasonType,
-                  style: const TextStyle(color: Colors.black),
-                  items: ['Purchase', 'Replacement', 'Bonus']
-                      .map((String drugClass) {
-                    return DropdownMenuItem<String>(
-                      value: drugClass,
-                      child: Text(drugClass),
-                    );
-                  }).toList(),
-                  onChanged: (String? value) {
-                    controller.inventory.value.reasonType = value;
-                  }),
               Padding(
                 padding: EdgeInsets.all(8),
                 child: TextFormField(
                   decoration: InputDecoration(
-                      labelText: 'Description (optional)',
+                      labelText: 'Note/Reason',
                       hintText: 'Write a note',
                       suffixIcon: Icon(
                         HugeIcons.strokeRoundedStickyNote02,

@@ -10,7 +10,7 @@ class ProductProvider extends ApiProvider {
         });
 
   Future<http.Response> getProducts({Map<String, dynamic>? query}) async {
-    final response = await get('products');
+    final response = await get('products', query: query);
     return response;
   }
 

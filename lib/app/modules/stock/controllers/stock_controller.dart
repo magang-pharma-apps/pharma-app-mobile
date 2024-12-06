@@ -17,12 +17,12 @@ class StockController extends GetxController {
   var selectedDateTime = DateTime.now().obs;
 
   String get formattedDateTime =>
-      DateFormat('dd/MM/yyyy hh:mm:ss a').format(selectedDateTime.value);
+      DateFormat('dd/MM/yyyy hh:mm a').format(selectedDateTime.value);
+
+  String get formattedDate => DateFormat('dd/MM/yyyy').format(selectedDateTime.value);
 
   final productRepository = ProductRepository();
   RxList<ProductModel> products = <ProductModel>[].obs;
-
-
 
   RxList<InventoryModel> inventoryList = <InventoryModel>[].obs;
 
@@ -31,6 +31,10 @@ class StockController extends GetxController {
   RxList<InventoryModel> stockInList = <InventoryModel>[].obs;
 
   RxBool isLoading = false.obs;
+  RxBool isShow = false.obs;
+
+  RxList<int> selectedItems = <int>[].obs; // Daftar item yang dipilih
+
 
   @override
   void onInit() {
@@ -46,7 +50,6 @@ class StockController extends GetxController {
     inventory.value.note = '';
     inventory.value.items = <InventoryItemModel>[];
   }
-
 
   // Fungsi untuk memilih tanggal
   Future<void> pickDate(BuildContext context) async {
@@ -74,8 +77,6 @@ class StockController extends GetxController {
       initialTime: TimeOfDay.fromDateTime(selectedDateTime.value),
     );
 
-
-
     if (pickedTime != null) {
       selectedDateTime.value = DateTime(
         selectedDateTime.value.year,
@@ -91,15 +92,14 @@ class StockController extends GetxController {
     try {
       isLoading.value = true;
       final response = await inventoryRepository.getInventories();
-      final responseFilteredOut = await inventoryRepository.getInventories(
-          query: {'inventoryType': 'Out'});
-      final responseFilteredIn = await inventoryRepository.getInventories(
-          query: {'inventoryType': 'In'});  
+      final responseFilteredOut = await inventoryRepository
+          .getInventories(query: {'inventoryType': 'Out'});
+      final responseFilteredIn = await inventoryRepository
+          .getInventories(query: {'inventoryType': 'In'});
 
       inventoryList.value = response;
       stockOutList.value = responseFilteredOut;
       stockInList.value = responseFilteredIn;
-
     } catch (e) {
       // TODO
       print('Failed to load inventory$e');
@@ -215,5 +215,4 @@ class StockController extends GetxController {
         items: [], inventoryDate: '', inventoryType: 'In', note: '');
     inventory.refresh();
   }
-
 }
