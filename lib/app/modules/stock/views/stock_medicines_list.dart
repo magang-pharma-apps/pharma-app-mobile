@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/search_widget.dart';
-import 'package:medpia_mobile/app/models/cart_item_model.dart';
 import 'package:medpia_mobile/app/models/inventory_item_model.dart';
-import 'package:medpia_mobile/app/modules/prescription/controllers/list_medicine_items_controller.dart';
-import 'package:medpia_mobile/app/modules/stock/controllers/stock_controller.dart';
 import 'package:medpia_mobile/app/modules/stock/controllers/stock_medicine_list_controller.dart';
 
 class StockMedicinesList extends GetView<StockMedicineListController> {

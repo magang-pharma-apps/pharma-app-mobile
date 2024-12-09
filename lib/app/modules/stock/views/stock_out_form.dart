@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:intl/intl.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/list_medicine_items_widget.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/note_item_widget.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/note_prescription.dart';
-import 'package:medpia_mobile/app/models/cart_item_model.dart';
-import 'package:medpia_mobile/app/models/cart_model.dart';
-import 'package:medpia_mobile/app/models/inventory_item_model.dart';
-import 'package:medpia_mobile/app/modules/prescription/controllers/redemption_controller.dart';
 import 'package:medpia_mobile/app/modules/stock/controllers/stock_controller.dart';
 import 'package:medpia_mobile/app/modules/stock/views/stock_medicines_list.dart';
 

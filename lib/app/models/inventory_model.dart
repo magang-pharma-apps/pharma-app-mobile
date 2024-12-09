@@ -57,10 +57,10 @@ class InventoryModel {
     );
   }
 
-  String get dateFormat {
+  String get createdDateFormat {
     DateTime parsedDate = DateTime.parse(inventoryDate!);
     String formattedInventoryDate =
-        DateFormat('MM/dd/yyyy hh:mm:ss a').format(parsedDate);
+        DateFormat('MM/dd/yyyy hh:mm a').format(parsedDate);
     return formattedInventoryDate;
   }
 }

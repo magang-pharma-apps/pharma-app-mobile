@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
-import 'package:medpia_mobile/app/commons/utils/scan_qr.dart';
+import 'package:medpia_mobile/app/models/inventory_item_model.dart';
 import 'package:medpia_mobile/app/modules/stock/controllers/stock_controller.dart';
 import 'package:medpia_mobile/app/modules/stock/views/stock_opname_form.dart';
 
@@ -19,7 +18,7 @@ class StockOpnameView extends GetView<StockController> {
       persistentFooterButtons: [
         Obx(() {
           return Visibility(
-            visible: controller.selectedItems.isNotEmpty,
+            visible: controller.inventory.value.items!.isNotEmpty,
             child: ElevatedButton(
                 onPressed: () {
                   Get.to(StockOpnameForm());
@@ -48,19 +47,41 @@ class StockOpnameView extends GetView<StockController> {
                     child: InkWell(
                       onTap: () {
                         controller.isShow.value = false;
-                        controller.selectedItems.clear();
+                        controller.inventory.value.items!.clear();
+                        controller.inventory.refresh();
                       },
-                      child: Text("Cancel",
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelMedium!
-                              .copyWith(color: Colors.teal)),
+                      child: Row(
+                        children: [
+                          Text("Cancel",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium!
+                                  .copyWith(color: Colors.teal)),
+                          Checkbox(
+                            activeColor: Colors.teal,
+                            value: controller.inventory.value.items!.length ==
+                                controller.products.length,
+                            onChanged: (value) {
+                              if (value == true) {
+                                controller.inventory.value.items!.clear();
+                                controller.inventory.value.items!
+                                    .addAll(controller.products.map((product) {
+                                  return InventoryItemModel(
+                                      product: product,
+                                      quantity: product.stockQuantity,
+                                      note: "");
+                                }).toList());
+                              } else {
+                                controller.inventory.value.items!.clear();
+                              }
+                              controller.inventory.refresh();
+                            },
+                          )
+                        ],
+                      ),
                     ),
                   )
-                : IconButton(
-                    onPressed: () {},
-                    icon: Icon(HugeIcons.strokeRoundedQrCode),
-                  );
+                : SizedBox.shrink();
           }),
         ],
       ),
@@ -70,32 +91,13 @@ class StockOpnameView extends GetView<StockController> {
           itemCount: controller.products.length,
           itemBuilder: (context, index) {
             final product = controller.products[index];
-            final currentDate = DateTime.now();
-            final expiryDate = DateTime.parse(product.expiryDate!);
-
-            // Calculate difference between expiry date and current date
-            final differenceInDays = expiryDate.difference(currentDate).inDays;
-
-            // Determine color based on expiry status
-            Color expiryColor;
-            if (differenceInDays < 0) {
-              // Already expired
-              expiryColor = Colors.red;
-            } else if (differenceInDays <= 30) {
-              // Will expire within 1 month
-              expiryColor = Colors.orange;
-            } else {
-              // Not expired yet
-              expiryColor = Colors.blue.shade800;
-            }
-
-            Color stockColor = conditionColor(product.stockQuantity!);
+      
 
             return ListTile(
               leading: CircleAvatar(
                 radius: 30,
                 backgroundColor: Colors.tealAccent.shade700,
-                child: Icon(
+                child: const Icon(
                   HugeIcons.strokeRoundedMedicineBottle01,
                   size: 20,
                   color: Colors.white,
@@ -114,33 +116,46 @@ class StockOpnameView extends GetView<StockController> {
                 children: [
                   Text(
                     'SKU: ${product.productCode}',
-                    style: Get.textTheme.bodyMedium!
-                        .copyWith(color: Colors.blue.shade800),
+                    style: Get.textTheme.bodyMedium!,
                   ),
                   Text(
                     'Stock: ${product.stockQuantity} ${product.unit!.name}',
-                    style:
-                        Get.textTheme.bodyMedium!.copyWith(color: stockColor),
+                    style: Get.textTheme.bodyMedium!
+                        .copyWith(color: product.stockColorInfo),
                   ),
                   Text(
                     'Exp Date: ${DateFormat('dd/MM/yy').format(DateTime.parse(product.expiryDate!))}',
-                    style:
-                        Get.textTheme.bodyMedium!.copyWith(color: expiryColor),
+                    style: Get.textTheme.bodyMedium!
+                        .copyWith(color: product.expiryCategory),
                   ),
                 ],
               ),
               trailing: Obx(() {
+                final productOpname = InventoryItemModel(
+                    product: product,
+                    quantity: product.stockQuantity,
+                    note: "");
                 return controller.isShow.value
-                    ? Checkbox(
-                        activeColor: Colors.teal,
-                        value: controller.selectedItems.contains(index),
-                        onChanged: (value) {
-                          if (value == true) {
-                            controller.selectedItems.add(index);
-                          } else {
-                            controller.selectedItems.remove(index);
-                          }
-                        })
+                    ? Obx(() {
+                        return Checkbox(
+                            activeColor: Colors.teal,
+                            value: controller.inventory.value.items!.any(
+                                (element) => element.product!.id == product.id),
+                            onChanged: (value) {
+                              if (value == true) {
+                                controller.inventory.value.items!
+                                    .add(productOpname);
+                                controller.inventory.refresh();
+
+                                // print(controller.inventory.value.items);
+                              } else {
+                                controller.inventory.value.items!.removeWhere(
+                                    (element) =>
+                                        element.product!.id == product.id);
+                                controller.inventory.refresh();
+                              }
+                            });
+                      })
                     : SizedBox.shrink();
               }),
               onLongPress: () => controller.isShow.value = true,
@@ -149,15 +164,5 @@ class StockOpnameView extends GetView<StockController> {
         );
       }),
     );
-  }
-
-  Color conditionColor(int stockQuantity) {
-    if (stockQuantity == 0) {
-      return Colors.red; // Stock habis
-    } else if (stockQuantity <= 15) {
-      return Colors.orange; // Stock hampir habis
-    } else {
-      return Colors.blue.shade800; // Stock aman
-    }
   }
 }

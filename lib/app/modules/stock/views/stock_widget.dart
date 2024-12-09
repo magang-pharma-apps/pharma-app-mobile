@@ -35,7 +35,7 @@ class StockWidget extends StatelessWidget {
             textLabelColor: inventoryModel!.inventoryType == 'In'
                 ? Color(0xFF47663B)
                 : Color(0xFFB43F3F),
-            trailingText: inventoryModel!.dateFormat,
+            trailingText: inventoryModel!.createdDateFormat,
             bgLabelColor: inventoryModel!.inventoryType == 'In'
                 ? const Color(0xffE8ECD7)
                 : const Color(0xFFFFE6E6),

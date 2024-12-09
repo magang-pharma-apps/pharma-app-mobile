@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_snackbar.dart';
-import 'package:medpia_mobile/app/models/cart_item_model.dart';
 import 'package:medpia_mobile/app/models/inventory_item_model.dart';
 import 'package:medpia_mobile/app/models/inventory_model.dart';
 import 'package:medpia_mobile/app/models/product_model.dart';
@@ -19,7 +18,8 @@ class StockController extends GetxController {
   String get formattedDateTime =>
       DateFormat('dd/MM/yyyy hh:mm a').format(selectedDateTime.value);
 
-  String get formattedDate => DateFormat('dd/MM/yyyy').format(selectedDateTime.value);
+  String get formattedDate =>
+      DateFormat('dd/MM/yyyy').format(selectedDateTime.value);
 
   final productRepository = ProductRepository();
   RxList<ProductModel> products = <ProductModel>[].obs;
@@ -33,8 +33,8 @@ class StockController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isShow = false.obs;
 
-  RxList<int> selectedItems = <int>[].obs; // Daftar item yang dipilih
-
+  RxList<ProductModel> selectedItems =
+      <ProductModel>[].obs; // Daftar item yang dipilih
 
   @override
   void onInit() {
@@ -132,6 +132,7 @@ class StockController extends GetxController {
     final index =
         items.indexWhere((element) => element.product!.id == item.product!.id);
     // print("index : $index");
+    calculateDiscrepancy(item);
 
     if (index >= 0) {
       if (items[index].quantity! > 1) {
@@ -148,6 +149,7 @@ class StockController extends GetxController {
     final index =
         items.indexWhere((element) => element.product!.id == item.product!.id);
     // print("index : $index");
+    calculateDiscrepancy(item);
 
     if (index >= 0) {
       // Jika produk sudah ada, tambahkan quantity
@@ -156,6 +158,7 @@ class StockController extends GetxController {
     } else {
       // Jika produk belum ada, tambahkan sebagai item baru
       items.add(item);
+
       // print("Added new item: ${item.product!.name}");
     }
 
@@ -213,6 +216,20 @@ class StockController extends GetxController {
   void clearForm() async {
     inventory.value = InventoryModel(
         items: [], inventoryDate: '', inventoryType: 'In', note: '');
+    inventory.refresh();
+  }
+
+  void calculateDiscrepancy(InventoryItemModel item) {
+    final items = inventory.value.items!;
+    final index =
+        items.indexWhere((element) => element.product!.id == item.product!.id);
+
+    if (index >= 0) {
+      final discrepancy = item.quantity! - items[index].product!.stockQuantity!;
+      item.discrepancy ?? 0;
+      items[index].discrepancy = discrepancy;
+    }
+
     inventory.refresh();
   }
 }

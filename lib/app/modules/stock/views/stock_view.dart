@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/custom_card_label_widget.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/custom_line_widget.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/modal_inventory_widget.dart';
-import 'package:medpia_mobile/app/commons/ui/widgets/summary_text.dart';
 import 'package:medpia_mobile/app/modules/stock/controllers/stock_controller.dart';
-import 'package:medpia_mobile/app/modules/stock/controllers/stock_list_controller.dart';
 import 'package:medpia_mobile/app/modules/stock/views/stock_widget.dart';
 
 class StockView extends GetView<StockController> {

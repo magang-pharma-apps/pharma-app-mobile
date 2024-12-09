@@ -1,5 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:medpia_mobile/app/commons/enums/expiry_standard.dart';
+import 'package:medpia_mobile/app/commons/enums/stock_standard.dart';
 import 'package:medpia_mobile/app/models/category_model.dart';
+import 'package:medpia_mobile/app/models/inventory_item_model.dart';
 import 'package:medpia_mobile/app/models/unit_model.dart';
 
 class ProductModel {
@@ -16,37 +20,37 @@ class ProductModel {
   String? productImageUrl;
   String? drugClass;
 
-  ProductModel({
-    this.id,
-    this.productCode,
-    this.name,
-    this.description,
-    this.purchasePrice,
-    this.sellingPrice,
-    this.expiryDate,
-    this.stockQuantity,
-    this.category,
-    this.unit,
-    this.productImageUrl,
-    this.drugClass,
-  });
+  ProductModel(
+      {this.id,
+      this.productCode,
+      this.name,
+      this.description,
+      this.purchasePrice,
+      this.sellingPrice,
+      this.expiryDate,
+      this.stockQuantity,
+      this.category,
+      this.unit,
+      this.productImageUrl,
+      this.drugClass,});
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-        id: json['id'],
-        productCode: json['productCode'],
-        name: json['name'],
-        description: json['description'],
-        purchasePrice: json['purchasePrice'],
-        sellingPrice: json['sellingPrice'] ?? 0,
-        expiryDate: json['expiryDate'],
-        stockQuantity: json['stockQuantity'],
-        category: json['category'] != null
-            ? CategoryModel.fromJson(json['category'])
-            : null,
-        unit: json['unit'] != null ? UnitModel.fromJson(json['unit']) : null,
-        productImageUrl: json['productImageUrl'] ?? '',
-        drugClass: json['drugClass']);
+      id: json['id'],
+      productCode: json['productCode'],
+      name: json['name'],
+      description: json['description'],
+      purchasePrice: json['purchasePrice'],
+      sellingPrice: json['sellingPrice'] ?? 0,
+      expiryDate: json['expiryDate'],
+      stockQuantity: json['stockQuantity'],
+      category: json['category'] != null
+          ? CategoryModel.fromJson(json['category'])
+          : null,
+      unit: json['unit'] != null ? UnitModel.fromJson(json['unit']) : null,
+      productImageUrl: json['productImageUrl'] ?? '',
+      drugClass: json['drugClass'],
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -68,4 +72,16 @@ class ProductModel {
       'drugClass': drugClass
     };
   }
+
+  Color get stockColorInfo {
+    if (stockQuantity! == StandartStock.empty.value) {
+      return StandartStock.empty.color;
+    } else if (stockQuantity! <= StandartStock.low.value) {
+      return StandartStock.low.color;
+    } else {
+      return StandartStock.available.color;
+    }
+  }
+
+  Color get expiryCategory => DateTime.parse(expiryDate!).expiryColor;
 }
