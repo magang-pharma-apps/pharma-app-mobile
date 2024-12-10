@@ -24,6 +24,11 @@ class InventoryProvider extends ApiProvider {
     return response;
   }
 
+  Future<http.Response> createOpname(Map<String, dynamic> body) async {
+    final response = await post('stock-opname-entries', body);
+    return response;
+  }
+
   Future<http.Response> getInventoryByType(String type) async {
     final response = await get('inventories?inventoryType=$type');
     return response;

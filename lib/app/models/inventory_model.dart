@@ -4,6 +4,7 @@ import 'package:medpia_mobile/app/models/inventory_item_model.dart';
 class InventoryModel {
   int? id;
   String? inventoryDate;
+  String? opnameDate;
   String? inventoryType;
   String? reasonType;
   String? note;
@@ -12,6 +13,7 @@ class InventoryModel {
   InventoryModel(
       {this.id,
       this.inventoryDate,
+      this.opnameDate,
       this.reasonType,
       this.inventoryType,
       this.note,
@@ -43,6 +45,14 @@ class InventoryModel {
     };
   }
 
+  Map<String, dynamic> opnameToJson() {
+    return {
+      'items': items!.map((item) => item.toJsonOpname()).toList(),
+      'opnameDate': opnameDate,
+      'note': note,
+    };
+  }
+
   factory InventoryModel.inventoryFromJson(Map<String, dynamic> json) {
     // print('json ====> $json');
     return InventoryModel(
@@ -53,6 +63,17 @@ class InventoryModel {
       items: json['items'] is List
           ? List<InventoryItemModel>.from(
               json['items'].map((x) => InventoryItemModel.fromJson(x)))
+          : [],
+    );
+  }
+
+  factory InventoryModel.opnameFromJson(Map<String, dynamic> json) {
+    return InventoryModel(
+      opnameDate: json['opnameDate'] ?? '',
+      note: json['note'] ?? '',
+      items: json['items'] is List
+          ? List<InventoryItemModel>.from(
+              json['items'].map((x) => InventoryItemModel.fromJsonOpname(x)))
           : [],
     );
   }

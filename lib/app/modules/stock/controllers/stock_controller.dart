@@ -45,6 +45,7 @@ class StockController extends GetxController {
 
     inventory.value.id = 0;
     inventory.value.inventoryDate = formattedDateTime;
+    inventory.value.opnameDate = formattedDateTime;
     inventory.value.inventoryType = '';
     inventory.value.reasonType = '';
     inventory.value.note = '';
@@ -144,7 +145,6 @@ class StockController extends GetxController {
     inventory.refresh();
   }
 
-
   void addMedicine(InventoryItemModel item) {
     final items = inventory.value.items!;
     final index =
@@ -211,6 +211,33 @@ class StockController extends GetxController {
       }
     } catch (e) {
       print("Error Create StockOut");
+    }
+  }
+
+  void createOpname() async {
+    try {
+      print("Create Opname");
+      final isCreated = await inventoryRepository.createOpname({
+        'opnameDate': inventory.value.opnameDate,
+        'note': inventory.value.note,
+        'items': inventory.value.items!.map((e) => e.toJsonOpname()).toList()
+      });
+      print("isCreated: $isCreated");
+
+      if (isCreated) {
+        Get.back(result: true);
+        CustomSnackbar.showSnackbar(Get.context!,
+            message: "Opname successfully created",
+            title: 'Success!',
+            contentType: ContentType.success);
+      } else {
+        CustomSnackbar.showSnackbar(Get.context!,
+            message: "Failed to created opname",
+            title: "Failed!",
+            contentType: ContentType.failure);
+      }
+    } catch (e) {
+      print("Error Create Opname");
     }
   }
 

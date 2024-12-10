@@ -7,7 +7,8 @@ import 'package:medpia_mobile/app/providers/inventory_provider.dart';
 class InventoryRepository {
   InventoryProvider inventoryProvider = InventoryProvider();
 
-  Future<List<InventoryModel>> getInventories({Map<String, dynamic>? query}) async {
+  Future<List<InventoryModel>> getInventories(
+      {Map<String, dynamic>? query}) async {
     final response = await inventoryProvider.getInventories(query: query);
     // print(response.body);
     // print(response.statusCode);
@@ -53,6 +54,23 @@ class InventoryRepository {
       }
     } catch (e) {
       throw Exception('Failed to create inventory: $e');
+    }
+  }
+
+  Future<bool> createOpname(Map<String, dynamic> body) async {
+    try {
+      final response = await inventoryProvider.createOpname(body);
+      print('createOpname body :${response.body}');
+      print('createOpname : ${response.statusCode}');
+
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        final errorResponse = json.decode(response.body);
+        throw Exception('Failed to create opname: ${errorResponse['message']}');
+      }
+    } catch (e) {
+      throw Exception('Failed to create opname: $e');
     }
   }
 }

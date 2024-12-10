@@ -29,6 +29,16 @@ class InventoryItemModel {
     );
   }
 
+  factory InventoryItemModel.fromJsonOpname(Map<String, dynamic> json) {
+    return InventoryItemModel(
+      product: json['product'] != null
+          ? ProductModel.fromJson(json['product'])
+          : null,
+      physicalStock: json['physicalStock'] ?? 0,
+      discrepancy: json['discrepancy']?? 0,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'productId': product!.id,
@@ -40,7 +50,7 @@ class InventoryItemModel {
   Map<String, dynamic> toJsonOpname() {
     return {
       'productId': product!.id,
-      'note': note,
+      // 'note': note,
       'physicalStock': physicalStock,
       'discrepancy': discrepancy,
     };
