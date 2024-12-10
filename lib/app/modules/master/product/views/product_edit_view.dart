@@ -85,7 +85,8 @@ class ProductEditView extends GetView<MasterProductController> {
                   const SizedBox(height: 10),
                   TextFormField(
                     initialValue: controller.productModel!.value.productCode,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      fillColor: Colors.grey[100],
                       labelText: 'SKU (Product Code)',
                     ),
                     readOnly: true,
@@ -193,23 +194,25 @@ class ProductEditView extends GetView<MasterProductController> {
 
                   //
                   const SizedBox(height: 10),
-                  DropdownButtonFormField<UnitModel>(
-                    value: controller.productModel!.value.unit,
-                    decoration: const InputDecoration(
-                      labelText: 'Select Unit',
-                    ),
-                    // value: controller.productModel!.value.unit,
-                    style: const TextStyle(color: Colors.black),
-                    items: controller.units.map((UnitModel unit) {
-                      return DropdownMenuItem<UnitModel>(
-                        value: unit,
-                        child: Text(unit.name!),
-                      );
-                    }).toList(),
-                    onChanged: (UnitModel? value) {
-                      controller.productModel!.value.unit = value;
-                    },
-                  ),
+                  Obx(() {
+                    return DropdownButtonFormField<UnitModel>(
+                      value: controller.productModel!.value.unit,
+                      decoration: const InputDecoration(
+                        labelText: 'Select Unit',
+                      ),
+                      // value: controller.productModel!.value.unit,
+                      style: const TextStyle(color: Colors.black),
+                      items: controller.units.map((UnitModel unit) {
+                        return DropdownMenuItem<UnitModel>(
+                          value: unit,
+                          child: Text(unit.name!),
+                        );
+                      }).toList(),
+                      onChanged: (UnitModel? value) {
+                        controller.productModel!.value.unit = value;
+                      },
+                    );
+                  }),
                   const SizedBox(
                     height: 10,
                   ),

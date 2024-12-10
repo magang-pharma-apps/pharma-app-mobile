@@ -127,34 +127,35 @@ class StockController extends GetxController {
     inventory.refresh();
   }
 
-  void reduceQuantity(InventoryItemModel item) {
+  void reduceQuantity(InventoryItemModel item, int minValue) {
     final items = inventory.value.items!;
     final index =
         items.indexWhere((element) => element.product!.id == item.product!.id);
     // print("index : $index");
-    calculateDiscrepancy(item);
 
     if (index >= 0) {
-      if (items[index].quantity! > 1) {
-        items[index].quantity = items[index].quantity! - 1;
+      if (items[index].quantity! > minValue) {
+        items[index].quantity = (items[index].quantity ?? 0) - 1;
         // print("Reduced quantity for ${item.product!.name}");
+        calculateDiscrepancy(item);
       }
     }
 
     inventory.refresh();
   }
 
+
   void addMedicine(InventoryItemModel item) {
     final items = inventory.value.items!;
     final index =
         items.indexWhere((element) => element.product!.id == item.product!.id);
     // print("index : $index");
-    calculateDiscrepancy(item);
 
     if (index >= 0) {
       // Jika produk sudah ada, tambahkan quantity
       items[index].quantity = (items[index].quantity ?? 0) + 1;
       // print("Updated quantity for ${item.product!.name}");
+      calculateDiscrepancy(item);
     } else {
       // Jika produk belum ada, tambahkan sebagai item baru
       items.add(item);

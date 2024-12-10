@@ -109,24 +109,25 @@ class _CardProductState extends State<CardProduct> {
                   style: Theme.of(context).textTheme.bodySmall)
             ],
           ),
-          ElevatedButton(
-              onPressed: () {
-                widget.onClick!(widget.widgetKey!);
-
-                widget.onAddToCart!();
-              },
+            ElevatedButton(
+              onPressed: widget.productModel!.stockQuantity == 0
+                ? null
+                : () {
+                  widget.onClick!(widget.widgetKey!);
+                  widget.onAddToCart!();
+                },
               child: Text(
-                "Add to Chart",
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall!
-                    .copyWith(fontSize: 11),
+              "Add to Cart",
+              style: Theme.of(context)
+                .textTheme
+                .titleSmall!
+                .copyWith(fontSize: 11),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                side: BorderSide(color: Colors.teal),
-                overlayColor: Colors.tealAccent.shade400,
-                elevation: 0,
+              backgroundColor: Colors.white,
+              side: BorderSide(color: Colors.teal),
+              overlayColor: Colors.tealAccent.shade400,
+              elevation: 0,
               ))
         ],
       ),

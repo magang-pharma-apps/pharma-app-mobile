@@ -58,6 +58,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                     padding: EdgeInsets.only(top: 5),
                     side: BorderSide(color: Colors.transparent)),
                 onPressed: () {
+                  widget.productModel!.stockQuantity == 0 ? null :
                   itemClick(widgetKey);
                   cartController.addItemToCart(CartItemModel(
                       product: widget.productModel, quantity: 1, note: ''));

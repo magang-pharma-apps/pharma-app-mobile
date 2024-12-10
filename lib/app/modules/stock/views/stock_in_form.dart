@@ -227,7 +227,7 @@ class StockInForm extends GetView<StockController> {
                                             visualDensity: const VisualDensity(
                                                 horizontal: 0, vertical: -4),
                                             onPressed: () {
-                                              controller.reduceQuantity(item);
+                                              controller.reduceQuantity(item, 1);
                                             },
                                             icon: Icon(
                                                 HugeIcons
@@ -256,25 +256,30 @@ class StockInForm extends GetView<StockController> {
                                               keyboardType: TextInputType
                                                   .number, // Keyboard angka untuk input kuantitas
                                               onChanged: (value) {
-                                                // Tambahkan logika untuk memperbarui nilai jika diperlukan
-                                                final int? newQuantity =
-                                                    int.tryParse(value);
-                                                if (newQuantity != null) {
-                                                  item.quantity =
-                                                      newQuantity; // Perbarui data
-                                                }
+                                                item.quantity =
+                                                    int.parse(value);
                                               },
                                               inputFormatters: [
                                                 FilteringTextInputFormatter
                                                     .digitsOnly,
-                                                FilteringTextInputFormatter
-                                                    .deny(RegExp(r'(^0$|^$)')),
-                                                DenyZeroInputFormatter()
+                                                TextInputFormatter.withFunction(
+                                                    (oldValue, newValue) {
+                                                  if (newValue.text.isEmpty) {
+                                                    return newValue.copyWith(
+                                                        text: '1',
+                                                        selection:
+                                                            const TextSelection
+                                                                .collapsed(
+                                                                offset: 1));
+                                                  }
+                                                  return newValue.copyWith(
+                                                      text: newValue.text);
+                                                })
                                               ],
                                             ),
                                           ),
                                           IconButton(
-                                            visualDensity: VisualDensity(
+                                            visualDensity: const VisualDensity(
                                                 horizontal: -4, vertical: -4),
                                             onPressed: () {
                                               controller.addMedicine(item);
@@ -286,8 +291,10 @@ class StockInForm extends GetView<StockController> {
                                                 size: 25),
                                           ),
                                           IconButton(
-                                              visualDensity: VisualDensity(
-                                                  horizontal: -4, vertical: -4),
+                                              visualDensity:
+                                                  const VisualDensity(
+                                                      horizontal: -4,
+                                                      vertical: -4),
                                               onPressed: () {
                                                 controller.removeMedicine(item);
                                               },
@@ -340,23 +347,5 @@ class StockInForm extends GetView<StockController> {
             ],
           ),
         ));
-  }
-}
-
-class DenyZeroInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    // Jika input kosong atau tidak dimulai dengan '0', terima input baru
-    if (newValue.text != "0" || newValue.text.isNotEmpty) {
-      return newValue;
-    }
-    // Jika input kosong, kembalikan nilai sebelumnya (tidak ada perubahan)
-    if (newValue.text.isEmpty || newValue.text == '0') {
-      return oldValue;
-    }
-
-    // Jika input adalah '0', kembalikan nilai sebelumnya (tidak ada perubahan)
-    return oldValue;
   }
 }

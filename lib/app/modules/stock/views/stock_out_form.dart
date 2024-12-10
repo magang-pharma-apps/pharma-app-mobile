@@ -220,7 +220,8 @@ class StockOutForm extends GetView<StockController> {
                                             visualDensity: const VisualDensity(
                                                 horizontal: 0, vertical: -4),
                                             onPressed: () {
-                                              controller.reduceQuantity(item);
+                                              controller.reduceQuantity(
+                                                  item, 1);
                                             },
                                             icon: Icon(
                                                 HugeIcons

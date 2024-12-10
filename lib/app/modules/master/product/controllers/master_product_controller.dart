@@ -39,8 +39,7 @@ class MasterProductController extends GetxController {
   }
 
   var expiryDateController = TextEditingController();
-  String? productCode =
-      '${Random().nextInt(max(1000, 9999)).toString()}';
+  String? productCode = '${Random().nextInt(max(1000, 9999)).toString()}';
   String? name;
   CategoryModel? selectedCategory;
   UnitModel? selectedUnit;
@@ -65,9 +64,19 @@ class MasterProductController extends GetxController {
     super.onInit();
     getProducts();
     getUnits();
+    initializeDropdownValue();
     getCategories();
 
     // ignore: unrelated_type_equality_checks
+  }
+
+  void initializeDropdownValue() {
+    final selectedUnit = units.firstWhere(
+      (unit) => unit.id == productModel!.value.unit?.id,
+      orElse: () => units.isNotEmpty ? units.first : UnitModel(),
+    );
+
+    productModel!.value.unit = selectedUnit;
   }
 
   void getProducts() async {

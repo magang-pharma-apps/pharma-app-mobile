@@ -77,7 +77,8 @@ class ProductFormView extends GetView<MasterProductController> {
               const SizedBox(height: 10),
               TextFormField(
                 initialValue: controller.productCode,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
+                  fillColor: Colors.grey[100],
                   labelText: 'SKU (Product Code)',
                 ),
                 readOnly: true,

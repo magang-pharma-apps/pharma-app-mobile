@@ -225,14 +225,25 @@ class StockOpnameForm extends GetView<StockController> {
                                                         horizontal: -4,
                                                         vertical: -4),
                                                 onPressed: () {
-                                                  controller
-                                                      .reduceQuantity(item);
+                                                  item.quantity != 0
+                                                      ? controller
+                                                          .reduceQuantity(item, 0)
+                                                      : controller
+                                                          .removeMedicine(item);
                                                 },
-                                                icon: Icon(
-                                                    HugeIcons
-                                                        .strokeRoundedRemoveCircle,
-                                                    color: Colors.teal.shade700,
-                                                    size: 20),
+                                                icon: item.quantity != 0
+                                                    ? Icon(
+                                                        HugeIcons
+                                                            .strokeRoundedRemoveCircle,
+                                                        color: Colors
+                                                            .teal.shade700,
+                                                        size: 20)
+                                                    : Icon(
+                                                        HugeIcons
+                                                            .strokeRoundedDelete04,
+                                                        color: Colors.red,
+                                                        size: 20,
+                                                      ),
                                               ),
                                               SizedBox(
                                                 width: 35,
@@ -247,7 +258,6 @@ class StockOpnameForm extends GetView<StockController> {
                                                       const InputDecoration(
                                                     enabledBorder:
                                                         InputBorder.none,
-
                                                     border: InputBorder
                                                         .none, // Menghapus border di sekitar TextFormField
                                                     isDense:
@@ -258,21 +268,31 @@ class StockOpnameForm extends GetView<StockController> {
                                                   keyboardType: TextInputType
                                                       .number, // Keyboard angka untuk input kuantitas
                                                   onChanged: (value) {
-                                                    // Tambahkan logika untuk memperbarui nilai jika diperlukan
-                                                    final int? newQuantity =
-                                                        int.tryParse(value);
-                                                    if (newQuantity != null) {
-                                                      item.quantity =
-                                                          newQuantity; // Perbarui data
-                                                    }
+                                                    // // Tambahkan logika untuk memperbarui nilai jika diperlukan
+                                                    item.quantity =
+                                                        int.parse(value);
+                                                    controller
+                                                        .calculateDiscrepancy(
+                                                            item);
                                                   },
                                                   inputFormatters: [
                                                     FilteringTextInputFormatter
                                                         .digitsOnly,
-                                                    FilteringTextInputFormatter
-                                                        .deny(RegExp(
-                                                            r'(^0$|^$)')),
-                                                    DenyZeroInputFormatter()
+                                                    TextInputFormatter
+                                                        .withFunction((oldValue,
+                                                            newValue) {
+                                                      if (newValue
+                                                          .text.isEmpty) {
+                                                        return TextEditingValue(
+                                                            text: '0',
+                                                            selection:
+                                                                TextSelection
+                                                                    .collapsed(
+                                                                        offset:
+                                                                            1));
+                                                      }
+                                                      return newValue;
+                                                    })
                                                   ],
                                                 ),
                                               ),
@@ -335,23 +355,5 @@ class StockOpnameForm extends GetView<StockController> {
             ],
           ),
         ));
-  }
-}
-
-class DenyZeroInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    // Jika input kosong atau tidak dimulai dengan '0', terima input baru
-    if (newValue.text != "0" || newValue.text.isNotEmpty) {
-      return newValue;
-    }
-    // Jika input kosong, kembalikan nilai sebelumnya (tidak ada perubahan)
-    if (newValue.text.isEmpty || newValue.text == '0') {
-      return oldValue;
-    }
-
-    // Jika input adalah '0', kembalikan nilai sebelumnya (tidak ada perubahan)
-    return oldValue;
   }
 }
