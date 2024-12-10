@@ -109,26 +109,35 @@ class _CardProductState extends State<CardProduct> {
                   style: Theme.of(context).textTheme.bodySmall)
             ],
           ),
-            ElevatedButton(
-              onPressed: widget.productModel!.stockQuantity == 0
-                ? null
-                : () {
-                  widget.onClick!(widget.widgetKey!);
-                  widget.onAddToCart!();
-                },
+          ElevatedButton(
+              onPressed: () {
+                widget.productModel!.stockQuantity != 0
+                    ? widget.onClick!(widget.widgetKey!)
+                    : false;
+                widget.productModel!.stockQuantity != 0
+                    ? widget.onAddToCart!()
+                    : false;
+              },
               child: Text(
-              "Add to Cart",
-              style: Theme.of(context)
-                .textTheme
-                .titleSmall!
-                .copyWith(fontSize: 11),
+                "Add to Cart",
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    fontSize: 11,
+                    color: widget.productModel!.stockQuantity != 0
+                        ? Colors.teal.shade800
+                        : Colors.grey.shade500),
               ),
-              style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              side: BorderSide(color: Colors.teal),
-              overlayColor: Colors.tealAccent.shade400,
-              elevation: 0,
-              ))
+              style: widget.productModel!.stockQuantity != 0
+                  ? ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      side: BorderSide(color: Colors.teal),
+                      overlayColor: Colors.tealAccent.shade400,
+                      elevation: 0,
+                    )
+                  : ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey.shade300,
+                      side: BorderSide(color: Colors.grey.shade300),
+                      elevation: 0,
+                    ))
         ],
       ),
     );

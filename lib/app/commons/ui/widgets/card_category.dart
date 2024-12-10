@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:medpia_mobile/app/models/category_model.dart';
-import 'package:medpia_mobile/app/repositories/category_repository.dart';
 
 class CardCategory extends StatefulWidget {
   CategoryModel? categoryModel;
@@ -17,7 +16,9 @@ class _CardCategoryState extends State<CardCategory> {
   Widget build(BuildContext context) {
     return InkWell(
       enableFeedback: false,
-      onTap: () {},
+      onTap: () {
+        
+      },
       highlightColor: Colors.transparent,
       focusColor: Colors.transparent,
       onHover: (value) {

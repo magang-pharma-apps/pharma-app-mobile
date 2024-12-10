@@ -93,11 +93,13 @@ class ProductEditView extends GetView<MasterProductController> {
                   ),
                   const SizedBox(height: 10),
                   TextFormField(
+                    readOnly: true,
                     initialValue: controller.productModel!.value.name,
                     onChanged: (value) {
                       controller.productModel!.value.name = value;
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      fillColor: Colors.grey[100],
                       labelText: 'Product Name',
                     ),
                   ),
@@ -237,6 +239,7 @@ class ProductEditView extends GetView<MasterProductController> {
                     height: 10,
                   ),
                   TextFormField(
+                    readOnly: true,
                     initialValue:
                         controller.productModel!.value.stockQuantity.toString(),
                     keyboardType: TextInputType.number,
@@ -249,7 +252,8 @@ class ProductEditView extends GetView<MasterProductController> {
                       FilteringTextInputFormatter.digitsOnly,
                       LengthLimitingTextInputFormatter(4),
                     ],
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      fillColor: Colors.grey[100],
                       labelText: 'Stock Quantity',
                     ),
                   ),

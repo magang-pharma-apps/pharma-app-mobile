@@ -78,8 +78,8 @@ class ProductOptionsWidget extends StatelessWidget {
                                   maxLines: 1),
                               Text(
                                   'Current Stock: ${item.product!.stockQuantity!.toString()}',
-                                  style: Get.textTheme.bodyMedium!
-                                      .copyWith(color: Colors.blue.shade800),
+                                  style: Get.textTheme.bodyMedium!.copyWith(
+                                      color: item.product!.stockColorInfo),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1),
                               Text('Discrepancy: ${item.discrepancy}',

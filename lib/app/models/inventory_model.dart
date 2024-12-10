@@ -46,6 +46,7 @@ class InventoryModel {
   }
 
   Map<String, dynamic> opnameToJson() {
+    print('items ====> ${items!.map((item) => item.toJsonOpname()).toList()}');
     return {
       'items': items!.map((item) => item.toJsonOpname()).toList(),
       'opnameDate': opnameDate,

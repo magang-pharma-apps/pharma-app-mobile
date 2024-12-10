@@ -20,19 +20,20 @@ class ProductModel {
   String? productImageUrl;
   String? drugClass;
 
-  ProductModel(
-      {this.id,
-      this.productCode,
-      this.name,
-      this.description,
-      this.purchasePrice,
-      this.sellingPrice,
-      this.expiryDate,
-      this.stockQuantity,
-      this.category,
-      this.unit,
-      this.productImageUrl,
-      this.drugClass,});
+  ProductModel({
+    this.id,
+    this.productCode,
+    this.name,
+    this.description,
+    this.purchasePrice,
+    this.sellingPrice,
+    this.expiryDate,
+    this.stockQuantity,
+    this.category,
+    this.unit,
+    this.productImageUrl,
+    this.drugClass,
+  });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
@@ -43,7 +44,7 @@ class ProductModel {
       purchasePrice: json['purchasePrice'],
       sellingPrice: json['sellingPrice'] ?? 0,
       expiryDate: json['expiryDate'],
-      stockQuantity: json['stockQuantity'],
+      stockQuantity: json['stockQuantity'] ?? 0,
       category: json['category'] != null
           ? CategoryModel.fromJson(json['category'])
           : null,
@@ -65,7 +66,7 @@ class ProductModel {
               DateFormat('dd-MM-yyyy').parse(expiryDate!),
             )
           : null,
-      'stockQuantity': stockQuantity,
+      'stockQuantity': stockQuantity ?? 0,
       'categoryId': category?.id,
       'unitId': unit?.id,
       'productImageUrl': productImageUrl,

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:medpia_mobile/app/models/inventory_item_model.dart';
 import 'package:medpia_mobile/app/models/inventory_model.dart';
 import 'package:medpia_mobile/app/providers/inventory_provider.dart';
 

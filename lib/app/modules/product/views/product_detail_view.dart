@@ -53,15 +53,23 @@ class _ProductDetailViewState extends State<ProductDetailView> {
       child: Scaffold(
           persistentFooterButtons: [
             ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.only(top: 5),
-                    side: BorderSide(color: Colors.transparent)),
+                style: widget.productModel!.stockQuantity != 0
+                    ? ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.only(top: 5),
+                        side: BorderSide(color: Colors.transparent))
+                    : ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.grey,
+                        padding: EdgeInsets.only(top: 5),
+                      ),
                 onPressed: () {
-                  widget.productModel!.stockQuantity == 0 ? null :
-                  itemClick(widgetKey);
-                  cartController.addItemToCart(CartItemModel(
-                      product: widget.productModel, quantity: 1, note: ''));
+                  if (widget.productModel!.stockQuantity != 0) {
+                    itemClick(widgetKey);
+                    cartController.addItemToCart(CartItemModel(
+                        product: widget.productModel, quantity: 1, note: ''));
+                  }
+                  false;
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -329,7 +337,8 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                           ),
                           Text(
                             widget.productModel!.description!,
-                            style: TextStyle(color: Colors.grey.shade700),
+                            style: TextStyle(
+                                fontSize: 12),
                           )
                         ],
                       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
+import 'package:medpia_mobile/app/commons/enums/last_opname_status.dart';
 import 'package:medpia_mobile/app/models/inventory_item_model.dart';
 import 'package:medpia_mobile/app/modules/stock/controllers/stock_controller.dart';
 import 'package:medpia_mobile/app/modules/stock/views/stock_opname_form.dart';
@@ -21,7 +22,14 @@ class StockOpnameView extends GetView<StockController> {
             visible: controller.inventory.value.items!.isNotEmpty,
             child: ElevatedButton(
                 onPressed: () {
-                  Get.to(StockOpnameForm());
+                  Get.to(() => StockOpnameForm())?.then((result) {
+                    if (result == true) {
+                      controller.getProducts();
+                      controller.isShow.value = false;
+                      controller.inventory.value.items!.clear();
+                      controller.inventory.refresh();
+                    }
+                  });
                 },
                 style: ElevatedButton.styleFrom(fixedSize: Size(Get.width, 20)),
                 child: Text(
@@ -91,9 +99,9 @@ class StockOpnameView extends GetView<StockController> {
           itemCount: controller.products.length,
           itemBuilder: (context, index) {
             final product = controller.products[index];
-      
 
             return ListTile(
+              isThreeLine: true,
               leading: CircleAvatar(
                 radius: 30,
                 backgroundColor: Colors.tealAccent.shade700,
@@ -156,9 +164,23 @@ class StockOpnameView extends GetView<StockController> {
                               }
                             });
                       })
-                    : SizedBox.shrink();
+                    : Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: LastOpnameStatus.notStarted.boxDecoration,
+                        child: Text(
+                          LastOpnameStatus.notStarted.text,
+                          style: LastOpnameStatus.notStarted.textStyle,
+                        ),
+                      );
               }),
-              onLongPress: () => controller.isShow.value = true,
+              onLongPress: () {
+                controller.isShow.value = true;
+                controller.inventory.value.items!.add(InventoryItemModel(
+                    product: product,
+                    quantity: product.stockQuantity,
+                    note: ""));
+                controller.inventory.refresh();
+              },
             );
           },
         );

@@ -137,6 +137,7 @@ class StockController extends GetxController {
     if (index >= 0) {
       if (items[index].quantity! > minValue) {
         items[index].quantity = (items[index].quantity ?? 0) - 1;
+        items[index].physicalStock = items[index].quantity;
         // print("Reduced quantity for ${item.product!.name}");
         calculateDiscrepancy(item);
       }
@@ -155,6 +156,7 @@ class StockController extends GetxController {
       // Jika produk sudah ada, tambahkan quantity
       items[index].quantity = (items[index].quantity ?? 0) + 1;
       // print("Updated quantity for ${item.product!.name}");
+      items[index].physicalStock = items[index].quantity;
       calculateDiscrepancy(item);
     } else {
       // Jika produk belum ada, tambahkan sebagai item baru
@@ -217,11 +219,9 @@ class StockController extends GetxController {
   void createOpname() async {
     try {
       print("Create Opname");
-      final isCreated = await inventoryRepository.createOpname({
-        'opnameDate': inventory.value.opnameDate,
-        'note': inventory.value.note,
-        'items': inventory.value.items!.map((e) => e.toJsonOpname()).toList()
-      });
+      final isCreated = await inventoryRepository
+          .createOpname(inventory.value.opnameToJson());
+      // print('Nilai yang dikirimkan ke api : ${inventory.value.opnameToJson()}');
       print("isCreated: $isCreated");
 
       if (isCreated) {

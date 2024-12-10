@@ -7,6 +7,7 @@ import 'package:medpia_mobile/app/repositories/product_repository.dart';
 class CategoryController extends GetxController {
   CategoryRepository categoryRepository = CategoryRepository();
   ProductRepository productRepository = ProductRepository();
+  RxBool isHovered = false.obs;
 
   Rx<ProductModel> products = ProductModel().obs;
   Rx<CategoryModel> category = CategoryModel().obs;

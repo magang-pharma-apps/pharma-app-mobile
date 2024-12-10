@@ -194,27 +194,13 @@ class _HomeViewState extends State<HomeView> {
                     Container(
                       // margin: EdgeInsets.symmetric(vertical: 10),
                       height: 150,
-                      child: CarouselView(
-                        onTap: (value) {
-                          Navigator.push(
+                      child: CustomBanner(
+                          onPressed: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ProductView()));
-                        },
-                        shrinkExtent: 0.7,
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        elevation: 0,
-                        children: [
-                          CustomBanner(
-                              onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ProductView()))),
-                        ],
-                        itemExtent: MediaQuery.of(context).size.width,
-                      ),
+                                  builder: (context) => ProductView()))),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     SectionHeader(
                       sectionName: "Category",
                       sectionIcon: HugeIcons.strokeRoundedGridView,
@@ -248,7 +234,9 @@ class _HomeViewState extends State<HomeView> {
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
                               final category = snapshot.data![index];
-                              return CardCategory(categoryModel: category);
+                              return CardCategory(
+                                categoryModel: category,
+                              );
                             },
                             itemCount: snapshot.data!.length,
                           ),
