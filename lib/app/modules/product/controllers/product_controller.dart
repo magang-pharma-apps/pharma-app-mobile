@@ -4,11 +4,14 @@ import 'package:medpia_mobile/app/models/product_model.dart';
 import 'package:medpia_mobile/app/repositories/product_repository.dart';
 
 class ProductController extends GetxController {
+  String? categoryId = '';
   RxBool isLoading = false.obs;
   RxList<ProductModel> productList = <ProductModel>[].obs;
   Rx<CategoryModel> category = CategoryModel().obs;
 
   ProductRepository productRepository = ProductRepository();
+
+  ProductController({this.categoryId = ''});
 
   @override
   void onInit() {
@@ -22,7 +25,7 @@ class ProductController extends GetxController {
     try {
       isLoading.value = true;
       final data = await productRepository
-          .getProducts(query: {'categoryId': Get.arguments??''});
+          .getProducts(query: {'categoryId': categoryId ?? ''});
       productList.value = data;
     } catch (e) {
       print('Failed to load product $e');

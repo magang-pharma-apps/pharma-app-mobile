@@ -230,8 +230,11 @@ class MasterProductController extends GetxController {
       productModel!.value = product;
       productModel!.value.expiryDate = DateFormat('dd-MM-yyyy')
           .format(DateTime.parse(productModel!.value.expiryDate!));
-      productModel!.value.category = null;
-      productModel!.value.unit = null;
+      productModel!.value.category = product.category;
+      productModel!.value.unit = units.firstWhere(
+        (unit) => unit.id == product.unit!.id,
+        orElse: () => units.isNotEmpty ? units.first : UnitModel(),
+      );
     } catch (e) {
       throw Exception('Failed to load product: $e');
       // TODO

@@ -22,7 +22,8 @@ class BarcodeButtonWidget extends StatelessWidget {
 
           },
           icon: Icon(
-            HugeIcons.strokeRoundedBarCode01,
+            HugeIcons.strokeRoundedBarCode02,
+            size: 30,
             color: Colors.white,
           )),
     );

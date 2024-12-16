@@ -15,7 +15,8 @@ import 'package:medpia_mobile/app/modules/product/views/product_detail_view.dart
 import 'package:medpia_mobile/app/repositories/product_repository.dart';
 
 class ProductView extends GetView<ProductController> {
-  ProductView({super.key});
+  String? categoryId;
+  ProductView({super.key, this.categoryId});
 
   GlobalKey<CartIconKey> cartKey = GlobalKey<CartIconKey>();
 
@@ -23,7 +24,7 @@ class ProductView extends GetView<ProductController> {
 
   final cartController = Get.put(CartController());
   @override
-  get controller => Get.put(ProductController());
+  get controller => Get.put(ProductController(categoryId: categoryId!));
 
   ProductRepository productRepository = ProductRepository();
 

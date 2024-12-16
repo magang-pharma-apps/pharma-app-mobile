@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_line_widget.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/summary_text.dart';
@@ -167,47 +168,75 @@ class _ReportTransactionWidgetState extends State<ReportTransactionWidget>
                           return Center(child: Text('No items found'));
                         }
                         final item = widget.cartModel!.items![index + 1];
-                        return ListTile(
-                          contentPadding:
-                              EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                          leading: Container(
-                            width: 60,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.grey.shade300, width: 0.5),
-                                borderRadius: BorderRadius.circular(5)),
-                            child:
-                                Image.network(item.product!.productImageUrl!),
-                          ),
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SummaryText(
-                                padding: EdgeInsets.zero,
-                                leftText: ' ${item.product!.name!}',
-                                leftStyle: Theme.of(context)
-                                    .textTheme
-                                    .labelSmall!
-                                    .copyWith(overflow: TextOverflow.ellipsis),
-                                rightText:
-                                    '${item.productPrice}   x${item.quantity.toString()}', // '1x',
-                                rightStyle: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .copyWith(overflow: TextOverflow.ellipsis),
-                              ),
-                              Text(
-                                item.note!.isEmpty
-                                    ? ''
-                                    : 'Dosage: ${item.note!}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(color: Colors.grey.shade600),
-                              ),
-                            ],
-                          ),
-                        );
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: widget.cartModel!.items!.length - 1,
+                            itemBuilder: (context, index) {
+                              if (widget.cartModel == null ||
+                                  widget.cartModel!.items == null ||
+                                  widget.cartModel!.items!.isEmpty) {
+                                return Center(child: Text('No items found'));
+                              }
+                              final item = widget.cartModel!.items![index + 1];
+                              return ListTile(
+                                contentPadding: EdgeInsets.only(
+                                    left: 15, right: 15, bottom: 15),
+                                leading: Container(
+                                  width: 60,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.grey.shade300,
+                                          width: 0.5),
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Image.network(
+                                      item.product!.productImageUrl!),
+                                ),
+                                subtitle: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ListTile(
+                                      visualDensity: const VisualDensity(
+                                          vertical: -4, horizontal: -4),
+                                      dense: true,
+                                      contentPadding: EdgeInsets.zero,
+                                      titleTextStyle: Get.textTheme.labelSmall!
+                                          .copyWith(
+                                              overflow: TextOverflow.clip),
+                                      title: Text(
+                                        item.product!.name!,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall!
+                                            .copyWith(
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      trailing: Text(
+                                          '${item.productPrice}  x${item.quantity}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall!
+                                              .copyWith(
+                                                overflow: TextOverflow.ellipsis,
+                                              )),
+                                    ),
+                                    Text(
+                                      item.note!.isEmpty
+                                          ? ''
+                                          : 'Dosage: ${item.note!}',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              color: Colors.grey.shade600),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            });
                       }),
                 ],
               ),

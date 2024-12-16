@@ -45,12 +45,12 @@ class CategoryView extends GetView<CategoryController> {
                     // print(category);
                     return CategoryWidget(
                       onTap: () {
-                        if (controller.getProductsByCategory(category.id) ==
-                            0) {
-                          return;
-                        }
-                        Get.to(ProductView(),
-                            arguments: category.id.toString());
+                        // if (controller.getProductsByCategory(category.id) ==
+                        //     0) {
+                        //   return;
+                        // }
+                        Get.to(ProductView(categoryId: category.id.toString(),),
+                            );
                       },
                       categoryModel: category,
                       productCount:

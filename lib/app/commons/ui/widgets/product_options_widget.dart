@@ -132,7 +132,7 @@ class ProductOptionsWidget extends StatelessWidget {
                                     textAlign: TextAlign.center,
                                     controller: TextEditingController(
                                         text: item.quantity
-                                            ?.toString()), // Mengisi nilai awal
+                                            ?.toString(), ), // Mengisi nilai awal
                                     style: Get.textTheme
                                         .labelSmall, // Menyesuaikan gaya teks
                                     decoration: const InputDecoration(
@@ -149,8 +149,8 @@ class ProductOptionsWidget extends StatelessWidget {
                                     onChanged: (value) {
                                       // // Tambahkan logika untuk memperbarui nilai jika diperlukan
                                       item.quantity = int.parse(value);
-                                      controller.calculateDiscrepancy(item);
                                       item.physicalStock = item.quantity;
+                                      controller.calculateDiscrepancy(item);
                                     },
                                     inputFormatters: [
                                       FilteringTextInputFormatter.digitsOnly,

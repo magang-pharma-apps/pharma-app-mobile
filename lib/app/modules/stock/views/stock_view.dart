@@ -33,7 +33,17 @@ class StockView extends GetView<StockController> {
         backgroundColor: Colors.white,
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          titlePadding: EdgeInsets.all(10),
+                          title: Text('Search'),
+                          content: SearchBar()
+                        ));
+              },
               icon: Icon(
                 HugeIcons.strokeRoundedSearchArea,
                 size: 20,

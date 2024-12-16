@@ -4,6 +4,7 @@ import 'package:medpia_mobile/app/commons/enums/expiry_standard.dart';
 import 'package:medpia_mobile/app/commons/enums/stock_standard.dart';
 import 'package:medpia_mobile/app/models/category_model.dart';
 import 'package:medpia_mobile/app/models/inventory_item_model.dart';
+import 'package:medpia_mobile/app/models/inventory_model.dart';
 import 'package:medpia_mobile/app/models/unit_model.dart';
 
 class ProductModel {
@@ -19,6 +20,8 @@ class ProductModel {
   String? expiryDate;
   String? productImageUrl;
   String? drugClass;
+  InventoryModel? lastOpname;
+  int? discrepancy;
 
   ProductModel({
     this.id,
@@ -33,25 +36,30 @@ class ProductModel {
     this.unit,
     this.productImageUrl,
     this.drugClass,
+    this.lastOpname,
+    this.discrepancy,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-      id: json['id'],
-      productCode: json['productCode'],
-      name: json['name'],
-      description: json['description'],
-      purchasePrice: json['purchasePrice'],
-      sellingPrice: json['sellingPrice'] ?? 0,
-      expiryDate: json['expiryDate'],
-      stockQuantity: json['stockQuantity'] ?? 0,
-      category: json['category'] != null
-          ? CategoryModel.fromJson(json['category'])
-          : null,
-      unit: json['unit'] != null ? UnitModel.fromJson(json['unit']) : null,
-      productImageUrl: json['productImageUrl'] ?? '',
-      drugClass: json['drugClass'],
-    );
+        id: json['id'],
+        productCode: json['productCode'],
+        name: json['name'],
+        description: json['description'],
+        purchasePrice: json['purchasePrice'],
+        sellingPrice: json['sellingPrice'] ?? 0,
+        expiryDate: json['expiryDate'],
+        stockQuantity: json['stockQuantity'] ?? 0,
+        category: json['category'] != null
+            ? CategoryModel.fromJson(json['category'])
+            : null,
+        unit: json['unit'] != null ? UnitModel.fromJson(json['unit']) : null,
+        productImageUrl: json['productImageUrl'] ?? '',
+        drugClass: json['drugClass'],
+        lastOpname: json['lastOpname'] != null
+            ? InventoryModel.opnameFromJson(json['lastOpname'])
+            : null,
+        discrepancy: json['lastOpname']?['discrepancy']);
   }
 
   Map<String, dynamic> toJson() {

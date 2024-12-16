@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
 import 'package:medpia_mobile/app/commons/enums/last_opname_status.dart';
+import 'package:medpia_mobile/app/commons/utils/scan_qr.dart';
 import 'package:medpia_mobile/app/models/inventory_item_model.dart';
 import 'package:medpia_mobile/app/modules/stock/controllers/stock_controller.dart';
 import 'package:medpia_mobile/app/modules/stock/views/stock_opname_form.dart';
@@ -41,11 +42,42 @@ class StockOpnameView extends GetView<StockController> {
       ],
       backgroundColor: Colors.white,
       appBar: AppBar(
-        forceMaterialTransparency: false,
+        forceMaterialTransparency: true,
         backgroundColor: Colors.white,
-        title: Text(
-          "Stock Opname",
-          style: Theme.of(context).textTheme.labelMedium!,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Stock Opname",
+              style: Theme.of(context).textTheme.labelSmall!,
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            SearchBar(
+              hintText: 'Search Product SKU',
+              hintStyle: MaterialStateProperty.all(
+                  TextStyle(fontSize: 12, color: Colors.grey)),
+              onChanged: (value) {
+                controller.search.value = value;
+                controller.getProducts();
+              },
+              elevation: WidgetStatePropertyAll(0),
+              constraints: BoxConstraints(maxHeight: 30),
+              leading: IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+              trailing: [
+                IconButton(
+                    onPressed: closeSearch,
+                    icon: Icon(Icons.medication_outlined)),
+                IconButton(
+                  onPressed: () {
+                    Get.to(() => ScanQr(setResult: setResult));
+                  },
+                  icon: const Icon(Icons.qr_code_scanner_sharp),
+                )
+              ],
+            ),
+          ],
         ),
         actions: [
           Obx(() {
@@ -77,6 +109,7 @@ class StockOpnameView extends GetView<StockController> {
                                   return InventoryItemModel(
                                       product: product,
                                       quantity: product.stockQuantity,
+                                      physicalStock: product.stockQuantity,
                                       note: "");
                                 }).toList());
                               } else {
@@ -102,8 +135,9 @@ class StockOpnameView extends GetView<StockController> {
 
             return ListTile(
               isThreeLine: true,
+              dense: true,
               leading: CircleAvatar(
-                radius: 30,
+                radius: 20,
                 backgroundColor: Colors.tealAccent.shade700,
                 child: const Icon(
                   HugeIcons.strokeRoundedMedicineBottle01,
@@ -114,14 +148,53 @@ class StockOpnameView extends GetView<StockController> {
               shape: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey.shade300),
               ),
-              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-              title: Text(
-                product.name!,
-                style: Get.textTheme.labelSmall!,
+              contentPadding: EdgeInsets.only(left: 10),
+              title: Container(
+                padding: EdgeInsets.all(3),
+                margin: EdgeInsets.only(bottom: 3),
+                decoration: controller.getOpnameStatus(product).boxDecoration,
+                child: Column(
+                  children: [
+                    Text(
+                      textAlign: TextAlign.center,
+                      controller.getOpnameStatus(product).text,
+                      style: Get.textTheme.labelSmall!.copyWith(
+                          fontSize: 10,
+                          color: controller
+                              .getOpnameStatus(product)
+                              .textStyle
+                              .color),
+                    ),
+                    product.lastOpname?.opnameDate?.isNotEmpty == true
+                        ? Text(
+                            'Last Opt. ${DateFormat('dd/MM/yy').format(DateTime.parse(product.lastOpname!.opnameDate!))}',
+                            style: Get.textTheme.bodySmall!.copyWith(
+                                color: controller
+                                    .getOpnameStatus(product)
+                                    .textStyle
+                                    .color),
+                          )
+                        : SizedBox.shrink(),
+                    product.lastOpname?.opnameDate?.isNotEmpty == true
+                        ? Text(
+                            'Discrepancy: ${product.discrepancy}',
+                            style: Get.textTheme.bodySmall!.copyWith(
+                                color: controller
+                                    .getOpnameStatus(product)
+                                    .textStyle
+                                    .color),
+                          )
+                        : SizedBox.shrink(),
+                  ],
+                ),
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                    product.name!,
+                    style: Get.textTheme.labelSmall!,
+                  ),
                   Text(
                     'SKU: ${product.productCode}',
                     style: Get.textTheme.bodyMedium!,
@@ -151,8 +224,9 @@ class StockOpnameView extends GetView<StockController> {
                                 (element) => element.product!.id == product.id),
                             onChanged: (value) {
                               if (value == true) {
-                                controller.inventory.value.items!
-                                    .add(productOpname);
+                                controller.inventory.value.items!.add(
+                                    productOpname.copyWith(
+                                        physicalStock: product.stockQuantity));
                                 controller.inventory.refresh();
 
                                 // print(controller.inventory.value.items);
@@ -164,19 +238,13 @@ class StockOpnameView extends GetView<StockController> {
                               }
                             });
                       })
-                    : Container(
-                        padding: EdgeInsets.all(5),
-                        decoration: LastOpnameStatus.notStarted.boxDecoration,
-                        child: Text(
-                          LastOpnameStatus.notStarted.text,
-                          style: LastOpnameStatus.notStarted.textStyle,
-                        ),
-                      );
+                    : SizedBox.shrink();
               }),
               onLongPress: () {
                 controller.isShow.value = true;
                 controller.inventory.value.items!.add(InventoryItemModel(
                     product: product,
+                    physicalStock: product.stockQuantity,
                     quantity: product.stockQuantity,
                     note: ""));
                 controller.inventory.refresh();
@@ -186,5 +254,23 @@ class StockOpnameView extends GetView<StockController> {
         );
       }),
     );
+  }
+
+  void setResult(String result) {
+    print('result barcode scan: $result');
+    controller.search.value = result;
+    controller.getProducts();
+
+    // Future.delayed(
+    //   Duration(milliseconds: 500),
+    //   () {
+    //     Get.to(const StockOpnameView(), arguments: result);
+    //   },
+    // );
+  }
+
+  void closeSearch() {
+    controller.search.value = '';
+    controller.getProducts();
   }
 }

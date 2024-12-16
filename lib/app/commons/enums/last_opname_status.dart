@@ -11,9 +11,9 @@ extension StatusOpnameExtension on LastOpnameStatus {
       case LastOpnameStatus.notStarted:
         return BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.orange.shade100,
+          color: Colors.red.shade100,
         );
-        case LastOpnameStatus.done:
+      case LastOpnameStatus.done:
         return BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.green.shade100,
@@ -25,12 +25,12 @@ extension StatusOpnameExtension on LastOpnameStatus {
     switch (this) {
       case LastOpnameStatus.notStarted:
         return TextStyle(
-          color: Colors.amber,
+          color: Colors.red.shade700,
           fontSize: 10,
         );
-        case LastOpnameStatus.done:
+      case LastOpnameStatus.done:
         return TextStyle(
-          color: Colors.green,
+          color: Colors.green.shade700,
           fontSize: 10,
         );
     }
@@ -40,7 +40,7 @@ extension StatusOpnameExtension on LastOpnameStatus {
     switch (this) {
       case LastOpnameStatus.notStarted:
         return 'Belum Opname';
-        case LastOpnameStatus.done:
+      case LastOpnameStatus.done:
         return 'Sudah Opname';
     }
   }

@@ -45,9 +45,7 @@ class CategoryController extends GetxController {
         .length;
   }
 
-  Future<void> getProducts({
-    Map<String, dynamic>? query,
-  }) async {
+  Future<void> getProducts() async {
     final data = await productRepository
         .getProducts(query: {'categoryId': category.value.id});
     productList.value = data;

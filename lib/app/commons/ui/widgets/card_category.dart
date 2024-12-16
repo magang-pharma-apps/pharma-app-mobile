@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:medpia_mobile/app/models/category_model.dart';
+import 'package:medpia_mobile/app/modules/category/controllers/category_controller.dart';
+import 'package:medpia_mobile/app/modules/product/views/product_view.dart';
 
 class CardCategory extends StatefulWidget {
   CategoryModel? categoryModel;
@@ -11,13 +14,17 @@ class CardCategory extends StatefulWidget {
 
 class _CardCategoryState extends State<CardCategory> {
   bool _isHovered = false;
+  final controller = Get.put(CategoryController());
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       enableFeedback: false,
       onTap: () {
-        
+        if (controller.getProductsByCategory(widget.categoryModel!.id) == 0) {
+          return;
+        }
+        Get.to(ProductView(categoryId: widget.categoryModel!.id.toString(),));
       },
       highlightColor: Colors.transparent,
       focusColor: Colors.transparent,

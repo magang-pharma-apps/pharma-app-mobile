@@ -35,7 +35,23 @@ class InventoryItemModel {
           ? ProductModel.fromJson(json['product'])
           : null,
       physicalStock: json['physicalStock'] ?? 0,
-      discrepancy: json['discrepancy']?? 0,
+      discrepancy: json['discrepancy'] ?? 0,
+    );
+  }
+
+  InventoryItemModel copyWith({
+    ProductModel? product,
+    int? quantity,
+    int? physicalStock,
+    int? discrepancy,
+    String? note,
+  }) {
+    return InventoryItemModel(
+      product: product ?? this.product,
+      quantity: quantity ?? this.quantity,
+      physicalStock: physicalStock ?? this.physicalStock,
+      discrepancy: discrepancy ?? this.discrepancy,
+      note: note ?? this.note,
     );
   }
 

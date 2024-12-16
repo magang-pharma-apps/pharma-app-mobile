@@ -26,12 +26,12 @@ class InventoryTabView extends GetView<StockController> {
             contentPadding: EdgeInsets.symmetric(horizontal: 15),
             title: Text('Stock Activity',
                 style: Theme.of(context).textTheme.labelSmall),
-            trailing: IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  HugeIcons.strokeRoundedSorting05,
-                  size: 20,
-                )),
+            // trailing: IconButton(
+            //     onPressed: () {},
+            //     icon: Icon(
+            //       HugeIcons.strokeRoundedSorting05,
+            //       size: 20,
+            //     )),
           ),
         ),
         Divider(

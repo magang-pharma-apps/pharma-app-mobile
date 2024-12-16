@@ -15,8 +15,7 @@ class ScanQr extends StatefulWidget {
   _ScanQrState createState() => _ScanQrState();
 }
 
-class _ScanQrState extends State<ScanQr>
-    with SingleTickerProviderStateMixin {
+class _ScanQrState extends State<ScanQr> with SingleTickerProviderStateMixin {
   late final MobileScannerController _controller;
   late final AnimationController _animationController;
   late final Animation<double> _animation;
@@ -57,7 +56,7 @@ class _ScanQrState extends State<ScanQr>
 
   void _cancelScan() async {
     await _controller.stop();
-    Navigator.of(context).pop();
+    Navigator.pop(context);
   }
 
   @override
@@ -75,7 +74,7 @@ class _ScanQrState extends State<ScanQr>
               if (barcode.rawValue != null) {
                 widget.setResult(barcode.rawValue!);
                 await _controller.stop();
-                Navigator.of(context).pop();
+                Navigator.pop(context);
               }
             },
           ),
@@ -121,15 +120,18 @@ class _ScanQrState extends State<ScanQr>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.flashlight_on, color: Colors.white, size: 40),
+                    icon: const Icon(Icons.flashlight_on,
+                        color: Colors.white, size: 40),
                     onPressed: _toggleTorch,
                   ),
                   IconButton(
-                    icon: const Icon(Icons.flip_camera_android, color: Colors.white, size: 40),
+                    icon: const Icon(Icons.flip_camera_android,
+                        color: Colors.white, size: 40),
                     onPressed: _toggleCamera,
                   ),
                   IconButton(
-                    icon: const Icon(Icons.cancel, color: Colors.redAccent, size: 40),
+                    icon: const Icon(Icons.cancel,
+                        color: Colors.redAccent, size: 40),
                     onPressed: _cancelScan,
                   ),
                 ],
@@ -148,7 +150,10 @@ class InvertedClipper extends CustomClipper<Path> {
     Path path = Path()
       ..addRect(Rect.fromLTWH(0, 0, size.width, size.height))
       ..addRRect(RRect.fromRectAndRadius(
-        Rect.fromCenter(center: Offset(size.width / 2, size.height / 2), width: 280, height: 280),
+        Rect.fromCenter(
+            center: Offset(size.width / 2, size.height / 2),
+            width: 280,
+            height: 280),
         Radius.circular(16),
       ))
       ..fillType = PathFillType.evenOdd;

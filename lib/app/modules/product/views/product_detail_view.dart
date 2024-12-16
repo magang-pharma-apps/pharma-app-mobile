@@ -53,24 +53,22 @@ class _ProductDetailViewState extends State<ProductDetailView> {
       child: Scaffold(
           persistentFooterButtons: [
             ElevatedButton(
-                style: widget.productModel!.stockQuantity != 0
-                    ? ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        padding: EdgeInsets.only(top: 5),
-                        side: BorderSide(color: Colors.transparent))
-                    : ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.grey,
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                onPressed: () {
-                  if (widget.productModel!.stockQuantity != 0) {
-                    itemClick(widgetKey);
-                    cartController.addItemToCart(CartItemModel(
-                        product: widget.productModel, quantity: 1, note: ''));
-                  }
-                  false;
-                },
+                style: ElevatedButton.styleFrom(
+                  textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    disabledBackgroundColor: Colors.grey.shade300,
+                    disabledForegroundColor: Colors.grey.shade500,
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.only(top: 5),
+                    side: BorderSide(color: Colors.transparent)),
+                onPressed: widget.productModel!.stockQuantity != 0
+                    ? () {
+                        itemClick(widgetKey);
+                        cartController.addItemToCart(CartItemModel(
+                            product: widget.productModel,
+                            quantity: 1,
+                            note: ''));
+                      }
+                    : null,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -80,10 +78,6 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                     ),
                     Text(
                       'Add To Cart',
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelSmall!
-                          .copyWith(color: Colors.white),
                     )
                   ],
                 ))
@@ -337,8 +331,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                           ),
                           Text(
                             widget.productModel!.description!,
-                            style: TextStyle(
-                                fontSize: 12),
+                            style: TextStyle(fontSize: 12),
                           )
                         ],
                       ),

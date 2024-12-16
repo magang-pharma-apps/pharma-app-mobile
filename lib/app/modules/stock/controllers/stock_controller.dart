@@ -2,6 +2,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:medpia_mobile/app/commons/enums/last_opname_status.dart';
 import 'package:medpia_mobile/app/commons/ui/widgets/custom_snackbar.dart';
 import 'package:medpia_mobile/app/models/inventory_item_model.dart';
 import 'package:medpia_mobile/app/models/inventory_model.dart';
@@ -22,7 +23,9 @@ class StockController extends GetxController {
       DateFormat('dd/MM/yyyy').format(selectedDateTime.value);
 
   final productRepository = ProductRepository();
+
   RxList<ProductModel> products = <ProductModel>[].obs;
+  RxString search = ''.obs;
 
   RxList<InventoryModel> inventoryList = <InventoryModel>[].obs;
 
@@ -35,6 +38,12 @@ class StockController extends GetxController {
 
   RxList<ProductModel> selectedItems =
       <ProductModel>[].obs; // Daftar item yang dipilih
+
+  LastOpnameStatus getOpnameStatus(ProductModel product) {
+    return product.lastOpname?.opnameDate?.isNotEmpty == true
+        ? LastOpnameStatus.done
+        : LastOpnameStatus.notStarted;
+  }
 
   @override
   void onInit() {
@@ -109,8 +118,10 @@ class StockController extends GetxController {
     }
   }
 
-  void getProducts() async {
-    final response = await productRepository.getProducts();
+  Future<void> getProducts() async {
+    print('Coba liat argument result barcode nya : ${Get.arguments}');
+    final response = await productRepository
+        .getProducts(query: {'productCode': search.value});
     products.value = response;
   }
 
@@ -138,6 +149,7 @@ class StockController extends GetxController {
       if (items[index].quantity! > minValue) {
         items[index].quantity = (items[index].quantity ?? 0) - 1;
         items[index].physicalStock = items[index].quantity;
+        print("physicalStock reduce : ${items[index].physicalStock}");
         // print("Reduced quantity for ${item.product!.name}");
         calculateDiscrepancy(item);
       }
@@ -151,16 +163,19 @@ class StockController extends GetxController {
     final index =
         items.indexWhere((element) => element.product!.id == item.product!.id);
     // print("index : $index");
+    print('mau liat pyhsical stock : ${item.physicalStock}');
 
     if (index >= 0) {
+      items[index].physicalStock = items[index].quantity;
+      print("physicalStock : ${items[index].physicalStock}");
+      calculateDiscrepancy(item);
       // Jika produk sudah ada, tambahkan quantity
       items[index].quantity = (items[index].quantity ?? 0) + 1;
       // print("Updated quantity for ${item.product!.name}");
-      items[index].physicalStock = items[index].quantity;
-      calculateDiscrepancy(item);
     } else {
       // Jika produk belum ada, tambahkan sebagai item baru
-      items.add(item);
+      items.add(item.copyWith(physicalStock: item.quantity));
+      print('mau liat pyhsical stock after add : ${item.physicalStock}');
 
       // print("Added new item: ${item.product!.name}");
     }

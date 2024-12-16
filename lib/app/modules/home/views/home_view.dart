@@ -22,8 +22,11 @@ import 'package:medpia_mobile/app/modules/cart/views/cart_screen.dart';
 import 'package:medpia_mobile/app/modules/category/views/category_view.dart';
 import 'package:medpia_mobile/app/modules/product/views/product_detail_view.dart';
 import 'package:medpia_mobile/app/modules/product/views/product_view.dart';
+import 'package:medpia_mobile/app/modules/stock/views/stock_opname_view.dart';
 import 'package:medpia_mobile/app/repositories/category_repository.dart';
 import 'package:medpia_mobile/app/repositories/product_repository.dart';
+
+import '../../stock/controllers/stock_controller.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -33,6 +36,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  final controller = Get.put(StockController());
   String barcodeResult = 'No Barcode Scanned';
   GlobalKey<CartIconKey> cartKeyHome = GlobalKey<CartIconKey>();
   late Function(GlobalKey) runAddToCartAnimation;
@@ -176,7 +180,6 @@ class _HomeViewState extends State<HomeView> {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   children: [
-                    SizedBox(height: 15),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -194,11 +197,8 @@ class _HomeViewState extends State<HomeView> {
                     Container(
                       // margin: EdgeInsets.symmetric(vertical: 10),
                       height: 150,
-                      child: CustomBanner(
-                          onPressed: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ProductView()))),
+                      child:
+                          CustomBanner(onPressed: () => Get.to(ProductView(categoryId: '',))),
                     ),
                     const SizedBox(height: 15),
                     SectionHeader(
@@ -252,10 +252,7 @@ class _HomeViewState extends State<HomeView> {
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: SectionHeader(
                     viewAllPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProductView()));
+                      Get.to(ProductView(categoryId: '',));
                     },
                     sectionName: "Products",
                     sectionIcon: HugeIcons.strokeRoundedPackage),
@@ -277,10 +274,6 @@ class _HomeViewState extends State<HomeView> {
                         return Center(child: Text(snapshot.error.toString()));
                       } else if (snapshot.hasData &&
                           snapshot.data!.isNotEmpty) {
-                        final List<GlobalKey> widgetKeys = List.generate(
-                          snapshot.data!.length,
-                          (index) => GlobalKey(),
-                        );
                         return ListView.builder(
                           itemExtent: MediaQuery.of(context).size.width / 2.5,
                           scrollDirection: Axis.horizontal,
@@ -349,11 +342,15 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void setResult(String result) {
-    setState(() {
-      barcodeResult = result;
-      print('Result barcode: $result');
-      locationController.text = result;
-      print('Location controller: ${locationController.text}');
-    });
+    print('result barcode scan: $result');
+    controller.search.value = result;
+
+    Future.delayed(
+      Duration(milliseconds: 500),
+      () {
+        controller.getProducts();
+        Get.to(const StockOpnameView());
+      },
+    );
   }
 }
