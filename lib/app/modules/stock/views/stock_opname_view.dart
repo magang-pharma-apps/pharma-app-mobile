@@ -45,7 +45,7 @@ class StockOpnameView extends GetView<StockController> {
         forceMaterialTransparency: true,
         backgroundColor: Colors.white,
         title: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Stock Opname",

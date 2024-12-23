@@ -236,7 +236,7 @@ class StockController extends GetxController {
       print("Create Opname");
       final isCreated = await inventoryRepository
           .createOpname(inventory.value.opnameToJson());
-      // print('Nilai yang dikirimkan ke api : ${inventory.value.opnameToJson()}');
+      print('Nilai yang dikirimkan ke api : ${inventory.value.opnameToJson()}');
       print("isCreated: $isCreated");
 
       if (isCreated) {
@@ -252,7 +252,7 @@ class StockController extends GetxController {
             contentType: ContentType.failure);
       }
     } catch (e) {
-      print("Error Create Opname");
+      print("Error Create Opname $e");
     }
   }
 

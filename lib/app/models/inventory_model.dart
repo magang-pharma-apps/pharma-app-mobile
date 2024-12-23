@@ -46,10 +46,20 @@ class InventoryModel {
   }
 
   Map<String, dynamic> opnameToJson() {
+    final inputDateFormat = DateFormat("dd/MM/yyyy hh:mm a");
+    DateTime parsedDate;
+    try {
+      parsedDate = inputDateFormat.parse(opnameDate!);
+    } catch (e) {
+      throw FormatException("Invalid date format for opnameDate: $opnameDate");
+    }
     print('items ====> ${items!.map((item) => item.toJsonOpname()).toList()}');
+    print(
+        'opnameDate ====> ${parsedDate.toUtc().add(const Duration(hours: 7)).toIso8601String()}');
     return {
       'items': items!.map((item) => item.toJsonOpname()).toList(),
-      'opnameDate': opnameDate,
+      'opnameDate':
+          parsedDate.toUtc().add(const Duration(hours: 7)).toIso8601String(),
       'note': note,
     };
   }
